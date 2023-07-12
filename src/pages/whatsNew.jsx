@@ -19,7 +19,7 @@ const whatsNew = () => {
       <div className="grid grid-cols-1 gap-10 mb-10">
         <Promotions promotions={promotionsList} />
       </div>
-      <h2 className='section-heading'>Clothes</h2>
+      <h2 className='section-heading'>What's New</h2>
       <Filters />
       <Products />
     </>
