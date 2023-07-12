@@ -160,9 +160,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-10 mb-10">
-        <Promotions promotions={promotionsList} />
-      </div>
+      <Promotions promotions={promotionsList} />
 
       <div>
         <h2 className='section-heading'>Todays Best Deals For You!</h2>

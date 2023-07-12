@@ -28,9 +28,7 @@ const Category = () => {
 
   return (
     <>
-      <div className="grid lg:grid-cols-3 gap-10 mb-10">
-        <Promotions promotions={promotionsList} />
-      </div>
+      <Promotions promotions={promotionsList} />
       <h2 className='section-heading'>Clothes</h2>
       <Filters />
       <Products />
