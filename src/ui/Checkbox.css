@@ -1,0 +1,23 @@
+.checkbox {
+  @apply flex flex-row items-center gap-2 cursor-pointer;
+}
+
+.checkbox .icon-container {
+  @apply block border border-slate-900 select-none transition duration-500;
+}
+
+.checkbox .icon-container.checked {
+  @apply bg-orange-500 !border-orange-500;
+}
+
+.checkbox .icon-container .icon {
+  @apply text-xs text-white opacity-0 transition duration-500;
+}
+
+.checkbox .icon-container.checked .icon {
+  @apply opacity-100;
+}
+
+.checkbox .text {
+  @apply text-lg capitalize select-none;
+}

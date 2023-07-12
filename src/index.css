@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.section-container {
+  @apply mx-auto px-10 max-w-screen-xl;
+}
+
+.slick-dots {
+  @apply static !flex flex-row gap-[22px] mt-5;
+}
+
+.slick-dots li {
+  @apply static block w-auto h-auto m-0 p-0;
+}
+
+.slick-dots li.slick-active img {
+  @apply border-slate-400
+}
+
+.section-heading {
+  @apply mb-8 text-3xl capitalize font-semibold text-center lg:text-left;
+}
+
+
+.slider {
+  @apply w-full h-8;
+}
+
+.slider .slider-track {
+  @apply h-2 top-1/2 -translate-y-1/2 bg-gray-300;
+}
+
+.slider .slider-track.slider-track-1 {
+  @apply bg-orange-400;
+}
+
+.slider .slider-thumb {
+  @apply w-6 h-6 top-1/2 -translate-y-1/2 bg-orange-500 rounded-full text-center cursor-pointer transition duration-700;
+}
+
+.slider .slider-thumb.active {
+  @apply bg-orange-600 border-none outline-none;
+}
+
+.filter-icon {
+  @apply text-slate-900 cursor-pointer transition duration-500 hover:text-orange-500;
+}
+
+.filter-icon.active {
+  @apply !text-orange-500;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+.xx {
+  background-position: top right;
+  background-repeat: no-repeat;
+  background-size: cover; 
+}
+
+
