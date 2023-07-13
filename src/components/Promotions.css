@@ -1,0 +1,19 @@
+.promotions {
+  @apply grid lg:grid-flow-col gap-10 mb-10;
+}
+
+.promotions .promotion {
+  @apply h-auto bg-cover bg-center;
+}
+
+.promotions .promotion .promotion-content {
+  @apply w-full h-full flex flex-col pt-32 md:pt-24 lg:pt-56 gap-3 px-14 lg:px-10 xl:px-12 py-10 bg-[#00000073];
+}
+
+.promotions .promotion .promotion-title {
+  @apply text-white text-2xl lg:text-xl xl:text-2xl font-semibold;
+}
+
+.promotions .promotion .promotion-text {
+  @apply mb-4 text-white text-lg leading-6;
+}

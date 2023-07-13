@@ -11,6 +11,7 @@ const whatsNew = () => {
       title: '20% Off On Tank Tops',
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac dictum.',
       image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2019/12/banner-03.jpg',
+      imageClasses: '!bg-left-top'
     }
   ];
 

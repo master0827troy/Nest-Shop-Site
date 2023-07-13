@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 import './Button.css';
 
@@ -13,7 +13,7 @@ const Button = (props) => {
       {props.children}
       <span>{props.text}</span>
     </button>
-  )
-}
+  );
+};
 
-export default Button
+export default Button;

@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { IoCartOutline } from 'react-icons/io5';
-import { BsStarFill } from 'react-icons/bs';
 import SingleProduct from '../components/SingleProduct';
 import Slider from 'react-slick';
 import Button from '../ui/Button';
+import Stars from '../ui/stars';
+import Badge from '../ui/Badge';
 
 const Product = () => {
   const images = [
@@ -42,25 +43,16 @@ const Product = () => {
               <Slider {...settings}>
                 {
                   images.map((image, index) => 
-                      <img key={index} src={image} alt="" className='w-full h-full object-cover border rounded-lg cursor-pointer' />
+                    <img key={index} src={image} alt="" className='w-full h-full object-cover border rounded-lg cursor-pointer' />
                   )
                 }
               </Slider>
             </div>
             <div>
-              <div className='flex flex-row w-36 items-center gap-2 mb-4 px-2 py-1 rounded-md text-sm font-semibold uppercase tracking-wider bg-orange-400'>
-                <BsStarFill className='text-xs' />
-                <span>best seller</span>
-              </div>
+              <Badge type='best' />
               <p className='max-w-2xl text-xl font-semibold tracking-wide'>Lorem ipsum dolor sit amet consectetur adipisicing</p>
               <div className='mt-4 flex flex-row items-center gap-2'>
-                <div className='flex flex-row gap-1 text-xl text-orange-500'>
-                  <BsStarFill />
-                  <BsStarFill />
-                  <BsStarFill />
-                  <BsStarFill />
-                  <BsStarFill />
-                </div>
+                <Stars max={5} numberOfStars={5} />
                 <span className='text-lg'>645 ratings</span>
               </div>
               <div className='my-5 space-y-1'>
@@ -82,16 +74,10 @@ const Product = () => {
             <div className='mb-6'>
               <div className='flex flex-row items-center gap-2 mb-2'>
                 <img src="https://images-na.ssl-images-amazon.com/images/S/amazon-avatars-global/default._CR0,0,1024,1024_SX48_.png" alt="" className='w-6' />
-                <p>Amazon Customer</p>
+                <p>Customer Review</p>
               </div>
               <div className='mb-3 flex flex-row items-center gap-2'>
-                <div className='flex flex-row gap-1 text-orange-500'>
-                  <BsStarFill />
-                  <BsStarFill />
-                  <BsStarFill />
-                  <BsStarFill />
-                  <BsStarFill />
-                </div>
+                <Stars max={5} numberOfStars={5} />
                 <p>June 22, 2023</p>
               </div>
               <p className='max-w-2xl tracking-wider leading-7'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eos, fuga quos! Consequuntur blanditiis ea dicta sequi? Qui nemo voluptates ipsum pariatur similique corrupti soluta numquam!</p>
@@ -99,16 +85,10 @@ const Product = () => {
             <div>
               <div className='flex flex-row items-center gap-2 mb-2'>
                 <img src="https://images-na.ssl-images-amazon.com/images/S/amazon-avatars-global/default._CR0,0,1024,1024_SX48_.png" alt="" className='w-6' />
-                <p>Amazon Customer</p>
+                <p>Customer Review</p>
               </div>
               <div className='mb-3 flex flex-row items-center gap-2'>
-                <div className='flex flex-row gap-1 text-orange-500'>
-                  <BsStarFill />
-                  <BsStarFill />
-                  <BsStarFill />
-                  <BsStarFill />
-                  <BsStarFill />
-                </div>
+              <Stars max={5} numberOfStars={3.5} />
                 <p>June 22, 2023</p>
               </div>
               <p className='max-w-2xl tracking-wider leading-7'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eos, fuga quos! Consequuntur blanditiis ea dicta sequi? Qui nemo voluptates ipsum pariatur similique corrupti soluta numquam!</p>

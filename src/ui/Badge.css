@@ -1,0 +1,19 @@
+.badge {
+  @apply flex flex-row w-36 items-center gap-2 mb-4 px-2 py-1 rounded-md;
+}
+
+.badge.best {
+  @apply bg-orange-400;
+}
+
+.badge.new {
+  @apply bg-red-500;
+}
+
+.badge .badge-icon {
+  @apply text-xs;
+}
+
+.badge .badge-text {
+  @apply  text-sm font-semibold uppercase tracking-wider select-none;
+}

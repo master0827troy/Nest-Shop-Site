@@ -10,7 +10,7 @@ import { FaListUl } from 'react-icons/fa'
 
 const links = [
   { title: 'categories', path: '', icon:  <FaListUl />},
-  { title: 'what\'s new', path: '', icon: <AiOutlineFire />},
+  { title: 'what\'s new', path: '/whats-new', icon: <AiOutlineFire />},
   { title: 'account', path: '', icon: <AiOutlineUser />},
   { title: 'cart', path: '', icon:  <IoCartOutline />},
 ]
@@ -29,8 +29,8 @@ const Navbar = () => {
           </Link>
           <SearchBar placeholder='Search' />
           <ul className="flex flex-col lg:flex-row items-center gap-5">
-            {links.map((link) => 
-              <li className="text-xl capitalize tracking-wide">
+            {links.map((link, index) => 
+              <li key={index} className="text-xl capitalize tracking-wide">
                 <Link to={link.path}>
                   <div className="flex flex-row items-center gap-2">
                     {link.icon}

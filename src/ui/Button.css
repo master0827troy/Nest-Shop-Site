@@ -1,5 +1,5 @@
 .button {
-  @apply w-fit flex flex-row justify-center items-center gap-2 py-1.5 px-10 font-semibold rounded-md transition duration-500;
+  @apply w-fit flex flex-row justify-center items-center gap-2 py-1.5 px-10 font-semibold tracking-wide transition duration-500;
 }
 
 .button.bg {

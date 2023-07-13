@@ -3,6 +3,7 @@ import React from 'react'
 import { FiTrash2 } from 'react-icons/fi'
 import { BsStarFill } from 'react-icons/bs';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
+import Button from '../ui/Button';
 
 const Checkout = () => {
   return (
@@ -144,9 +145,7 @@ const Checkout = () => {
               <p>Items: 10</p>
               <p>Total: $500</p>
             </div>
-            <button className='flex flex-row justify-center items-center gap-2 w-full mb-4 py-1 font-semibold border rounded-lg hover:bg-yellow-400 transition duration-500'>
-                <span className='text-lg'>Confirm</span>
-              </button>
+            <Button text='Confirm' className='text-lg !w-full' noBg />
           </div>
         </div>
       </div>
