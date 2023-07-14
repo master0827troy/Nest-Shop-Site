@@ -72,7 +72,7 @@ const Filters = () => {
     <div className='mb-14'>
       <div className='flex flex-col xl:flex-row md:items-center lg:items-start xl:items-end gap-12 mb-10'>
         <div className="flex flex-col md:flex-row items-center lg:items-end gap-12">
-          <SearchBar className='!border-b !border-solid border-black rounded-none' placeholder='Search' />
+          <SearchBar placeholder='Search' containerClass='border-bottom' />
           <div className="flex flex-row items-end gap-12">
             <div className='flex flex-row gap-5 order-2 lg:order-1'>
               <div className='w-36'>

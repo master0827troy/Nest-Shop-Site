@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { IoCartOutline } from 'react-icons/io5';
 import SingleProduct from '../components/SingleProduct';
 import Slider from 'react-slick';
 import Button from '../ui/Button';
-import Stars from '../ui/stars';
 import Badge from '../ui/Badge';
+import CustomerReviews from '../components/CustomerReviews';
+import Rating from '../components/Rating';
+import { customerReviews } from '../data';
+import Price from '../components/Price';
 
 const Product = () => {
   const images = [
@@ -13,10 +16,17 @@ const Product = () => {
     'https://f.nooncdn.com/p/v1667829013/N41247610A_2.jpg?format=avif&width=240',
     'https://f.nooncdn.com/p/v1667829014/N41247610A_3.jpg?format=avif&width=240',
     'https://f.nooncdn.com/p/v1667829014/N41247610A_4.jpg?format=avif&width=240',
+    'https://f.nooncdn.com/p/v1667829014/N41247610A_5.jpg?format=avif&width=240',
+    'https://f.nooncdn.com/p/v1667829014/N41247610A_7.jpg?format=avif&width=240',
+    'https://f.nooncdn.com/p/v1667829014/N41247610A_8.jpg?format=avif&width=240',
+    'https://f.nooncdn.com/p/v1667829014/N41247610A_9.jpg?format=avif&width=240',
+    'https://f.nooncdn.com/p/v1667829014/N41247610A_10.jpg?format=avif&width=240'
   ];
 
-  const settings = {
-    dots: true,
+  const [nav1, setNav1] = useState();
+  const [nav2, setNav2] = useState();
+
+  const firstSliderSettings = {
     infinite: true,
     autoplay: true,
     speed: 300,
@@ -25,13 +35,14 @@ const Product = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     swipeToSlide: true,
-    customPaging: function(i) {
-      return (
-        <a>
-          <img src={images[i]} alt="" className='w-16 h-16 object-cover border border-slate-200 rounded-lg cursor-pointer transition duration-500 hover:border-slate-400' />
-        </a>
-      );
-    },
+    asNavFor: nav2
+  };
+
+  const secondSliderSettings = {
+    slidesToShow: 4,
+    swipeToSlide: true,
+    focusOnSelect: true,
+    asNavFor: nav1
   };
 
   return (
@@ -39,26 +50,31 @@ const Product = () => {
       <div className="flex flex-col lg:flex-row justify-between gap-12 lg:gap-14">
         <div className='grow'>
           <div className="mb-12 flex flex-col md:flex-row gap-8">
-            <div className='md:w-80 h-full'>
-              <Slider {...settings}>
+            <div className='md:w-80 h-full space-y-4'>
+              <Slider {...firstSliderSettings} ref={(slider1) => setNav1(slider1)}>
                 {
                   images.map((image, index) => 
                     <img key={index} src={image} alt="" className='w-full h-full object-cover border rounded-lg cursor-pointer' />
                   )
                 }
               </Slider>
+              <Slider {...secondSliderSettings} ref={(slider2) => setNav2(slider2)} >
+                {
+                  images.map((image, index) =>
+                    <div key={index}>
+                        <img key={index} src={image} alt="" className='w-16 h-16 object-cover border border-slate-200 rounded-lg cursor-pointer transition duration-500 hover:border-slate-400' />
+                    </div>
+                  )
+                }
+              </Slider>
             </div>
             <div>
               <Badge type='best' />
-              <p className='max-w-2xl text-xl font-semibold tracking-wide'>Lorem ipsum dolor sit amet consectetur adipisicing</p>
-              <div className='mt-4 flex flex-row items-center gap-2'>
-                <Stars max={5} numberOfStars={5} />
-                <span className='text-lg'>645 ratings</span>
-              </div>
-              <div className='my-5 space-y-1'>
-                <p className='text-md line-through'>$799</p>
-                <p className="text-2xl font-bold">$599</p>
-              </div>
+              <p className='max-w-2xl mb-4 text-xl font-semibold tracking-wide'>Lorem ipsum dolor sit amet consectetur adipisicing</p>
+              <Rating max={5} rating={1.1}>
+                <span className='text-sm'>(645)</span>
+              </Rating>
+              <Price className='my-5' newPrice={399} oldPrice={599} />
               <div className="group mb-4 flex flex-row items-center">
                 <span className="inline-block w-2 h-2 bg-orange-500 rounded-full mt-0.5 mr-2 group-hover:animate-ping"></span>
                 <span>5 units left in stock</span>
@@ -69,35 +85,11 @@ const Product = () => {
               </Button>
             </div>
           </div>
-          <div>
-            <p className='text-2xl mb-8'>Customer reviews</p>
-            <div className='mb-6'>
-              <div className='flex flex-row items-center gap-2 mb-2'>
-                <img src="https://images-na.ssl-images-amazon.com/images/S/amazon-avatars-global/default._CR0,0,1024,1024_SX48_.png" alt="" className='w-6' />
-                <p>Customer Review</p>
-              </div>
-              <div className='mb-3 flex flex-row items-center gap-2'>
-                <Stars max={5} numberOfStars={5} />
-                <p>June 22, 2023</p>
-              </div>
-              <p className='max-w-2xl tracking-wider leading-7'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eos, fuga quos! Consequuntur blanditiis ea dicta sequi? Qui nemo voluptates ipsum pariatur similique corrupti soluta numquam!</p>
-            </div>
-            <div>
-              <div className='flex flex-row items-center gap-2 mb-2'>
-                <img src="https://images-na.ssl-images-amazon.com/images/S/amazon-avatars-global/default._CR0,0,1024,1024_SX48_.png" alt="" className='w-6' />
-                <p>Customer Review</p>
-              </div>
-              <div className='mb-3 flex flex-row items-center gap-2'>
-              <Stars max={5} numberOfStars={3.5} />
-                <p>June 22, 2023</p>
-              </div>
-              <p className='max-w-2xl tracking-wider leading-7'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eos, fuga quos! Consequuntur blanditiis ea dicta sequi? Qui nemo voluptates ipsum pariatur similique corrupti soluta numquam!</p>
-            </div>
-          </div>
+          <CustomerReviews customerReviews={customerReviews} />
         </div>
         <div>
           <p className='text-2xl mb-8'>You may also like</p>
-          <div className="flex flex-row lg:flex-col">
+          <div className="flex flex-col sm:flex-row lg:flex-col gap-8">
           <SingleProduct image='https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2021/03/sports-shoe1-300x300.jpg' />
           <SingleProduct image='https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2021/03/sports-shoe1-300x300.jpg' />
           <SingleProduct image='https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2021/03/sports-shoe1-300x300.jpg' />

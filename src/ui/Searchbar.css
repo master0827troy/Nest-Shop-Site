@@ -1,0 +1,44 @@
+.search-bar-container {
+  @apply relative;
+}
+
+.search-bar-container .search-bar {
+  @apply w-full py-1.5 pl-8 pr-2 text-black border-none outline-none transition-all duration-700;
+}
+
+.search-bar-container.border-bottom .search-bar {
+  @apply !pl-6 !pr-0 !border-b !border-solid border-gray-400;
+}
+
+.search-bar-container.active .search-bar {
+  @apply !pl-2 !pr-8 !border-orange-600;
+}
+
+.search-bar-container.border-bottom.active .search-bar {
+  @apply !pl-0 !border-orange-600;
+}
+
+.search-bar-container .icon-container {
+  @apply w-fit absolute top-1/2 -translate-y-1/2 transition-all duration-700;
+  --padding-x: 10px;
+  left: calc(0px + var(--padding-x));
+  right: calc(100% - var(--padding-x));
+}
+
+.search-bar-container.border-bottom .icon-container {
+  --padding-x: 0px;
+}
+
+.search-bar-container.active .icon-container {
+  @apply -translate-x-full;
+  left: calc(100% - var(--padding-x));
+  right: calc(0px + var(--padding-x));
+}
+
+.search-bar-container .icon-container .icon {
+  @apply text-gray-500 cursor-pointer transition duration-700 hover:scale-125;
+}
+
+.search-bar-container.active .icon-container .icon {
+  @apply !text-orange-500;
+}

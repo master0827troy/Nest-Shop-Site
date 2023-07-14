@@ -1,7 +1,5 @@
-import React from 'react'
-
+import React from 'react';
 import { FaStar } from 'react-icons/fa6';
-
 import './Badge.css';
 
 const Badge = (props) => {

@@ -1,61 +1,41 @@
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
+import './SearchBar.css';
 
 const SearchBar = (props) => {
   const [isActive, setIsActive] = useState(null);
-  
-  let inputClasses = 'w-full text-black border-none outline-none py-1.5 pl-6 pr-0 rounded-md transition-all duration-700';
-
-  if (props.className) {
-    inputClasses += ' ' + props.className;
-  }
-
-  if (isActive) {
-    inputClasses += ' ' + '!pl-0 !pr-6 !border-orange-600';
-  }
-
-  let iconClasses = 'absolute top-1/2 transition-all duration-700 -translate-y-1/2 right-full left-0';
-
-  if (isActive) {
-    iconClasses += ' left-[93%] right-0';
-  } else if (isActive === false) {
-    iconClasses += ' right-full left-0';
-  }
-
   const [placeholder, setPlaceholder] = useState(props.placeholder);
   const [counter, setCounter] = useState(0)
-  const [op, setOp] = useState(null)
+  const [operation, setOperation] = useState(null)
 
   const editPlaceholder = (value) => {
-    if(placeholder.length >= 0 || placeholder.length <= props.placeholder.length){
-      setCounter(prevCounter => prevCounter + value);
-      if(op === 'inc') {
-        setPlaceholder(prevPlaceholder => 
-          prevPlaceholder.substr(0, (prevPlaceholder.length - value))
-        );
-      } else if(op === 'dec') {
-        setPlaceholder(prevPlaceholder => 
-          prevPlaceholder + props.placeholder.substr(prevPlaceholder.length, 1)
-        );
-      }
+    setCounter(prevCounter => prevCounter + value);
+    if(operation === 'delete') {
+      setPlaceholder(prevPlaceholder => 
+        prevPlaceholder.substr(0, (prevPlaceholder.length - value))
+      );
+    } else if(operation === 'write') {
+      setPlaceholder(prevPlaceholder => 
+        prevPlaceholder + props.placeholder.substr(prevPlaceholder.length, 1)
+      );
     }
   }
 
   const focusHandler = () => {
     setIsActive(true)
-    setOp('inc')
+    setOperation('delete')
   };
 
   const blurHandler = () => {
     setIsActive(false)
-    setOp('dec')
+    setOperation('write')
   };
 
   useEffect(() => {
-    let timer = setTimeout(() => {
-      if (op === 'inc' && counter < props.placeholder.length) {
+    const timer = setTimeout(() => {
+      if (operation === 'delete' && counter < props.placeholder.length) {
         editPlaceholder(1);
-      } else if(op === 'dec' && counter > 0) {
+      } else if(operation === 'write' && counter > 0) {
         editPlaceholder(-1);
       }
       return;
@@ -64,10 +44,17 @@ const SearchBar = (props) => {
     return () => {
       clearTimeout(timer);
     };
-  }), [op];
+  }), [operation];
+
+  let containerClasses = 'search-bar-container'
+  props.containerClass ? containerClasses += ' ' + props.containerClass : '';
+  isActive ? containerClasses += ' active' : '';
+
+  let inputClasses = 'search-bar';
+  props.inputClass ? inputClasses += ' ' + props.inputClass : '';
 
   return (
-    <div className='relative  '>
+    <div className={containerClasses}>
       <input 
         type="text" 
         id="search" 
@@ -77,13 +64,8 @@ const SearchBar = (props) => {
         onFocus={focusHandler}
         onBlur={blurHandler}
       />
-      <div className={iconClasses}>
-        <FaSearch className={
-          isActive ? 
-          'cursor-pointer transition duration-700 text-orange-500 hover:scale-125'
-          :
-          'cursor-pointer transition duration-700 text-gray-500 hover:scale-125'
-        }/>
+      <div className='icon-container'>
+        <FaSearch className='icon' />
       </div>
     </div>
   );

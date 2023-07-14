@@ -1,3 +1,7 @@
 .stars {
   @apply flex flex-row gap-1 text-orange-500;
 }
+
+.stars .notFull {
+  @apply absolute overflow-hidden top-0 h-full;
+}

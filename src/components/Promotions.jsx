@@ -1,7 +1,6 @@
-import React from 'react'
-
-import './Promotions.css';
+import React from 'react';
 import Button from '../ui/Button';
+import './Promotions.css';
 
 const promotions = (props) => {
   return (

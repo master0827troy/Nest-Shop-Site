@@ -27,7 +27,7 @@ const Navbar = () => {
               <span>Ipsum</span>
             </p>
           </Link>
-          <SearchBar placeholder='Search' />
+          <SearchBar placeholder='Search' inputClass = 'rounded-md' />
           <ul className="flex flex-col lg:flex-row items-center gap-5">
             {links.map((link, index) => 
               <li key={index} className="text-xl capitalize tracking-wide">
