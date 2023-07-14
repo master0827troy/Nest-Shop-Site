@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const Price = (props) => {
   return (
@@ -8,7 +8,7 @@ const Price = (props) => {
         props.oldPrice && <p className={`${props.fontSizes[1]} line-through text-gray-500`}>{`$${props.oldPrice}`}</p>
       }
     </div>
-  )
-}
+  );
+};
 
-export default Price
+export default Price;
