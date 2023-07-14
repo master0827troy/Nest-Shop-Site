@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { IoCartOutline } from 'react-icons/io5';
 import SingleProduct from '../components/SingleProduct';
 import Slider from 'react-slick';
@@ -74,7 +73,7 @@ const Product = () => {
               <Rating max={5} rating={1.1}>
                 <span className='text-sm'>(645)</span>
               </Rating>
-              <Price className='my-5' newPrice={399} oldPrice={599} />
+              <Price className='my-5' newPrice={399} oldPrice={599} fontSizes={['text-2xl', 'text-lg']} />
               <div className="group mb-4 flex flex-row items-center">
                 <span className="inline-block w-2 h-2 bg-orange-500 rounded-full mt-0.5 mr-2 group-hover:animate-ping"></span>
                 <span>5 units left in stock</span>

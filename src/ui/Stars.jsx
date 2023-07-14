@@ -11,9 +11,7 @@ const Stars = (props) => {
   const fullStarsArray = new Array(numberOfFullStars).fill("").map((_, i) => i + 1);
   const emptyStarsArray = new Array(numberOfEmptyStars).fill("").map((_, i) => i + 1);
 
-  const x = parseInt((props.numberOfStars % 1).toFixed(2).substring(2));
-
-  console.log(x)
+  const width = parseInt((props.numberOfStars % 1).toFixed(2).substring(2));
 
   return (
     <div className='stars'>
@@ -25,7 +23,7 @@ const Stars = (props) => {
         props.numberOfStars % 1 !== 0 && 
           <div className='relative'>
             <FaStar className='text-gray-400' />
-            <span className='notFull' style={{ width: `${x}%` }}>
+            <span className='notFull' style={{ width: `${width}%` }}>
               <FaStar />
             </span>
           </div>  

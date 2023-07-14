@@ -6,18 +6,6 @@
   @apply mx-auto px-10 max-w-screen-xl;
 }
 
-.slick-dots {
-  @apply static !flex flex-row gap-[22px] mt-5;
-}
-
-.slick-dots li {
-  @apply static block w-auto h-auto m-0 p-0;
-}
-
-.slick-dots li.slick-active img {
-  @apply border-slate-400
-}
-
 .section-heading {
   @apply mb-8 text-3xl capitalize font-semibold text-center lg:text-left;
 }

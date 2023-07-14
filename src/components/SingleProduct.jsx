@@ -30,7 +30,7 @@ const Product = (props) => {
           </div>
             <p className='mb-1 font-normal tracking-wide text-md'>Lorem ipsum dolor sit amet consectetur</p>
             <div className="flex flex-row justify-between">
-            <Price newPrice={799} oldPrice={599} />
+            <Price newPrice={799} oldPrice={599} fontSizes={['text-xl', '']} />
             <Rating max={5} rating={4.5}>
               <span className='text-sm'>(645)</span>
             </Rating>
