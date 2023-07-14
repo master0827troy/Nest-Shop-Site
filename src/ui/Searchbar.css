@@ -15,7 +15,7 @@
 }
 
 .search-bar-container.border-bottom.active .search-bar {
-  @apply !pl-0 !border-orange-600;
+  @apply !pl-0 !pr-6 !border-orange-600;
 }
 
 .search-bar-container .icon-container {

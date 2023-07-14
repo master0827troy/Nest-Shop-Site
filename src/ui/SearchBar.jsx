@@ -38,20 +38,18 @@ const SearchBar = (props) => {
       } else if(operation === 'write' && counter > 0) {
         editPlaceholder(-1);
       }
-      return;
     }, 60);
 
     return () => {
       clearTimeout(timer);
     };
-  }), [operation];
+  }, [operation]);
 
-  let containerClasses = 'search-bar-container'
-  props.containerClass ? containerClasses += ' ' + props.containerClass : '';
-  isActive ? containerClasses += ' active' : '';
+  let containerClasses = 'search-bar-container';
+  containerClasses += isActive ? ' active' : '';
+  containerClasses += props.containerClass ? ' ' + props.containerClass : '';
 
-  let inputClasses = 'search-bar';
-  props.inputClass ? inputClasses += ' ' + props.inputClass : '';
+  const inputClasses = props.inputClass ? 'search-bar' + ' ' + props.inputClass : 'search-bar';
 
   return (
     <div className={containerClasses}>
