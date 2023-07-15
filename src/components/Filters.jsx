@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from 'react-icons/fa'
 import { BsGrid3X3GapFill } from 'react-icons/bs'

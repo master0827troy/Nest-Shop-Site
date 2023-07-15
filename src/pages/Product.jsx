@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { IoCartOutline } from 'react-icons/io5';
 import SingleProduct from '../components/SingleProduct';
 import Slider from 'react-slick';

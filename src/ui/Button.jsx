@@ -1,12 +1,10 @@
-import React from 'react';
-
 import './Button.css';
 
 const Button = (props) => {
   let buttonClasses = 'button';
 
-  props.className ? buttonClasses += ' ' + props.className: buttonClasses;
-  props.noBg ? buttonClasses += ' no-bg' : buttonClasses += ' bg';
+  buttonClasses += props.className ? ' ' + props.className: '';
+  buttonClasses += props.noBg ? ' no-bg' : ' bg';
 
   return (
     <button className={buttonClasses} onClick={props.onClick}>

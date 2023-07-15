@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { FiTrash2 } from 'react-icons/fi'
 import { BsStarFill } from 'react-icons/bs';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';

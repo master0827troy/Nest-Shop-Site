@@ -1,12 +1,11 @@
-import React from 'react';
 import { FaStar } from 'react-icons/fa6';
 import './Badge.css';
 
 const Badge = (props) => {
   let badgeClasses = 'badge';
 
-  props.type === 'best' ? badgeClasses += ' best' : '';
-  props.type === 'new' ? badgeClasses += ' new' : '';
+  badgeClasses += props.type === 'best' ? ' best' : '';
+  badgeClasses += props.type === 'new' ? ' new' : '';
 
   return (
     <div className={badgeClasses}>

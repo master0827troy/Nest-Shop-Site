@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { IoCartOutline, IoCartSharp } from 'react-icons/io5'
 import { Link } from 'react-router-dom';

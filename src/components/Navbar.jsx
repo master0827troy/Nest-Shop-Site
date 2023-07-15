@@ -1,4 +1,3 @@
-import React from 'react'
 import SearchBar from '../ui/SearchBar'
 import { Link } from 'react-router-dom'
 

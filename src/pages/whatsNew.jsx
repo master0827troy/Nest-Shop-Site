@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Promotions from '../components/Promotions';
 import Products from '../components/Products';
 import Filters from '../components/Filters';

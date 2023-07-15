@@ -1,5 +1,3 @@
-import React from 'react'
-
 const Profile = () => {
   return (
     <ul className='flex flex-col gap-5 text-xl font-semibold bg-red-200 w-fit'>

@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Price = (props) => {
   return (
     <div className={props.className ? 'flex flex-row items-end gap-3 ' + props.className : 'flex flex-row items-end gap-3'}>

@@ -1,4 +1,3 @@
-import React from 'react'
 import { FiCheck } from 'react-icons/fi';
 
 import './Checkbox.css';
