@@ -1,0 +1,16 @@
+.pagination .pagination-list {
+  @apply flex justify-start mt-4;
+}
+
+.pagination .pagination-link {
+  @apply block border border-gray-200 cursor-pointer transition duration-700 hover:text-white hover:bg-orange-500 hover:border-orange-500;
+  padding: 0.5rem 0.75rem;
+}
+
+.pagination .pagination-link.active {
+  @apply text-white bg-orange-500 border-orange-500;
+}
+
+.pagination .pagination-link.disabled {
+  @apply cursor-default hover:text-black hover:bg-white hover:border-gray-200;
+}

@@ -1,11 +1,25 @@
 import Rating from './Rating'
+import usePagination from '../hooks/usePagination'
+import { useState } from 'react';
+import Pagination from '../ui/Pagination';
 
 const CustomerReviews = (props) => {
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const [modifiedData, paginationOptions] = usePagination(
+    props.customerReviews,
+    2,
+    currentPage,
+    2,
+    false,
+    (page) => setCurrentPage(page)
+  );
+
   return (
     <div>
       <p className='text-2xl mb-8'>Customer reviews</p>
       {
-        props.customerReviews.map(review => 
+        modifiedData.map(review => 
           <div key={review.id} className='mb-6'>
             <div className='flex flex-row items-center gap-2 mb-2'>
               <img src={review.userImage} alt="" className='w-6' />
@@ -18,6 +32,8 @@ const CustomerReviews = (props) => {
           </div>
         )
       }
+
+      <Pagination {...paginationOptions} />
     </div>
   )
 }

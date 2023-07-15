@@ -10,7 +10,7 @@ export const customerReviews = [
   {
     id: 2,
     userImage: 'https://images-na.ssl-images-amazon.com/images/S/amazon-avatars-global/default._CR0,0,1024,1024_SX48_.png',
-    username: 'Patrick Bateman',
+    username: 'Bruce Wayne',
     text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eos, fuga quos! Consequuntur blanditiis ea dicta sequi? Qui nemo voluptates ipsum pariatur similique corrupti soluta numquam!',
     date: 'June 22, 2023',
     rating: 3.5
@@ -18,10 +18,34 @@ export const customerReviews = [
   {
     id: 3,
     userImage: 'https://images-na.ssl-images-amazon.com/images/S/amazon-avatars-global/default._CR0,0,1024,1024_SX48_.png',
-    username: 'Patrick Bateman',
+    username: 'Madara Uchiha',
     text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eos, fuga quos! Consequuntur blanditiis ea dicta sequi? Qui nemo voluptates ipsum pariatur similique corrupti soluta numquam!',
     date: 'June 22, 2023',
-    rating: 3.7
+    rating: 2.4
+  },
+  {
+    id: 4,
+    userImage: 'https://images-na.ssl-images-amazon.com/images/S/amazon-avatars-global/default._CR0,0,1024,1024_SX48_.png',
+    username: 'Ryan Gosling',
+    text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eos, fuga quos! Consequuntur blanditiis ea dicta sequi? Qui nemo voluptates ipsum pariatur similique corrupti soluta numquam!',
+    date: 'June 22, 2023',
+    rating: 1.2
+  },
+  {
+    id: 5,
+    userImage: 'https://images-na.ssl-images-amazon.com/images/S/amazon-avatars-global/default._CR0,0,1024,1024_SX48_.png',
+    username: 'Rick Sanchez',
+    text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eos, fuga quos! Consequuntur blanditiis ea dicta sequi? Qui nemo voluptates ipsum pariatur similique corrupti soluta numquam!',
+    date: 'June 22, 2023',
+    rating: 2.6
+  },
+  {
+    id: 6,
+    userImage: 'https://images-na.ssl-images-amazon.com/images/S/amazon-avatars-global/default._CR0,0,1024,1024_SX48_.png',
+    username: 'Thomas Shelby',
+    text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eos, fuga quos! Consequuntur blanditiis ea dicta sequi? Qui nemo voluptates ipsum pariatur similique corrupti soluta numquam!',
+    date: 'June 22, 2023',
+    rating: 4.8
   }
 ];
 

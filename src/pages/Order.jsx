@@ -1,6 +1,10 @@
+import StarInput from "../ui/StarInput";
+
 const Order = () => {
   return (
-    <div>Order</div>
+    <div>
+      <StarInput numberOfStars={5} />
+    </div>
   );
 };
 
