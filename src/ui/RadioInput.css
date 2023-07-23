@@ -1,0 +1,23 @@
+.radio {
+  @apply flex flex-row items-center gap-2 mb-3;
+}
+
+.radio .icon {
+  @apply relative w-fit h-fit flex flex-row items-center;
+}
+
+.radio .icon span {
+  @apply absolute inset-0 -z-10 w-5 h-5 transition duration-300;
+}
+
+.radio .icon span svg {
+  @apply w-full h-full;
+}
+
+.radio .icon input {
+  @apply w-5 h-5 opacity-0 cursor-pointer;
+}
+
+.radio label {
+  @apply text-lg tracking-wide leading-5 cursor-pointer transition-all duration-300;
+}

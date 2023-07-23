@@ -1,49 +1,44 @@
+import { PropTypes } from "prop-types";
 import './Pagination.css'
 
-const Pagination = ({ modifiedPages, pagesNumber, currentPage, hideArrows, pageChangeFunction }) => {
+const Pagination = ({ modifiedPages, pagesNumber, currentPage, hideArrows, changeFunction, containerClasses, listClasses, pageClasses }) => {
   if (pagesNumber === 1) return;
 
+  const prev = <li className={pageClasses} onClick={() => changeFunction(currentPage - 1)}>«</li>;
+  const next = <li className={pageClasses} onClick={() => changeFunction(currentPage + 1)}>»</li>;
+
+  const prevDisabled = <li className={`${pageClasses} disabled`}>«</li>;
+  const nextDisabled = <li className={`${pageClasses} disabled`}>»</li>;
+
+  const prevPage = hideArrows ? ( currentPage !== 1 && prev ) : ( currentPage !== 1 ? prev : prevDisabled );
+  const nextPage = hideArrows ? ( currentPage !== pagesNumber && next ) : ( currentPage !== pagesNumber ? next : nextDisabled )
+
   return (
-    <div className='pagination'>
-      <ul className='pagination-list'>
-        {
-          !hideArrows ?
-            (
-              currentPage !== 1 &&
-              <li className='pagination-link' onClick={() => pageChangeFunction(currentPage - 1)}>«</li>
-            )
-          :
-            (
-              currentPage !== 1 ?
-                <li className='pagination-link' onClick={() => pageChangeFunction(currentPage - 1)}>«</li>
-              :
-                <li className='pagination-link disabled'>«</li>
-            )
-        }
+    <div className={containerClasses}>
+      <ul className={listClasses}>
+        { prevPage }
 
         {
           modifiedPages.map((page) => (
-            <li key={page} className={currentPage === page ? 'pagination-link active' : 'pagination-link'} onClick={() => pageChangeFunction(page)}>{page}</li>
+            <li key={page} className={currentPage === page ? pageClasses + ' active' : pageClasses} onClick={() => changeFunction(page)}>{page}</li>
           ))
         }
 
-        {
-          !hideArrows ?
-            (
-              currentPage !== pagesNumber &&
-              <li className='pagination-link' onClick={() => pageChangeFunction(currentPage + 1)}>»</li>
-            )
-          :
-            (
-              currentPage !== pagesNumber ?
-                <li className='pagination-link' onClick={() => pageChangeFunction(currentPage + 1)}>»</li>
-              :
-                <li className='pagination-link disabled'>»</li>
-            )
-        }
+        { nextPage }
       </ul>
     </div>
   )
+}
+
+Pagination.propTypes = {
+  modifiedPages: PropTypes.array,
+  pagesNumber: PropTypes.number,
+  currentPage: PropTypes.number,
+  hideArrows: PropTypes.bool,
+  changeFunction: PropTypes.func,
+  containerClasses: PropTypes.string,
+  listClasses: PropTypes.string,
+  pageClasses: PropTypes.string,
 }
 
 export default Pagination

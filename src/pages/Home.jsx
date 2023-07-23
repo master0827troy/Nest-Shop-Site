@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import Products from '../components/Products';
 import Promotions from '../components/Promotions';
-import { brands, promotionsList1, topCategories } from '../data';
+import {brands, promotionsList1, topCategories, products} from '../data';
 
 const Home = () =>{
   return (
     <>
-      <div className='mb-12'>
+      <div className='my-12'>
         <h2 className='section-heading'>shop from our top categories</h2>
         <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-6'>
           {
@@ -41,7 +41,7 @@ const Home = () =>{
 
       <div>
         <h2 className='section-heading'>Todays Best Deals For You!</h2>
-        <Products />
+        <Products products={products} />
       </div>
     </>
   );

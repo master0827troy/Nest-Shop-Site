@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  background-color: #80808008;
+}
+
 .section-container {
   @apply mx-auto px-10 max-w-screen-xl;
 }
@@ -10,6 +14,10 @@
   @apply mb-8 text-3xl capitalize font-semibold text-center lg:text-left;
 }
 
+
+.slick-arrow {
+  @apply !hidden;
+}
 
 .slider {
   @apply w-full h-8;

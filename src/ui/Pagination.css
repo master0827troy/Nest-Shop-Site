@@ -3,8 +3,7 @@
 }
 
 .pagination .pagination-link {
-  @apply block border border-gray-200 cursor-pointer transition duration-700 hover:text-white hover:bg-orange-500 hover:border-orange-500;
-  padding: 0.5rem 0.75rem;
+  @apply block py-1 px-3 border border-gray-300 text-gray-500 cursor-pointer transition duration-700 hover:text-white hover:bg-orange-500 hover:border-orange-500;
 }
 
 .pagination .pagination-link.active {
@@ -12,5 +11,5 @@
 }
 
 .pagination .pagination-link.disabled {
-  @apply cursor-default hover:text-black hover:bg-white hover:border-gray-200;
+  @apply cursor-default text-gray-500 hover:bg-white hover:border-gray-200;
 }

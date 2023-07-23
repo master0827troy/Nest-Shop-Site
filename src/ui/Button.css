@@ -1,11 +1,11 @@
 .button {
-  @apply w-fit flex flex-row justify-center items-center gap-2 py-1.5 px-10 font-semibold tracking-wide transition duration-500;
+  @apply w-fit flex flex-row justify-center items-center gap-2 py-1.5 px-10 font-semibold tracking-wide transition duration-500 focus:outline-none;
 }
 
 .button.bg {
-  @apply bg-orange-500 hover:bg-orange-600;
+  @apply bg-orange-600 hover:bg-orange-700 text-gray-100;
 }
 
 .button.no-bg {
-  @apply border border-slate-300 hover:border-orange-500 hover:bg-orange-500;
+  @apply border border-slate-300 hover:border-orange-600 hover:bg-orange-600 hover:text-gray-100;
 }

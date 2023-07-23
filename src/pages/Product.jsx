@@ -7,6 +7,7 @@ import Badge from '../ui/Badge';
 import CustomerReviews from '../components/CustomerReviews';
 import Rating from '../components/Rating';
 import { customerReviews } from '../data';
+import { products } from '../data'
 import Price from '../components/Price';
 
 const Product = () => {
@@ -44,6 +45,7 @@ const Product = () => {
     asNavFor: nav1
   };
 
+  console.log(products)
   return (
     <>
       <div className="flex flex-col lg:flex-row justify-between gap-12 lg:gap-14">
@@ -53,7 +55,7 @@ const Product = () => {
               <Slider {...firstSliderSettings} ref={(slider1) => setNav1(slider1)}>
                 {
                   images.map((image, index) => 
-                    <img key={index} src={image} alt="" className='w-full h-full object-cover border rounded-lg cursor-pointer' />
+                    <img key={index} src={image} alt='' className='w-full h-full object-cover border rounded-lg cursor-pointer' />
                   )
                 }
               </Slider>
@@ -61,7 +63,7 @@ const Product = () => {
                 {
                   images.map((image, index) =>
                     <div key={index}>
-                        <img key={index} src={image} alt="" className='w-16 h-16 object-cover border border-slate-200 rounded-lg cursor-pointer transition duration-500 hover:border-slate-400' />
+                        <img src={image} alt='' className='w-16 h-16 object-cover border border-slate-200 rounded-lg cursor-pointer transition duration-500 hover:border-slate-400' />
                     </div>
                   )
                 }
@@ -89,9 +91,9 @@ const Product = () => {
         <div>
           <p className='text-2xl mb-8'>You may also like</p>
           <div className="flex flex-col sm:flex-row lg:flex-col gap-8">
-          <SingleProduct image='https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2021/03/sports-shoe1-300x300.jpg' />
-          <SingleProduct image='https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2021/03/sports-shoe1-300x300.jpg' />
-          <SingleProduct image='https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2021/03/sports-shoe1-300x300.jpg' />
+          <SingleProduct product={products[0]} />
+          <SingleProduct product={products[0]} />
+          <SingleProduct product={products[0]} />
           </div>
         </div>
       </div>

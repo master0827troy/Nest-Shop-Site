@@ -11,91 +11,70 @@ import SelectBox from '../ui/SelectBox'
 import CheckBox from '../ui/CheckBox'
 import Button from '../ui/Button'
 
-const Filters = () => {
+const Filters = (props) => {
   const inputNumberClasses = 'w-24 border border-gray-300 rounded-sm text-slate-900 text-center font-semibold tracking-wider transition duration-700 focus:outline-none focus:border-gray-500';
 
   const orderList = [
-    { id: 1, text: 'Popular' },
-    { id: 2, text: 'Price' },
-    { id: 3, text: 'Rating' }
+    { id: 1, text: 'Popular', value: 'id' },
+    { id: 2, text: 'Price', value: 'price' },
+    { id: 3, text: 'Rating', value: 'rating' }
   ];
 
   const elementsPerPageList = [
-    {id: 1, text: '20'},
-    {id: 2, text: '30'},
-    {id: 3, text: '40'},
-    {id: 4, text: '50'},
-    {id: 5, text: '60'}
+    {id: 1, text: '4'},
+    {id: 2, text: '8'},
+    {id: 3, text: '12'},
+    {id: 4, text: '16'},
+    {id: 5, text: '20'}
   ];
 
-  const [activeLayout, setActiveLayout] = useState('grid');
-  const [activeOrderBy, setActiveOrderBy] = useState('des');
-  const [inStock, setInStock] = useState(false);
-  const [orderBy, setOrderBy] = useState(orderList[0]);
-  const [elementsPerPage, setElementsPerPage] = useState(elementsPerPageList[0]);
+  const [elementsPerPage, setElementsPerPage] = useState({id: props.elementsPerPage, text: props.elementsPerPage});
 
-  const minPrice = 0;
-  const maxPrice = 1000;
-  const [values, setValues] = useState([minPrice, maxPrice]);
-
-
-  const orderByChangeHandler = (item) => {
-    setOrderBy(item);
+  const priceChangeHandler = (newValues) => {
+    props.setPriceValues(newValues)
+    props.priceFilterFunction()
   };
 
   const elementsPerPageChangeHandler = (item) => {
     setElementsPerPage(item);
+    props.setElementsPerPage(parseInt(item.text));
   };
 
-  const priceChangeHandler = (newValues) => {
-    setValues(newValues);
-  };
-
-  const checkboxToggleHandler = () => {
-    setInStock(prevState => !prevState);
-  };
-
-  const applyHandler = () => {
-    console.log(activeOrderBy, activeLayout, inStock, values)
-  };
 
   const resetHandler = () => {
-    setActiveOrderBy('des');
-    setActiveLayout('grid');
-    setInStock(false);
-    setOrderBy(orderList[0]);
+    props.setActiveLayout('grid');
+    if (props.filterIsActive) props.onFilter();
     setElementsPerPage(elementsPerPageList[0]);
-    setValues([minPrice, maxPrice]);
   };
 
   return (
     <div className='mb-14'>
       <div className='flex flex-col xl:flex-row md:items-center lg:items-start xl:items-end gap-12 mb-10'>
         <div className="flex flex-col md:flex-row items-center lg:items-end gap-12">
-          <SearchBar placeholder='Search' containerClass='border-bottom' />
+          <SearchBar placeholder='Search' containerClass='border-bottom' value={props.searchInputValue} onSearch={props.onSearch} />
           <div className="flex flex-row items-end gap-12">
             <div className='flex flex-row gap-5 order-2 lg:order-1'>
               <div className='w-36'>
-                <SelectBox list={orderList} selected={orderBy} onSelect={orderByChangeHandler} />
+                <SelectBox list={orderList} selected={orderList.find(item => item.value === props.sortBy)} onSelect={(item) =>  props.setSortBy(item.value)} />
               </div>
               <div className='flex flex-row items-center gap-2 text-xl'>
                 {
-                  activeOrderBy === 'des' ?
+                  props.sortOrder === 'des' ?
                     <FaArrowAltCircleUp className={'filter-icon' + ' active'} />
                   :
-                    <FaArrowAltCircleUp className={'filter-icon'} onClick={() => setActiveOrderBy('des')} />
+                    <FaArrowAltCircleUp className={'filter-icon'} onClick={() => props.setSortOrder('des')} />
                 }
 
                 {
-                  activeOrderBy === 'asc' ?
+                  props.sortOrder === 'asc' ?
                     <FaArrowAltCircleDown className={'filter-icon' + ' active'} />
                   :
-                    <FaArrowAltCircleDown className={'filter-icon'} onClick={() => setActiveOrderBy('asc')} />
+                    <FaArrowAltCircleDown className={'filter-icon'} onClick={() => props.setSortOrder('asc')} />
                 }
               </div>
             </div>
             <div className="order-1 lg:order-2">
-              <CheckBox text='In Stock' isChecked={inStock} onToggle={checkboxToggleHandler} />
+              <CheckBox text='In Stock' isChecked={props.filterIsActive} onToggle={props.onFilter} />
             </div>
           </div>
         </div>
@@ -111,17 +90,17 @@ const Filters = () => {
 
           <div className='flex flex-row gap-2 text-xl'>
             {
-              activeLayout === 'grid' ?
+              props.activeLayout === 'grid' ?
                 <BsGrid3X3GapFill className={'filter-icon' + ' active'} />
               :
-                <BsGrid3X3GapFill className={'filter-icon'} onClick={() => setActiveLayout('grid')} />
+                <BsGrid3X3GapFill className={'filter-icon'} onClick={() => props.setActiveLayout('grid')} />
             }
 
             {
-              activeLayout === 'list' ?
+              props.activeLayout === 'list' ?
                 <FaListUl className={'text-xl filter-icon' + ' active'} />
               :
-                <FaListUl className={'text-xl filter-icon'} onClick={() => setActiveLayout('list')} />
+                <FaListUl className={'text-xl filter-icon'} onClick={() => props.setActiveLayout('list')} />
             }
           </div>
         </div>
@@ -133,25 +112,26 @@ const Filters = () => {
                 className="slider"
                 thumbClassName="slider-thumb"
                 trackClassName="slider-track"
-                defaultValue={[minPrice, maxPrice]}
+                defaultValue={[0, 1000]}
                 pearling
                 min={0}
                 max={1000}
                 step={1}
                 minDistance={100}
-                value={values}
+                value={props.priceValues}
                 onChange={priceChangeHandler}
               />
             </div>
             <div className="flex flex-row justify-center gap-4">
-              <input type="number" min={minPrice} className={inputNumberClasses} value={values[0]} onChange={(e) => changeHandler([+e.target.value, values[1]])} />
+              <input type="number" min={0} className={inputNumberClasses} value={props.priceValues[0]} 
+              onChange={(e) => priceChangeHandler([+e.target.value, props.priceValues[1]])} />
               <span className='text-lg select-none'>-</span>
-              <input type="number" max={maxPrice} className={inputNumberClasses} value={values[1]} onChange={(e) => changeHandler([values[0], +e.target.value])} />
+              <input type="number" max={1000} className={inputNumberClasses} value={props.priceValues[1]} 
+              onChange={(e) => priceChangeHandler([props.priceValues[0], +e.target.value])} />
             </div>
           </div>
           <div className='flex flex-row gap-8'>
-            <Button text='Apply' onClick={applyHandler} className='text-white rounded-sm' />
-            <Button text='Reset' onClick={resetHandler} className='text-white rounded-sm' />
+            <Button text='Reset' onClick={resetHandler} className='text-white rounded-sm py-1' />
           </div>
       </div>
     </div>

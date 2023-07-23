@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { IoIosArrowDown } from 'react-icons/io';
+import useClickOutside from '../hooks/useClickOutside';
 
 const SelectBox = (props) => {
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleHandler = () => {
     setIsOpen(prevState => !prevState);
@@ -12,6 +13,12 @@ const SelectBox = (props) => {
     props.onSelect(item);
     setIsOpen(false);
   };
+
+  const onClickOutside = () => {
+    setIsOpen(false);
+  };
+
+  const selectBoxRef = useClickOutside(onClickOutside);
 
   const divClasses = 'flex flex-row items-center justify-between gap-3 rounded-sm py-0.5 pl-5 pr-2 text-xl cursor-pointer overflow-hidden transition duration-700 hover:shadow-md hover:shadow-slate-200';
   const iconClasses = 'text-lg text-slate-900 transition duration-700';
@@ -40,7 +47,7 @@ const SelectBox = (props) => {
   
 
   return (
-    <div className='w-full relative tracking-wide'>
+    <div className='w-full relative tracking-wide' ref={selectBoxRef}>
       <div className={isOpen ? divClasses + ' shadow-md shadow-slate-200' : divClasses} onClick={toggleHandler}>
         <span className='select-none'>{props.selected.text}</span>
         <IoIosArrowDown className={isOpen ? iconClasses + ' rotate-180' : iconClasses} />

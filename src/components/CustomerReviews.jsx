@@ -1,19 +1,9 @@
 import Rating from './Rating'
 import usePagination from '../hooks/usePagination'
-import { useState } from 'react';
 import Pagination from '../ui/Pagination';
 
 const CustomerReviews = (props) => {
-  const [currentPage, setCurrentPage] = useState(1)
-
-  const [modifiedData, paginationOptions] = usePagination(
-    props.customerReviews,
-    2,
-    currentPage,
-    2,
-    false,
-    (page) => setCurrentPage(page)
-  );
+  const [modifiedData, paginationOptions] = usePagination(props.customerReviews, 3);
 
   return (
     <div>

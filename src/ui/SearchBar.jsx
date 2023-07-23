@@ -43,7 +43,7 @@ const SearchBar = (props) => {
     return () => {
       clearTimeout(timer);
     };
-  }, [operation]);
+  }, [counter, editPlaceholder, operation, props.placeholder.length]);
 
   let containerClasses = 'search-bar-container';
   containerClasses += isActive ? ' active' : '';
@@ -58,7 +58,8 @@ const SearchBar = (props) => {
         id="search" 
         placeholder={placeholder}
         className={inputClasses}
-        onChange={(e) => props.onChange(e)}
+        value={props.value}
+        onChange={(e) => props.onSearch(e)}
         onFocus={focusHandler}
         onBlur={blurHandler}
       />

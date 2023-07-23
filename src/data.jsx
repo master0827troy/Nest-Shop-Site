@@ -1,3 +1,207 @@
+import product1 from '../src/assets/product1.png';
+
+export const categories = [
+  { id: 1, title: "Electronics" },
+  { id: 2, title: "Books" },
+  { id: 3, title: "Clothing" },
+  { id: 4, title: "Home & Kitchen" },
+  { id: 5, title: "Toys & Games" },
+  { id: 6, title: "Beauty & Personal Care" },
+  { id: 7, title: "Sports & Outdoors" },
+  { id: 8, title: "Health & Household" },
+  { id: 9, title: "Automotive" },
+  { id: 10, title: "Tools & Home Improvement" },
+  { id: 11, title: "Fashion" },
+  { id: 12, title: "Home Decor" },
+  { id: 13, title: "Jewelry" },
+  { id: 14, title: "Baby Products" },
+  { id: 15, title: "Pet Supplies" },
+  { id: 16, title: "Grocery & Gourmet Food" },
+  { id: 17, title: "Movies & TV Shows" },
+  { id: 18, title: "Music" },
+  { id: 19, title: "Office Supplies" },
+  { id: 20, title: "Fitness & Wellness" }
+];
+
+export const products = [
+  {
+    id: 1,
+    title: 'Product 1 Title',
+    image: product1,
+    rating: 3.7,
+    discount: 10,
+    price: 100,
+    description: 'Product description',
+    stock: 0,
+    reviews: 736
+  },
+  {
+    id: 2,
+    title: 'Product 2 Title',
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2021/03/sports-shoe1-300x300.jpg',
+    rating: 3.1,
+    discount: 10,
+    price: 200,
+    description: 'Product description',
+    stock: 0,
+    reviews: 500
+  },
+  {
+    id: 3,
+    title: 'Product 3 Title',
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-m-jeans1-300x300.jpg',
+    rating: 1.2,
+    discount: 10,
+    price: 100,
+    description: 'Product description',
+    stock: 5,
+    reviews: 300
+  },
+  {
+    id: 4,
+    title: 'Product 4 Title',
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-w-jeans2-300x300.jpg',
+    rating: 4,
+    discount: 10,
+    price: 20,
+    description: 'Product description',
+    stock: 10,
+    reviews: 1000
+  },
+  {
+    id: 5,
+    title: 'Product 5 Title',
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-bag1-300x300.jpg',
+    rating: 2.5,
+    discount: 10,
+    price: 50,
+    description: 'Product description',
+    stock: 3,
+    reviews: 150
+  },
+  {
+    id: 6,
+    title: 'Product 6 Title',
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-bag3-300x300.jpg',
+    rating: 3.5,
+    discount: 10,
+    price: 60,
+    description: 'Product description',
+    stock: 0,
+    reviews: 200
+  },
+  {
+    id: 7,
+    title: 'Product 7 Title',
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-hoodie1-300x300.jpg',
+    rating: 4.2,
+    discount: 10,
+    price: 70,
+    description: 'Product description',
+    stock: 6,
+    reviews: 250
+  },
+  {
+    id: 8,
+    title: 'Product 8 Title',
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2021/03/tshirt2-300x300.jpg',
+    rating: 3.8,
+    discount: 10,
+    price: 80,
+    description: 'Product description',
+    stock: 8,
+    reviews: 300
+  },
+  {
+    id: 9,
+    title: 'Product 9 Title',
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-hoodie3-300x300.jpg',
+    rating: 4.0,
+    discount: 10,
+    price: 90,
+    description: 'Product description',
+    stock: 9,
+    reviews: 350
+  },
+  {
+    id: 10,
+    title: 'Product 10 Title',
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-m-jeans2-300x300.jpg',
+    rating: 4.5,
+    discount: 10,
+    price: 100,
+    description: 'Product description',
+    stock: 0,
+    reviews: 400
+  },
+  {
+    id: 11,
+    title: 'Product 11 Title',
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-hoodie4.jpg-300x300.jpg',
+    rating: 3.9,
+    discount: 10,
+    price: 110,
+    description: 'Product description',
+    stock: 11,
+    reviews: 450
+  },
+  {
+    id: 12,
+    title: 'Product 12 Title',
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2021/03/sports-shoe2-300x300.jpg',
+    rating: 4.1,
+    discount: 10,
+    price: 120,
+    description: 'Product description',
+    stock: 12,
+    reviews: 500
+  },
+  {
+    id: 13,
+    title: 'Product 13 Title',
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-accessory3-300x300.jpg',
+    rating: 3.7,
+    discount: 10,
+    price: 130,
+    description: 'Product description',
+    stock: 13,
+    reviews: 550
+  },
+  {
+    id: 14,
+    title: 'Product 14 Title',
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-accessory2-300x300.jpg',
+    rating: 4.3,
+    discount: 10,
+    price: 140,
+    description: 'Product description',
+    stock: 14,
+    reviews: 600
+  },
+  {
+    id: 15,
+    title: 'Product 15 Title',
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-w-jeans3-300x300.jpg',
+    rating: 4.7,
+    discount: 10,
+    price: 150,
+    description: 'Product description',
+    stock: 0,
+    reviews: 650
+  },
+  {
+    id: 16,
+    title: 'Product 16 Title',
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-bag4-300x300.jpg',
+    rating: 4.5,
+    discount: 10,
+    price: 80,
+    description: 'Product description',
+    stock: 6,
+    reviews: 850
+  }
+];
+
 export const customerReviews = [
   {
     id: 1,

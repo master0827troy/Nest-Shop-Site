@@ -1,50 +1,70 @@
 import { useState } from 'react'
-
-import { IoCartOutline, IoCartSharp } from 'react-icons/io5'
-import { Link } from 'react-router-dom';
-import Rating from './Rating';
 import Price from './Price';
+import { useDispatch, useSelector } from 'react-redux';
+import { cartActions } from '../store/cart-slice';
+import Stars from '../ui/stars';
+import { RiShoppingCart2Line, RiShoppingCart2Fill, RiHeart3Line, RiHeart3Fill } from 'react-icons/ri';
+import PropTypes from 'prop-types';
 
 const Product = (props) => {
-  const [inCart, setInCart] = useState(false)
+  
+  const dispatch = useDispatch();
+  const cartItems = useSelector(state => state.cart.items)
+  
+  const [saved, setSaved] = useState(cartItems.find(item => item.id === props.product.id))
 
   const addToCartHandler = () => {
-    setInCart(true);
+    dispatch(cartActions.addItemToCart(props.product));
   };
 
   const removeFromCartHandler = () => {
-    setInCart(false);
+    dispatch(cartActions.removeItemFromCart(props.product.id));
   };
 
-  const cartIconClasses = 'absolute z-30 top-2 right-4 text-3xl cursor-pointer transition duration-500 hover:scale-125 hover:text-orange-600';
+  const saveHandler = () => {
+    setSaved(true);
+  };
+  
+  const unsaveHandler = () => {
+    setSaved(false);
+  };
 
   return (
     <div  className='relative'>
-      <Link to='/product/1'>
         <div className="h-auto">
-          <div className='h-56 mb-2 relative overflow-hidden border rounded-lg group'>
-            <img src={props.image} alt="" 
-            className='w-full h-full absolute right-0 z-20 object-fit group-hover:right-full transition-all duration-700' />
-            <img src='https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-bag1-300x300.jpg' alt="" 
-            className='w-full h-full object-fit z-10 absolute left-full group-hover:left-0 transition-all duration-700' />
+          <div className='mb-2 pb-3 relative overflow-hidden  rounded-lg text-center shadow-lg text-gray-900 group'>
+            <img src={props.product.image} alt="" 
+            className='w-full h-56 mb-2 object-fit group-hover:right-full transition-all duration-700' />
+            <div className='flex flex-row items-center justify-between mx-10 mb-2'>
+              {
+                saved ?
+                  <RiHeart3Fill className='text-xl text-orange-500 cursor-pointer transition duration-700 hover:scale-125' onClick={unsaveHandler} />
+                :
+                  <RiHeart3Line className='text-xl cursor-pointer transition duration-700 hover:scale-125' onClick={saveHandler} />
+              }
+              <Price newPrice={props.product.price} oldPrice={props.product.oldPrice} fontSizes={['text-xl', '']} />
+              {
+                cartItems.find(item => item.id === props.product.id) ?
+                  <RiShoppingCart2Fill className='text-xl text-orange-500 cursor-pointer transition duration-700 hover:scale-125' onClick={removeFromCartHandler} />
+                :
+                  <RiShoppingCart2Line className='text-xl cursor-pointer transition duration-700 hover:scale-125' onClick={addToCartHandler} />
+              }
+            </div>
+            <p className='mb-1 font-bold tracking-wide text-md'>{props.product.title}</p>
+            <div className="w-fit mx-auto">
+              <Stars max={5} numberOfStars={props.product.rating} />
+            </div>
+            <span className='text-sm font-semibold'>({props.product.reviews})</span>
           </div>
-            <p className='mb-1 font-normal tracking-wide text-md'>Lorem ipsum dolor sit amet consectetur</p>
             <div className="flex flex-row justify-between">
-            <Price newPrice={799} oldPrice={599} fontSizes={['text-xl', '']} />
-            <Rating max={5} rating={4.5}>
-              <span className='text-sm'>(645)</span>
-            </Rating>
             </div>
         </div>
-      </Link>
-      {
-        inCart ?
-          <IoCartSharp className={cartIconClasses + ' text-orange-500'} onClick={removeFromCartHandler} />
-        :
-          <IoCartOutline className={cartIconClasses + 'text-slate-900'} onClick={addToCartHandler} />
-      }
     </div>
   )
 }
+
+Product.propTypes = {
+  product: PropTypes.object.isRequired,
+};
 
 export default Product

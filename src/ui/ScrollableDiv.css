@@ -1,0 +1,19 @@
+.scrollableDiv {
+  @apply pr-5 overflow-y-auto;
+}
+
+.scrollableDiv::-webkit-scrollbar {
+  @apply w-2;
+}
+
+.scrollableDiv::-webkit-scrollbar-track {
+  @apply bg-gray-200;
+}
+ 
+.scrollableDiv::-webkit-scrollbar-thumb {
+  @apply bg-orange-600;
+}
+
+.scrollableDiv::-webkit-scrollbar-thumb:hover {
+  @apply bg-orange-700;
+}

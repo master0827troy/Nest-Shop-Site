@@ -1,0 +1,15 @@
+.backdrop {
+  @apply fixed top-0 left-0 z-10;
+  @apply w-full h-screen;
+  @apply bg-black bg-opacity-75;
+  @apply cursor-pointer;
+  @apply transition-all duration-700;
+}
+
+.backdrop.backdrop-visible {
+  @apply !opacity-100;
+}
+
+.backdrop.backdrop-hidden {
+  @apply !opacity-0;
+}

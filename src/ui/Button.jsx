@@ -7,7 +7,7 @@ const Button = (props) => {
   buttonClasses += props.noBg ? ' no-bg' : ' bg';
 
   return (
-    <button className={buttonClasses} onClick={props.onClick}>
+    <button className={buttonClasses} onClick={props.onClick} type={props.type ? props.type : 'button'}>
       {props.children}
       <span>{props.text}</span>
     </button>
