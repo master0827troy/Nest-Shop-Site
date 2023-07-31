@@ -4,14 +4,19 @@ import PropTypes from 'prop-types';
 import { RiCloseLine } from 'react-icons/ri';
 import Backdrop from './Backdrop';
 import './Modal.css';
+import useScrollBlock from '../hooks/useScrollBlock';
 
 const Modal = (props) => {
   const [modalClasses, setModalClasses] = useState('modal modal-hidden')
   const [backdropClasses, setBackdropClasses] = useState('backdrop backdrop-hidden')
 
+  const [blockScroll, allowScroll] = useScrollBlock();
+
   const closeModal = () => {
     setModalClasses('modal modal-hidden')
     setBackdropClasses('backdrop backdrop-hidden')
+
+    allowScroll();
 
     /*
     * This setTimeout will delay the execution of the props.onClose() function by 0.7s
@@ -26,9 +31,13 @@ const Modal = (props) => {
     if (props.isOpen) {
       setModalClasses('modal modal-visible')
       setBackdropClasses('backdrop backdrop-visible')
+
+      blockScroll();
     } else {
       setModalClasses('modal modal-hidden')
       setBackdropClasses('backdrop backdrop-hidden')
+
+      allowScroll();
     }
   }, [props.isOpen])
 

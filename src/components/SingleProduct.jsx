@@ -30,7 +30,7 @@ const Product = (props) => {
   };
 
   return (
-    <div  className='relative'>
+    <div className='relative max-w-full'>
         <div className="h-auto">
           <div className='mb-2 pb-3 relative overflow-hidden  rounded-lg text-center shadow-lg text-gray-900 group'>
             <img src={props.product.image} alt="" 

@@ -9,3 +9,7 @@
 .button.no-bg {
   @apply border border-slate-300 hover:border-orange-600 hover:bg-orange-600 hover:text-gray-100;
 }
+
+.button.link {
+  @apply p-0 text-orange-600 hover:text-orange-700;
+}

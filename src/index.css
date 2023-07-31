@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 html {
-  background-color: #80808008;
+  @apply bg-gray-50;
+  box-sizing: border-box;
 }
 
 .section-container {

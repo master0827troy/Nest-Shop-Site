@@ -1,29 +1,70 @@
-import Modal from "../ui/Modal";
-import {FiEye, FiEyeOff} from 'react-icons/fi';
-import Button from '../ui/Button';
-import { useState } from "react";
-import Sidebar from "../ui/Sidebar";
-
+import Rating from "../components/Rating";
+import Button from "../ui/Button";
 
 const Orders = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission
-  };
-
-
   return (
     <>
-    <button onClick={() => setIsOpen(true)}>Open Modal</button>
-      <Sidebar isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum blanditiis nostrum molestias, ipsam deserunt esse quis velit pariatur aperiam. Sint similique nostrum, accusamus non impedit mollitia magni accusantium soluta ab modi velit inventore numquam, neque pariatur vero ipsam architecto autem iste in! Illum quos repellat quod perferendis eius ducimus commodi facere. Enim nobis quisquam ratione assumenda iure necessitatibus beatae officiis.</p>
-      </Sidebar>
+      <div className='mb-10 p-5 bg-gray-100 shadow-lg'>
+        <div className='mb-3 flex flex-row justify-between'>
+          <div className='flex flex-col items-center'>
+            <p className='text-xl font-semibold'>Order ID</p>
+            <p className='text-base'>#384679127</p>
+          </div>
+          <div className='flex flex-col items-center'>
+            <p className='text-xl font-semibold'>Placed On</p>
+            <p>5 November 2022</p>
+          </div>
+          <div className='flex flex-col items-center'>
+            <p className='text-xl font-semibold'>Shipped To</p>
+            <p>22 zbi street, Cairo, Egypt, 11777</p>
+          </div>
+          <div className='flex flex-col items-center'>
+            <p className='text-xl font-semibold'>Items</p>
+            <p>3</p>
+          </div>
+          <div className='flex flex-col items-center'>
+            <p className='text-xl font-semibold'>Total</p>
+            <p>$600</p>
+          </div>
+        </div>
+        <div className='mb-5 w-full border border-orange-600'></div>
+        <div className='grid grid-cols-2 gap-8'>
+          <div className='flex flex-row items-start gap-10'>
+            <div className='flex flex-row gap-5'>
+              <img src='https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2021/03/sports-shoe1-300x300.jpg' alt='' className='w-36 h-36 object-cover border rounded-lg' />
+              <div>
+                <p className='mb-2 text-xl font-semibold tracking-wide'>Lorem ipsum dolor sit amet.</p>
+                <p className='text-lg'>Items: <span className='font-semibold'>1</span></p>
+                <p className='mb-3 text-lg'>Price: <span className='font-semibold'>$100</span></p>
+                <Button link text='Write a review' className='h-fit' />
+              </div>
+            </div>
+          </div>
+          <div className='flex flex-row items-start gap-10'>
+            <div className='flex flex-row gap-5'>
+              <img src='https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2021/03/sports-shoe1-300x300.jpg' alt='' className='w-36 h-36 object-cover border rounded-lg' />
+              <div>
+                <p className='mb-2 text-xl font-semibold tracking-wide'>Lorem ipsum dolor sit amet.</p>
+                <p className='text-lg'>Items: <span className='font-semibold'>1</span></p>
+                <p className='mb-3 text-lg'>Price: <span className='font-semibold'>$100</span></p>
+                <Button link text='Write a review' className='h-fit' />
+              </div>
+            </div>
+          </div>
+          <div className='flex flex-row items-start gap-10'>
+            <div className='flex flex-row gap-5'>
+              <img src='https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2021/03/sports-shoe1-300x300.jpg' alt='' className='w-36 h-36 object-cover border rounded-lg' />
+              <div>
+                <p className='mb-2 text-xl font-semibold tracking-wide'>Lorem ipsum dolor sit amet.</p>
+                <p className='text-lg'>Items: <span className='font-semibold'>1</span></p>
+                <p className='mb-3 text-lg'>Price: <span className='font-semibold'>$100</span></p>
+                <Button link text='Write a review' className='h-fit' />
+              </div>
+            </div>
+          </div>
+    
+        </div>
+      </div>
     </>
   );
 };

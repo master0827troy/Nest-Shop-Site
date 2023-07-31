@@ -1,5 +1,3 @@
-import product1 from '../src/assets/product1.png';
-
 export const categories = [
   { id: 1, title: "Electronics" },
   { id: 2, title: "Books" },
@@ -27,7 +25,7 @@ export const products = [
   {
     id: 1,
     title: 'Product 1 Title',
-    image: product1,
+    image: 'https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2021/03/sports-shoe3-300x300.jpg',
     rating: 3.7,
     discount: 10,
     price: 100,

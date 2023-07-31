@@ -26,7 +26,7 @@ const CartItem = (props) => {
   return (
     <div className="flex flex-row gap-5 justify-between mb-10">
       <div className="flex flex-row gap-5 justify-between">
-        <img src="https://ethanselzer.github.io/react-image-magnify/static/media/front-1426.f3b00b8c.jpg" alt="" className={imageClasses} />
+        <img src={props.cartItem.image} alt={props.cartItem.title} className={imageClasses} />
         <div>
           <Badge type='best' />
           <p className={titleClasses}>{props.cartItem.title}</p>

@@ -2,7 +2,6 @@ import SearchBar from '../ui/SearchBar'
 import { Link } from 'react-router-dom'
 
 import { AiOutlineUser } from 'react-icons/ai'
-import { IoCartOutline } from 'react-icons/io5'
 import { FiMenu } from 'react-icons/fi'
 import { BiCog } from 'react-icons/bi'
 import {useState} from 'react';
@@ -10,21 +9,20 @@ import Sidebar from '../ui/Sidebar';
 import Modal from '../ui/Modal';
 import { categories } from '../data'
 import Cart from './Cart'
+import Form from './Forms/Form'
+import CartIcon from './CartIcon'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [ModalsOpen, setModalIsOpen] = useState(false);
+  const [formIsOpen, setFormIsOpen] = useState(false);
 
   const closeCartHandler = () => {
     setModalIsOpen(false);
   };
+
   
-  const iconClasses = 'text-3xl cursor-pointer transition duration-700 hover:text-orange-500 hover:scale-110';
-  
-  const links = [
-    { title: 'cart', path: '', icon:  <BiCog />},
-    { title: 'account', path: '/user', icon: <AiOutlineUser />}
-  ]
+  const iconClasses = 'text-3xl cursor-pointer transition duration-700 hover:text-orange-600 hover:scale-110';
 
   return (
     <div className="text-slate-900 bg-gray-300 bg-opacity-10 shadow-md">
@@ -43,19 +41,21 @@ const Navbar = () => {
           </Link>
           <SearchBar placeholder='Search' inputClass = '!py-2 rounded-sm' containerClass='w-1/3' />
           <ul className="flex flex-col lg:flex-row items-center gap-5">
-            {links.map((link, index) => 
-              <li key={index} className={iconClasses}>
-                <Link to={link.path}>
-                    {link.icon}
-                </Link>
-              </li>
-            )}
-            <li className={iconClasses} onClick={() => setModalIsOpen(true)}>
-              <IoCartOutline />
-              <Modal isOpen={ModalsOpen} onClose={() => setModalIsOpen(false)}>
-                <Cart />
+            <li className={iconClasses}>
+              <BiCog />
+            </li>
+            <li className={iconClasses} onClick={() => setFormIsOpen(true)}>
+              <AiOutlineUser />
+              <Modal isOpen={formIsOpen} onClose={() => setFormIsOpen(false)}>
+                <Form />
               </Modal>
             </li>
+            <li className={iconClasses} onClick={() => setModalIsOpen(true)}>
+              <CartIcon />
+            </li>
+            <Modal isOpen={ModalsOpen} onClose={() => setModalIsOpen(false)}>
+              <Cart onClose={closeCartHandler} />
+            </Modal>
           </ul>
         </div>
       </div>

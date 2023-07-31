@@ -1,5 +1,5 @@
 .modal {
-  @apply fixed top-1/2 left-1/2 z-10;
+  @apply fixed top-1/2 left-1/2 z-50;
   @apply -translate-x-1/2 -translate-y-1/2;
   @apply w-fit pt-12 px-10 pb-6 overflow-hidden;
   @apply bg-white rounded;
@@ -19,5 +19,5 @@
   @apply text-3xl text-gray-400;
   @apply cursor-pointer;
   @apply transition duration-500;
-  @apply hover:text-red-500 hover:scale-110;
+  @apply hover:text-orange-600 hover:scale-110;
 }

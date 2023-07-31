@@ -32,7 +32,7 @@ const Filters = (props) => {
 
   const priceChangeHandler = (newValues) => {
     props.setPriceValues(newValues)
-    props.priceFilterFunction()
+    props.priceFilterFunction(`${newValues[0]}-${newValues[1]}`)
   };
 
   const elementsPerPageChangeHandler = (item) => {

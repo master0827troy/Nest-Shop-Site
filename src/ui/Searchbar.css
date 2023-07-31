@@ -40,5 +40,5 @@
 }
 
 .search-bar-container.active .icon-container .icon {
-  @apply !text-orange-500;
+  @apply !text-orange-600;
 }

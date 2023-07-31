@@ -1,15 +1,22 @@
 import { FaMapMarkerAlt, FaPhoneAlt, FaAddressBook } from "react-icons/fa"; 
 import Button from '../ui/Button';
 import CartItem from '../components/CartItem';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {RiShoppingCart2Line} from 'react-icons/ri';
 import RadioInput from "../ui/RadioInput";
 import { Link } from "react-router-dom";
+import {cartActions} from '../store/cart-slice';
 
 const Checkout = () => {
   const cartTotalQuantity = useSelector(state => state.cart.totalQuantity);
   const cartTotalPrice = useSelector(state => state.cart.totalPrice);
   const cartItems = useSelector(state => state.cart.items);
+
+  const dispatch = useDispatch();
+
+  const emptyCartHandler = () => {
+    dispatch(cartActions.emptyCart());
+  };
 
   const addressList = [
     { id: 1, value: '22 zbi street, Cairo, Egypt' },
@@ -61,7 +68,7 @@ const Checkout = () => {
             <p>Total: ${cartTotalPrice}</p>
           </div>
           <Button text='Confirm Order' className='text-lg !w-full mb-4' noBg />
-          <Button text='Empty Cart' className='text-lg !w-full' noBg />
+          <Button text='Empty Cart' className='text-lg !w-full' noBg onClick={emptyCartHandler} />
         </div>
       </div>
     </div>

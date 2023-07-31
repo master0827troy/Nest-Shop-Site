@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { IoCartOutline } from 'react-icons/io5';
-import SingleProduct from '../components/SingleProduct';
 import Slider from 'react-slick';
+import {RiHeart3Line, RiShoppingCart2Line} from 'react-icons/ri';
+import SingleProduct from '../components/SingleProduct';
 import Button from '../ui/Button';
 import Badge from '../ui/Badge';
 import CustomerReviews from '../components/CustomerReviews';
 import Rating from '../components/Rating';
-import { customerReviews } from '../data';
-import { products } from '../data'
+import { customerReviews, products } from '../data';
 import Price from '../components/Price';
+import ReviewForm from '../components/ReviewForm';
+import CustomerRatings from '../components/CustomerRatings';
 
 const Product = () => {
   const images = [
@@ -47,8 +48,8 @@ const Product = () => {
 
   console.log(products)
   return (
-    <>
-      <div className="flex flex-col lg:flex-row justify-between gap-12 lg:gap-14">
+    <div className='my-12'>
+      <div className="flex flex-col xl:flex-row justify-between gap-12 lg:gap-14">
         <div className='grow'>
           <div className="mb-12 flex flex-col md:flex-row gap-8">
             <div className='md:w-80 h-full space-y-4'>
@@ -81,23 +82,39 @@ const Product = () => {
                 <span>5 units left in stock</span>
               </div>
               <p className='max-w-lg mb-6 text-md tracking-wide leading-7'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga voluptatem non rerum beatae ab? Voluptatibus expedita harum voluptates earum nesciunt aliquid accusantium et accusamus laborum.</p>
-              <Button text='Add to cart' className='text-lg' noBg>
-                <IoCartOutline className='text-2xl' />
-              </Button>
+              <div className="flex flex-col lg:flex-row gap-3">
+                <Button text='Save for later' className='text-lg w-60' noBg>
+                  <RiHeart3Line className='text-2xl' />
+                </Button>
+                <Button text='Add to cart' className='text-lg w-60' noBg>
+                  <RiShoppingCart2Line className='text-2xl' />
+                </Button>
+              </div>
             </div>
           </div>
-          <CustomerReviews customerReviews={customerReviews} />
+          <div>
+            <p className='text-2xl text-center lg:text-left font-semibold mb-10'>Customer reviews</p>
+            <div className='flex flex-col lg:flex-row items-center lg:items-start gap-12'>
+              <CustomerRatings />
+              <div>
+                <CustomerReviews customerReviews={customerReviews} />
+                <ReviewForm />
+              </div>
+            </div>
+          </div>
         </div>
         <div>
-          <p className='text-2xl mb-8'>You may also like</p>
-          <div className="flex flex-col sm:flex-row lg:flex-col gap-8">
-          <SingleProduct product={products[0]} />
-          <SingleProduct product={products[0]} />
-          <SingleProduct product={products[0]} />
+          <p className='text-2xl font-semibold mb-8'>Similar Products</p>
+          <div className='w-full xl:w-64 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:flex xl:flex-col gap-8'>
+            <SingleProduct product={products[0]} />
+            <SingleProduct product={products[1]} />
+            <SingleProduct product={products[6]} />
+            <SingleProduct product={products[4]} />
           </div>
         </div>
       </div>
-    </>
+      
+    </div>
   )
 }
 

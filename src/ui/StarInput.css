@@ -3,9 +3,9 @@
 }
 
 .star-input .star {
-  @apply text-gray-300 cursor-pointer transition duration-700;
+  @apply text-xl text-gray-300 cursor-pointer transition duration-700;
 }
 
 .star-input .star.filled {
-  @apply text-orange-500;
+  @apply text-orange-600;
 }

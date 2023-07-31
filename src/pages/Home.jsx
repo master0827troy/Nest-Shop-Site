@@ -2,8 +2,22 @@ import { Link } from 'react-router-dom';
 import Products from '../components/Products';
 import Promotions from '../components/Promotions';
 import {brands, promotionsList1, topCategories, products} from '../data';
+import Slider from 'react-slick';
 
 const Home = () =>{
+  const settings = {
+    dots: false,
+    infinite: true,
+    autoplay: true,
+    speed: 300,
+    autoplaySpeed: 2000,
+    pauseOnHover: true,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    swipeToSlide: true,
+    centerMode: true,
+  };
+
   return (
     <>
       <div className='my-12'>
@@ -24,16 +38,19 @@ const Home = () =>{
 
       <div className='mb-12'>
         <h2 className='section-heading'>choose from our top brands</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-6">
-          {
-            brands.map(brand =>
-              <Link key={brand.id} to='/'>
-                <div className='rounded-xl overflow-hidden'>
-                  <img src={brand.image} alt="" className='w-full' />
-                </div>
-              </Link>
-            )
-          }
+        <div className='-mx-1'>
+          <Slider {...settings}>
+            {
+              brands.map((brand, index) => 
+                <Link key={brand.id} to='/'>
+                  <div className='rounded-xl overflow-hidden'>
+                    <img src={brand.image} alt="" className='w-full' />
+                  </div>
+                </Link>
+              )
+            }
+          </Slider>
+
         </div>
       </div>
 

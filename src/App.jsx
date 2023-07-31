@@ -13,7 +13,13 @@ import Product from "./pages/Product";
 import Checkout from "./pages/Checkout";
 import Orders from "./pages/Orders";
 import Order from "./pages/Order";
-import Profile from "./pages/Profile";
+import ProfileLayout from "./pages/ProfileLayout";
+import AccountInfo from "./pages/AccountInfo";
+import AddressBook from "./pages/AddressBook";
+import SavedItems from "./pages/SavedItems";
+import Reviews from "./pages/Reviews";
+import Vouchers from "./pages/Vouchers";
+import RecentlyViewed from "./pages/RecentlyViewed";
 
 const router = createBrowserRouter([
   {
@@ -26,9 +32,20 @@ const router = createBrowserRouter([
       { path: 'category/:name', element: <Category />},
       { path: 'product/:id', element: <Product />},
       { path: 'checkout', element: <Checkout />},
-      { path: 'orders', element: <Orders />},
       { path: 'order/:id', element: <Order />},
-      { path: 'profile', element: <Profile />}
+      { 
+        path: 'profile',
+        element: <ProfileLayout />,
+        children: [
+          { index: true, element: <AccountInfo /> },
+          { path: 'address-book', element: <AddressBook />},
+          { path: 'orders', element: <Orders />},
+          { path: 'saved-items', element: <SavedItems />},
+          { path: 'recently-viewed', element: <RecentlyViewed />},
+          { path: 'reviews', element: <Reviews />},
+          { path: 'vouchers', element: <Vouchers />},
+        ]
+      }
     ]
   },
 ]);

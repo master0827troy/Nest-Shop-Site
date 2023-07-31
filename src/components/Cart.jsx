@@ -3,11 +3,19 @@ import Button from '../ui/Button';
 import ScrollableDiv from '../ui/ScrollableDiv';
 import CartItem from './CartItem';
 import {RiShoppingCart2Line} from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
-const Cart = () => {
+const Cart = (props) => {
   const cartTotalQuantity = useSelector(state => state.cart.totalQuantity);
   const cartTotalPrice = useSelector(state => state.cart.totalPrice);
   const cartItems = useSelector(state => state.cart.items);
+
+  const navigate = useNavigate();
+
+  const clickHandler = () => {
+    navigate('/checkout');
+    props.onClose();
+  };
 
   return (
     <>
@@ -28,7 +36,7 @@ const Cart = () => {
             </ScrollableDiv>
             <div className="flex flex-row items-center justify-between gap-4">
               <span className='text-xl font-semibold tracking-wide'>Total: ${cartTotalPrice}</span>
-              <Button text='Checkout' />
+              <Button text='Checkout' onClick={clickHandler} />
             </div>
           </>
         :

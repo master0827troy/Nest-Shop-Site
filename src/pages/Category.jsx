@@ -35,19 +35,20 @@ const Category = () => {
   ];
 
   const { name } = useParams();
+  
+  const [priceValues, setPriceValues] = useState([0, 1000]);
+  const {filteredArray: dataAfterPriceFilter, applyFilter: applyPriceFilter} = useFilter(
+    products, (array) => array.filter(item => (item['price'] > priceValues[0] && item['price'] < priceValues[1])),
+    'price',
+    `${priceValues[0]}-${priceValues[1]}`
+  );
 
   const {filteredArray: dataAfterStockFilter, toggleFilter: stockFilterFunction, filterIsActive: stockFilterIsActive}= useFilter(
-    products, (array) => array.filter(item => item['stock'] > 0),
+    dataAfterPriceFilter, (array) => array.filter(item => item['stock'] > 0),
     'stock',
     'true'
     );
 
-  const [priceValues, setPriceValues] = useState([0, 1000]);
-  const {filteredArray: dataAfterPriceFilter, applyFilter: applyPriceFilter} = useFilter(
-    dataAfterStockFilter, (array) => array.filter(item => (item['price'] > priceValues[0] && item['price'] < priceValues[1])),
-    'price',
-    `${priceValues[0]}-${priceValues[1]}`
-  );
   const [searchFunction, dataAfterSearch, inputValue ] = useSearch(dataAfterStockFilter, 'title');
   const [setSortBy, setSortOrder, dataAfterSort, sortBy, sortOrder] = useSort(dataAfterSearch, 'id');
   const [elementsPerPage, setElementsPerPage] = useState(4);

@@ -6,7 +6,7 @@ const useFilter = (array, filterFunction, urlSearchParamName, useSearchParamValu
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
-  const [active, setActive] = useState((searchParams.get(urlSearchParamName) === useSearchParamValue) ? true : false);
+  const [active, setActive] = useState((searchParams.get(urlSearchParamName)) ? true : false);
   const [filteredArray, setFilteredArray] = useState(searchParams.get(urlSearchParamName) ? filterFunction(array) : array);
 
   const toggleFilter = useCallback(
@@ -16,7 +16,6 @@ const useFilter = (array, filterFunction, urlSearchParamName, useSearchParamValu
         setFilteredArray(array);
         searchParams.delete(urlSearchParamName);
       } else {
-        console.log(filterFunction(array))
         setFilteredArray(filterFunction(array));
         searchParams.set(urlSearchParamName, useSearchParamValue);
       }
@@ -27,10 +26,13 @@ const useFilter = (array, filterFunction, urlSearchParamName, useSearchParamValu
   );
 
   const applyFilter = useCallback(
-    () => {
+    (x) => {
+      console.log(array)
+      console.log(filterFunction(array))
       const searchParams = new URLSearchParams(location.search);
       setFilteredArray(filterFunction(array));
-      searchParams.set(urlSearchParamName, useSearchParamValue);
+      console.log(useSearchParamValue)
+      searchParams.set(urlSearchParamName, x);
       navigate(`${location.pathname}?${searchParams.toString()}`);
       setActive(true);
     }, [array, filterFunction, location.pathname, location.search, navigate, urlSearchParamName, useSearchParamValue]

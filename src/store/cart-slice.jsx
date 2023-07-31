@@ -21,6 +21,7 @@ const cartSlice = createSlice({
         state.items.push({
           id: newItem.id,
           title: newItem.title,
+          image: newItem.image,
           price: newItem.price,
           rating: newItem.rating,
           stock: newItem.stock,
@@ -44,12 +45,10 @@ const cartSlice = createSlice({
       state.totalQuantity--;
       state.totalPrice -= existingItem.price;
     },
-    inCart(state, action) {
-      const id = action.payload;
-      return state.items.find(item => item.id === id);
-    },
     emptyCart(state) {
       state.items = [];
+      state.totalQuantity = 0;
+      state.totalPrice = 0;
     }   
   }
 });
