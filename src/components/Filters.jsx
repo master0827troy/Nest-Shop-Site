@@ -30,9 +30,9 @@ const Filters = (props) => {
 
   const [elementsPerPage, setElementsPerPage] = useState({id: props.elementsPerPage, text: props.elementsPerPage});
 
-  const priceChangeHandler = (newValues) => {
-    props.setPriceValues(newValues)
-    props.priceFilterFunction(`${newValues[0]}-${newValues[1]}`)
+  const priceChangeHandler = () => {
+    props.minPriceFilterFunction(props.priceValues[0])
+    props.maxPriceFilterFunction(props.priceValues[1])
   };
 
   const elementsPerPageChangeHandler = (item) => {
@@ -40,12 +40,12 @@ const Filters = (props) => {
     props.setElementsPerPage(parseInt(item.text));
   };
 
-
   const resetHandler = () => {
     props.setActiveLayout('grid');
     if (props.filterIsActive) props.onFilter();
     setElementsPerPage(elementsPerPageList[0]);
   };
+
 
   return (
     <div className='mb-14'>
@@ -119,19 +119,20 @@ const Filters = (props) => {
                 step={1}
                 minDistance={100}
                 value={props.priceValues}
-                onChange={priceChangeHandler}
+                onChange={(newValues) => props.setPriceValues(newValues)}
               />
             </div>
             <div className="flex flex-row justify-center gap-4">
               <input type="number" min={0} className={inputNumberClasses} value={props.priceValues[0]} 
-              onChange={(e) => priceChangeHandler([+e.target.value, props.priceValues[1]])} />
+              onChange={(e) => props.setPriceValues(prevState => [+e.target.value, prevState[1]])} />
               <span className='text-lg select-none'>-</span>
               <input type="number" max={1000} className={inputNumberClasses} value={props.priceValues[1]} 
-              onChange={(e) => priceChangeHandler([props.priceValues[0], +e.target.value])} />
+              onChange={(e) => props.setPriceValues(prevState => [prevState[0], +e.target.value])} />
+              <Button bg text='Apply' onClick={priceChangeHandler} className='rounded-sm py-1' />
             </div>
           </div>
           <div className='flex flex-row gap-8'>
-            <Button text='Reset' onClick={resetHandler} className='text-white rounded-sm py-1' />
+            <Button bg text='Reset' onClick={resetHandler} className='rounded-sm py-1' />
           </div>
       </div>
     </div>
