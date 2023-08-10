@@ -25,7 +25,7 @@ const Home = () =>{
         <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-6'>
           {
             topCategories.map(category => 
-              <Link key={category.id} to='/category/x'>
+              <Link key={category.id} to={`/category/${category.path}`}>
                 <div className='relative rounded-xl overflow-hidden'>
                   <img src={category.image} alt="" className='w-full transition duration-500 hover:scale-125' />
                   <p className='absolute to top-6 left-1/2 -translate-x-1/2 text-3xl capitalize font-semibold text-white'>{category.text}</p>

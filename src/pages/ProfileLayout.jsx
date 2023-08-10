@@ -1,5 +1,6 @@
 import { AiOutlineUser } from 'react-icons/ai'
 import { NavLink, Outlet } from 'react-router-dom'
+import {getAuth} from 'firebase/auth';
 
 const ProfileLayout = () => {
   const list = [
@@ -8,15 +9,16 @@ const ProfileLayout = () => {
     { id: 3, text: 'Orders', path: 'orders' },
     { id: 4, text: 'Saved Items', path: 'saved-items' },
     { id: 5, text: 'Recently Viewed', path: 'recently-viewed' },
-    { id: 6, text: 'Reviews', path: 'reviews' },
-    { id: 7, text: 'Vouchers', path: 'vouchers' },
+    { id: 6, text: 'Reviews', path: 'reviews' }
   ];
+
+  const auth = getAuth();
 
   return (
     <>
       <div className='mt-12 mb-6 ml-4 flex flex-row gap-2'>
         <AiOutlineUser className='text-3xl' />
-        <h3 className='text-2xl font-semibold'>Hello, Peter</h3>
+        <h3 className='text-2xl font-semibold'>Hello, {auth.currentUser.displayName}</h3>
       </div>
       <div className='flex flex-row gap-8'>
         <div className="w-fit flex flex-col">

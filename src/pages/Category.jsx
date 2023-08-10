@@ -1,13 +1,14 @@
-import Promotions from '../components/Promotions';
-import Products from '../components/Products';
-import Filters from '../components/Filters';
-import useSearch from '../hooks/useSearch';
-import { products } from '../data'
-import usePagination from '../hooks/usePagination';
 import { useEffect, useState} from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import Promotions from '../components/Promotions';
+import Filters from '../components/Filters';
+import Products from '../components/Products';
 import useFilter from '../hooks/useFilter';
+import useSearch from '../hooks/useSearch';
 import useSort from '../hooks/useSort';
-import { useLocation, useParams } from 'react-router-dom';
+import usePagination from '../hooks/usePagination';
+import useGetFirestoreData from '../hooks/useGetFirestoreData';
+import Loading from '../ui/Loading';
 
 const Category = () => {
   const promotionsList = [
@@ -34,48 +35,104 @@ const Category = () => {
     }
   ];
 
-  const { name } = useParams();
-
+  const { id } = useParams();
   const location = useLocation();
-  
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
 
+  const {
+    data: categoryData,
+    isLoading: categoryDataLoading,
+    error: categoryDataError
+  } = useGetFirestoreData('categories', id);
+
+  const {
+    data: categoryProducts,
+    isLoading: categoryProductsLoading,
+    error: categoryProductsError
+  } = useGetFirestoreData('products' , null, {lhs: 'categoryId', op: '==', rhs: id});
+  
+  const defaultPriceValues = [0, 1000]
   const [priceValues, setPriceValues] = useState([
-    searchParams.get('minPrice') ? parseInt(searchParams.get('minPrice')) : 0,
-    searchParams.get('maxPrice') ? parseInt(searchParams.get('maxPrice')) : 1000
+    searchParams.get('minPrice') ? parseInt(searchParams.get('minPrice')) : defaultPriceValues[0],
+    searchParams.get('maxPrice') ? parseInt(searchParams.get('maxPrice')) : defaultPriceValues[1]
   ]);
 
+  const defaultStockValue = 0;
+  const [stockValue, setStockValue] = useState(
+    searchParams.get('stock') && searchParams.get('stock') === 'available' ? 1 : defaultStockValue
+  );
+
   const filterFunctions = [
-    [(item) => item.price > priceValues[0], 'minPrice', priceValues[0]],
-    [(item) => item.price < priceValues[1], 'maxPrice', priceValues[1]],
-  ];
-
-  const [, applyMinPriceFilter] = useFilter(products, filterFunctions);
-  const [dataAfterMaxPriceFilter, applyMaxPriceFilter] = useFilter(products, filterFunctions);
-
-  const [searchFunction, dataAfterSearch, inputValue ] = useSearch(dataAfterMaxPriceFilter, 'title');
+    {
+      filterFunction: (item) => item.price >= priceValues[0],
+      resetFunction: (item) => item.price >= defaultPriceValues[0],
+      urlSearchParam: 'minPrice',
+      urlSearchDefaultValue: defaultPriceValues[0],
+      urlSearchValue: priceValues[0]
+    },
+    {
+      filterFunction: (item) => item.price <= priceValues[1],
+      resetFunction: (item) => item.price <= defaultPriceValues[1],
+      urlSearchParam: 'maxPrice',
+      urlSearchDefaultValue: defaultPriceValues[1],
+      urlSearchValue: priceValues[1]
+    },
+    {
+      filterFunction: (item) => item.stock >= stockValue,
+      resetFunction: (item) => item.stock >= defaultStockValue,
+      urlSearchParam: 'stock',
+      urlSearchDefaultValue: 'all',
+      urlSearchValue: stockValue === defaultStockValue ? 'all' : 'available'
+    },
+  ]
+  
+  const [products, setProducts] = useState(categoryProducts || [])
+  const [dataAfterFilters, applyFilters, resetFilters] = useFilter(products, filterFunctions);
+  const [searchFunction, dataAfterSearch, inputValue ] = useSearch(dataAfterFilters, 'title');
   const [setSortBy, setSortOrder, dataAfterSort, sortBy, sortOrder] = useSort(dataAfterSearch, 'id');
   const [elementsPerPage, setElementsPerPage] = useState(4);
   const [modifiedData, paginationOptions] = usePagination(dataAfterSort, elementsPerPage);
   
+  const resetFunction = () => {
+    setPriceValues(defaultPriceValues);
+    setStockValue(defaultStockValue);
+    resetFilters();
+  };
+
   const [activeLayout, setActiveLayout] = useState('grid');
 
   const searchHandler = (e) => {
     searchFunction(e.target.value);
   };
-  
+
+  useEffect(() => {
+    setProducts(categoryProducts)
+  }, [categoryProducts])  
+
+  useEffect(() => {
+    if (categoryDataError || categoryProductsError) {
+      navigate('/')
+    }
+  }, [categoryDataError, categoryProductsError, navigate])
+
+  if (categoryDataLoading) return <Loading />;
+
   return (
     <div className='my-12'>
       <Promotions promotions={promotionsList} />
-      <h2 className='section-heading'>{name}</h2>
+      <h2 className='section-heading'>{categoryData?.title}</h2>
       <Filters
+        priceValues={priceValues} setPriceValues={setPriceValues} stockValue={stockValue} setStockValue={setStockValue}
+        filterFunction={applyFilters} resetFunction={resetFunction}
         searchInputValue={inputValue} onSearch={searchHandler}
-        elementsPerPage={elementsPerPage} setElementsPerPage={setElementsPerPage}
         sortBy={sortBy} sortOrder={sortOrder} setSortBy={setSortBy} setSortOrder={setSortOrder}
-        priceValues={priceValues} setPriceValues={setPriceValues}
-        minPriceFilterFunction={applyMinPriceFilter} maxPriceFilterFunction={applyMaxPriceFilter}
+        elementsPerPage={elementsPerPage} setElementsPerPage={setElementsPerPage}
       />
       {
+        categoryProductsLoading ?
+          <Loading />
+        :
         modifiedData.length > 0 ?
           <Products products={modifiedData} paginationOptions={paginationOptions} activeLayout={activeLayout} />
         :

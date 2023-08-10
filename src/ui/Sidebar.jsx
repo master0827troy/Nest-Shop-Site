@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { RiCloseLine } from 'react-icons/ri';
 import Backdrop from './Backdrop';
 import './Sidebar.css';
+import ScrollableDiv from './ScrollableDiv';
 
 const Sidebar = (props) => {
   const [sidebarClasses, setSidebarClasses] = useState('sidebar sidebar-hidden')
@@ -40,7 +41,9 @@ const Sidebar = (props) => {
         <Backdrop backdropClasses={backdropClasses} onClose={closeSidebar} />
         <div className={sidebarClasses}>
           <RiCloseLine className='sidebar-close-icon' onClick={closeSidebar} />
-          {props.children}
+          <ScrollableDiv className='h-full'>
+            {props.children}
+          </ScrollableDiv>
         </div>
       </>,
       document.getElementById('portal')

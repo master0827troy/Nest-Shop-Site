@@ -1,18 +1,33 @@
 import SearchBar from '../ui/SearchBar'
-import { Link } from 'react-router-dom'
-
+import { Link, useNavigate } from 'react-router-dom'
 import { AiOutlineUser } from 'react-icons/ai'
 import { FiMenu } from 'react-icons/fi'
-import { BiCog } from 'react-icons/bi'
 import {useState} from 'react';
 import Sidebar from '../ui/Sidebar';
 import Modal from '../ui/Modal';
-import { categories } from '../data'
 import Cart from './Cart'
 import Form from './Forms/Form'
 import CartIcon from './CartIcon'
+import { BsBoxArrowInRight } from 'react-icons/bs'
+import {useSelector, useDispatch} from 'react-redux';
+import { authActions } from '../store/AuthSlice';
+import { getAuth } from 'firebase/auth';
+import useGetFirestoreData from '../hooks/useGetFirestoreData';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const isAuthenticated = useSelector(state => state.authentication.isAuthenticated);
+  const { data: categories, isLoading, error } = useGetFirestoreData('categories', null, null, 'title')
+
+  const dispatch = useDispatch();
+  const auth = getAuth();
+
+  const logoutHandler = () => {
+    auth.signOut();
+    dispatch(authActions.logout());
+  };
+
   const [isOpen, setIsOpen] = useState(false);
   const [ModalsOpen, setModalIsOpen] = useState(false);
   const [formIsOpen, setFormIsOpen] = useState(false);
@@ -21,7 +36,6 @@ const Navbar = () => {
     setModalIsOpen(false);
   };
 
-  
   const iconClasses = 'text-3xl cursor-pointer transition duration-700 hover:text-orange-600 hover:scale-110';
 
   return (
@@ -40,30 +54,40 @@ const Navbar = () => {
             </p>
           </Link>
           <SearchBar placeholder='Search' inputClass = '!py-2 rounded-sm' containerClass='w-1/3' />
-          <ul className="flex flex-col lg:flex-row items-center gap-5">
-            <li className={iconClasses}>
-              <BiCog />
-            </li>
-            <li className={iconClasses} onClick={() => setFormIsOpen(true)}>
-              <AiOutlineUser />
-              <Modal isOpen={formIsOpen} onClose={() => setFormIsOpen(false)}>
-                <Form />
-              </Modal>
-            </li>
-            <li className={iconClasses} onClick={() => setModalIsOpen(true)}>
+          <ul className="flex flex-col lg:flex-row items-center gap-3">
+            <li className={iconClasses + ' mr-2'} onClick={() => setModalIsOpen(true)}>
               <CartIcon />
             </li>
-            <Modal isOpen={ModalsOpen} onClose={() => setModalIsOpen(false)}>
-              <Cart onClose={closeCartHandler} />
-            </Modal>
+            {
+              isAuthenticated ?
+                <li className={iconClasses} onClick={() => navigate('/profile')}>
+                  <AiOutlineUser />
+                </li>  
+              :
+                <li className={iconClasses} onClick={() => setFormIsOpen(true)}>
+                  <AiOutlineUser />
+                </li>
+            }
+            {
+              isAuthenticated &&
+              <li className={iconClasses} onClick={logoutHandler}>
+                <BsBoxArrowInRight />
+              </li>
+            }
           </ul>
         </div>
       </div>
+      <Modal isOpen={ModalsOpen} onClose={() => setModalIsOpen(false)}>
+        <Cart onClose={closeCartHandler} />
+      </Modal>
+      <Modal isOpen={formIsOpen} onClose={() => setFormIsOpen(false)}>
+        <Form onClose={() => setFormIsOpen(false)} />
+      </Modal>
       <Sidebar isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <ul>
-          {categories.map(category =>
-            <Link key={category.id} to='/category/clothes' onClick={() => setIsOpen(false)}>
-              <li className='mb-2 pb-2 text-lg border-b last:border-none text-slate-900'>
+          {categories?.map(category =>
+            <Link key={category.id} to={`/category/${category.id}`} onClick={() => setIsOpen(false)} className='block pb-4 last:pb-0'>
+              <li className='text-lg text-slate-900'>
                 {category.title}
               </li>  
             </Link>

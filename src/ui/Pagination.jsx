@@ -2,7 +2,7 @@ import { PropTypes } from "prop-types";
 import './Pagination.css'
 
 const Pagination = ({ modifiedPages, pagesNumber, currentPage, hideArrows, changeFunction, containerClasses, listClasses, pageClasses }) => {
-  if (pagesNumber === 1) return;
+  if (pagesNumber <= 1) return;
 
   const prev = <li className={pageClasses} onClick={() => changeFunction(currentPage - 1)}>«</li>;
   const next = <li className={pageClasses} onClick={() => changeFunction(currentPage + 1)}>»</li>;
@@ -12,7 +12,7 @@ const Pagination = ({ modifiedPages, pagesNumber, currentPage, hideArrows, chang
 
   const prevPage = hideArrows ? ( currentPage !== 1 && prev ) : ( currentPage !== 1 ? prev : prevDisabled );
   const nextPage = hideArrows ? ( currentPage !== pagesNumber && next ) : ( currentPage !== pagesNumber ? next : nextDisabled )
-
+  console.log(modifiedPages)
   return (
     <div className={containerClasses}>
       <ul className={listClasses}>

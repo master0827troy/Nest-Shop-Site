@@ -37,24 +37,24 @@ const CartItem = (props) => {
           </div>
         </div>
       </div>
-        <div className='text-center'>
-          <div className='mb-3 space-y-1'>
-            <p className={newPriceClasses}>${props.cartItem.price}</p>
-            <p className={oldPriceClasses}>$799</p>
-          </div>
-          <div className='flex flex-row items-center justify-center gap-2 mb-3'>
-            <button>
-              <GoChevronLeft className={iconClasses} onClick={removeFromCartHandler} />
-            </button>
-            <p className='text-xl font-semibold'>{props.cartItem.quantity}</p>
-            <button>
-              <GoChevronRight className={iconClasses} onClick={addToCartHandler} />
-            </button>
-          </div>
-          <button onClick={removeFromCartHandler}>
-            <FiTrash2 className={iconClasses} />
+      <div className='text-center'>
+        <div className='mb-3 space-y-1'>
+          <p className={newPriceClasses}>${props.cartItem.price}</p>
+          <p className={oldPriceClasses}>$799</p>
+        </div>
+        <div className='flex flex-row items-center justify-center gap-2 mb-3'>
+          <button>
+            <GoChevronLeft className={iconClasses} onClick={removeFromCartHandler} />
+          </button>
+          <p className='text-xl font-semibold'>{props.cartItem.quantity}</p>
+          <button>
+            <GoChevronRight className={iconClasses} onClick={addToCartHandler} />
           </button>
         </div>
+        <button onClick={removeFromCartHandler}>
+          <FiTrash2 className={iconClasses} />
+        </button>
+      </div>
     </div>
   );
 };

@@ -61,7 +61,7 @@ const Checkout = () => {
               </RadioInput>
               <div className='flex flex-row items-center gap-2 text-orange-600 cursor-pointer transition duration-500 hover:text-orange-700'>
                 <FaAddressBook />
-                <Link to='' className='text-base font-semibold'>Edit your addresses</Link>
+                <Link to='/profile/address-book' className='text-base font-semibold'>Edit your addresses</Link>
               </div>
             </div>
             <p>Items: {cartTotalQuantity}</p>

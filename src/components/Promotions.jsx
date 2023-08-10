@@ -11,7 +11,7 @@ const promotions = (props) => {
             <div className='promotion-content'>
               <h3 className='promotion-title'>{promotion.title}</h3>
               <p className='promotion-text'>{promotion.text}</p>
-              <Button text='Shop now' className='text-white !border-orange-500 rounded-sm' noBg />
+              <Button text='Shop now' className='text-white !border-orange-600 rounded-sm' noBg />
             </div>
           </div>
         )

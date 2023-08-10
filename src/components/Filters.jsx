@@ -1,11 +1,8 @@
 import { useState } from 'react'
-
+import ReactSlider from 'react-slider'
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from 'react-icons/fa'
 import { BsGrid3X3GapFill } from 'react-icons/bs'
 import { FaListUl } from 'react-icons/fa6'
-
-import ReactSlider from 'react-slider'
-
 import SearchBar from '../ui/SearchBar';
 import SelectBox from '../ui/SelectBox'
 import CheckBox from '../ui/CheckBox'
@@ -30,28 +27,16 @@ const Filters = (props) => {
 
   const [elementsPerPage, setElementsPerPage] = useState({id: props.elementsPerPage, text: props.elementsPerPage});
 
-  const priceChangeHandler = () => {
-    props.minPriceFilterFunction(props.priceValues[0])
-    props.maxPriceFilterFunction(props.priceValues[1])
-  };
-
   const elementsPerPageChangeHandler = (item) => {
     setElementsPerPage(item);
     props.setElementsPerPage(parseInt(item.text));
   };
 
-  const resetHandler = () => {
-    props.setActiveLayout('grid');
-    if (props.filterIsActive) props.onFilter();
-    setElementsPerPage(elementsPerPageList[0]);
-  };
-
-
   return (
     <div className='mb-14'>
       <div className='flex flex-col xl:flex-row md:items-center lg:items-start xl:items-end gap-12 mb-10'>
         <div className="flex flex-col md:flex-row items-center lg:items-end gap-12">
-          <SearchBar placeholder='Search' containerClass='border-bottom' value={props.searchInputValue} onSearch={props.onSearch} />
+          <SearchBar placeholder='Search' containerClass='border-bottom' inputClass='bg-transparent' value={props.searchInputValue} onSearch={props.onSearch} />
           <div className="flex flex-row items-end gap-12">
             <div className='flex flex-row gap-5 order-2 lg:order-1'>
               <div className='w-36'>
@@ -74,7 +59,7 @@ const Filters = (props) => {
               </div>
             </div>
             <div className="order-1 lg:order-2">
-              <CheckBox text='In Stock' isChecked={props.filterIsActive} onToggle={props.onFilter} />
+              <CheckBox text='In Stock' isChecked={props.stockValue} onToggle={() => props.setStockValue(prevState => prevState === 0 ? 1 : 0)} />
             </div>
           </div>
         </div>
@@ -128,11 +113,11 @@ const Filters = (props) => {
               <span className='text-lg select-none'>-</span>
               <input type="number" max={1000} className={inputNumberClasses} value={props.priceValues[1]} 
               onChange={(e) => props.setPriceValues(prevState => [prevState[0], +e.target.value])} />
-              <Button bg text='Apply' onClick={priceChangeHandler} className='rounded-sm py-1' />
+              <Button bg text='Apply' onClick={() => props.filterFunction()} className='rounded-sm py-1' />
             </div>
           </div>
           <div className='flex flex-row gap-8'>
-            <Button bg text='Reset' onClick={resetHandler} className='rounded-sm py-1' />
+            <Button bg text='Reset' onClick={() => props.resetFunction()} className='rounded-sm py-1' />
           </div>
       </div>
     </div>

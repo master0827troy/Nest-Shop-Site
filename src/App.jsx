@@ -18,8 +18,12 @@ import AccountInfo from "./pages/AccountInfo";
 import AddressBook from "./pages/AddressBook";
 import SavedItems from "./pages/SavedItems";
 import Reviews from "./pages/Reviews";
-import Vouchers from "./pages/Vouchers";
 import RecentlyViewed from "./pages/RecentlyViewed";
+import PrivateRoute from "./components/PrivateRoute";
+import { useDispatch } from "react-redux";
+import { getAuth } from 'firebase/auth';
+import { onAuthStateChanged } from "firebase/auth";
+import {authActions} from './store/AuthSlice';
 
 const router = createBrowserRouter([
   {
@@ -29,21 +33,26 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home />},
       { path: 'whats-new', element: <WhatsNew />},
-      { path: 'category/:name', element: <Category />},
+      { path: 'category/:id', element: <Category />},
       { path: 'product/:id', element: <Product />},
       { path: 'checkout', element: <Checkout />},
       { path: 'order/:id', element: <Order />},
       { 
         path: 'profile',
-        element: <ProfileLayout />,
+        element: <PrivateRoute />,
         children: [
-          { index: true, element: <AccountInfo /> },
-          { path: 'address-book', element: <AddressBook />},
-          { path: 'orders', element: <Orders />},
-          { path: 'saved-items', element: <SavedItems />},
-          { path: 'recently-viewed', element: <RecentlyViewed />},
-          { path: 'reviews', element: <Reviews />},
-          { path: 'vouchers', element: <Vouchers />},
+          { 
+            path: '/profile',
+            element: <ProfileLayout />,
+            children: [
+              { index: true, element: <AccountInfo /> },
+              { path: 'address-book', element: <AddressBook />},
+              { path: 'orders', element: <Orders />},
+              { path: 'saved-items', element: <SavedItems />},
+              { path: 'recently-viewed', element: <RecentlyViewed />},
+              { path: 'reviews', element: <Reviews />},
+            ]
+          }
         ]
       }
     ]
@@ -51,6 +60,17 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
+  const dispatch = useDispatch();
+  const auth = getAuth();
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      dispatch(authActions.login());
+    } else {
+      dispatch(authActions.logout());
+    }
+  });
+
   return (
     <RouterProvider router={router} />
     );

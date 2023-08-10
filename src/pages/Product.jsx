@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import {RiHeart3Line, RiShoppingCart2Line} from 'react-icons/ri';
 import SingleProduct from '../components/SingleProduct';
@@ -6,12 +6,93 @@ import Button from '../ui/Button';
 import Badge from '../ui/Badge';
 import CustomerReviews from '../components/CustomerReviews';
 import Rating from '../components/Rating';
-import { customerReviews, products } from '../data';
+import { products } from '../data';
 import Price from '../components/Price';
-import ReviewForm from '../components/ReviewForm';
+import ReviewForm from '../components/Forms/ReviewForm';
 import CustomerRatings from '../components/CustomerRatings';
+import useGetFirestoreData from '../hooks/useGetFirestoreData';
+import { useNavigate, useParams } from 'react-router-dom';
+import {useSelector} from 'react-redux';
+import {getAuth} from 'firebase/auth';
+import {doc, updateDoc} from 'firebase/firestore';
+import {db} from '../firebase';
 
 const Product = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const auth = getAuth();
+  
+  const isAuthenticated = useSelector(state => state.authentication.isAuthenticated);
+  const userId = auth.currentUser?.uid;
+  
+  const {
+    data,
+    isLoading,
+    error
+  } = useGetFirestoreData('products', id)
+
+  const {
+    data: reviews,
+    isLoading: reviewsLoading,
+    error: reviewsError
+  } = useGetFirestoreData('reviews', null, {lhs: 'productId', op: '==', rhs: id});
+
+  const {
+    data: userData,
+    isLoading: userDataLoading,
+    error: userDataError
+  } = useGetFirestoreData('users', userId);
+
+  const [productData, setProductData] = useState({});
+  
+  const [nav1, setNav1] = useState();
+  const [nav2, setNav2] = useState();
+
+  useEffect(() => {
+    const addProductToRecentlyViewed = async () => {
+      let updatedRecentlyViewed = userData.recentlyViewed.includes(id) ?
+          [id, ...userData.recentlyViewed.filter(item => item !== id)]
+        :
+          [id, ...userData.recentlyViewed];
+      
+      if (updatedRecentlyViewed.length > 8) {
+        updatedRecentlyViewed = updatedRecentlyViewed.slice(0, 8);
+      }
+
+      await updateDoc(doc(db, 'users', userId), {
+        recentlyViewed: updatedRecentlyViewed
+      });
+    }
+    
+    if (data && userData) {
+      setProductData(data);
+      addProductToRecentlyViewed();
+    }
+  }, [data, id, userData, userId])
+  
+  if (isLoading || !reviews) return <h3>Loading...</h3>;
+  if (error) navigate('/');
+
+  let productRating = 0;
+  const totalReviews = reviews.length;
+  const currentUserReview = reviews.find(review => review?.userId === userId);
+
+  if (totalReviews) {
+    for (const review of reviews) {
+      productRating += review.rating;
+    }
+    productRating /= totalReviews;
+  }
+  
+  const ratings = [];
+  for (let i = 5; i >= 1; i--) {
+    const ratingCount = reviews.reduce(function(acc, obj) {
+      return acc + (obj.rating === i ? 1 : 0);
+    }, 0);
+
+    ratings.push({ value: i, rating: ratingCount });
+  }
+
   const images = [
     'https://f.nooncdn.com/p/v1686663857/N41247610A_1.jpg?format=avif&width=240',
     'https://f.nooncdn.com/p/v1667829013/N41247610A_2.jpg?format=avif&width=240',
@@ -23,9 +104,6 @@ const Product = () => {
     'https://f.nooncdn.com/p/v1667829014/N41247610A_9.jpg?format=avif&width=240',
     'https://f.nooncdn.com/p/v1667829014/N41247610A_10.jpg?format=avif&width=240'
   ];
-
-  const [nav1, setNav1] = useState();
-  const [nav2, setNav2] = useState();
 
   const firstSliderSettings = {
     infinite: true,
@@ -46,7 +124,6 @@ const Product = () => {
     asNavFor: nav1
   };
 
-  console.log(products)
   return (
     <div className='my-12'>
       <div className="flex flex-col xl:flex-row justify-between gap-12 lg:gap-14">
@@ -72,16 +149,16 @@ const Product = () => {
             </div>
             <div>
               <Badge type='best' />
-              <p className='max-w-2xl mb-4 text-xl font-semibold tracking-wide'>Lorem ipsum dolor sit amet consectetur adipisicing</p>
-              <Rating max={5} rating={1.1}>
-                <span className='text-sm'>(645)</span>
+              <p className='max-w-2xl mb-4 text-xl font-semibold tracking-wide'>{productData.title}</p>
+              <Rating max={5} rating={productRating}>
+                <span className='text-sm'>({totalReviews})</span>
               </Rating>
               <Price className='my-5' newPrice={399} oldPrice={599} fontSizes={['text-2xl', 'text-lg']} />
               <div className="group mb-4 flex flex-row items-center">
                 <span className="inline-block w-2 h-2 bg-orange-500 rounded-full mt-0.5 mr-2 group-hover:animate-ping"></span>
-                <span>5 units left in stock</span>
+                <span>{productData.stock} units left in stock</span>
               </div>
-              <p className='max-w-lg mb-6 text-md tracking-wide leading-7'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga voluptatem non rerum beatae ab? Voluptatibus expedita harum voluptates earum nesciunt aliquid accusantium et accusamus laborum.</p>
+              <p className='max-w-lg mb-6 text-md tracking-wide leading-7'>{productData.description}</p>
               <div className="flex flex-col lg:flex-row gap-3">
                 <Button text='Save for later' className='text-lg w-60' noBg>
                   <RiHeart3Line className='text-2xl' />
@@ -95,17 +172,23 @@ const Product = () => {
           <div>
             <p className='text-2xl text-center lg:text-left font-semibold mb-10'>Customer reviews</p>
             <div className='flex flex-col lg:flex-row items-center lg:items-start gap-12'>
-              <CustomerRatings />
-              <div>
-                <CustomerReviews customerReviews={customerReviews} />
-                <ReviewForm />
+              <CustomerRatings productRating={productRating} productReviews={totalReviews} ratings={ratings} />
+              <div className='grow'>
+                <CustomerReviews customerReviews={reviews} />
+                {
+                  isAuthenticated && !currentUserReview &&
+                  <>
+                    <p className='text-2xl font-semibold mb-5'>Leave a review</p>
+                    <ReviewForm userId={userId} productId={id} />
+                  </>
+                }
               </div>
             </div>
           </div>
         </div>
         <div>
           <p className='text-2xl font-semibold mb-8'>Similar Products</p>
-          <div className='w-full xl:w-64 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:flex xl:flex-col gap-8'>
+          <div className='w-full xl:w-64 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:flex xl:flex-col gap-8'>
             <SingleProduct product={products[0]} />
             <SingleProduct product={products[1]} />
             <SingleProduct product={products[6]} />

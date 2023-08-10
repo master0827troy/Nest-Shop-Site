@@ -1,8 +1,9 @@
 import { useState } from "react";
 import LoginForm from "./LoginForm";
-import SingUpForm from "./SingUpForm";
+import SignUpForm from "./SignUpForm";
+import ForgotPasswordForm from "./ForgotPasswordForm";
 
-const Form = () => {
+const Form = (props) => {
   const [mode, setMode] = useState('login')
 
   const switchForm = (form) => {
@@ -13,10 +14,12 @@ const Form = () => {
     <>
       {
         mode === 'login' ?
-          <LoginForm switchForm={switchForm} />
+          <LoginForm switchForm={switchForm} onClose={() => props.onClose(false)} />
+        : mode === 'signup' ?
+          <SignUpForm switchForm={switchForm} onClose={() => props.onClose(false)} />
         :
-          <SingUpForm switchForm={switchForm} />
-      }
+          <ForgotPasswordForm switchForm={switchForm} onClose={() => props.onClose(false)} />
+        }
     </>
   );
 };

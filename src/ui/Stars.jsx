@@ -2,8 +2,12 @@ import { FaStar } from 'react-icons/fa6';
 import './Stars.css';
 
 const Stars = (props) => {
-  const numberOfFullStars = Math.floor(props.numberOfStars);
-  const numberOfEmptyStars = props.max - numberOfFullStars - 1;
+  const numberOfFullStars = props.numberOfStars ? Math.floor(props.numberOfStars) : 0;
+  const numberOfEmptyStars = 
+    props.numberOfStars === Math.floor(props.numberOfStars) ?
+      props.max - numberOfFullStars
+    :
+    props.max - numberOfFullStars - 1;
 
   const fullStarsArray = new Array(numberOfFullStars).fill("").map((_, i) => i + 1);
   const emptyStarsArray = new Array(numberOfEmptyStars).fill("").map((_, i) => i + 1);

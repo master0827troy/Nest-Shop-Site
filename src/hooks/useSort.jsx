@@ -6,7 +6,7 @@ const useSort = (initialArray, attribute, sortType = 'asc') => {
   const [sortedArray, setSortedArray] = useState([]);
 
   useEffect(() => {
-    const newSortedArray = [...initialArray].sort((a, b) => {
+    const newSortedArray = [...initialArray || []].sort((a, b) => {
       if (a[sortBy] < b[sortBy]) {
         return sortOrder === 'asc' ? -1 : 1;
       }

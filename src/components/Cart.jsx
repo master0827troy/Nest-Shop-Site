@@ -36,7 +36,7 @@ const Cart = (props) => {
             </ScrollableDiv>
             <div className="flex flex-row items-center justify-between gap-4">
               <span className='text-xl font-semibold tracking-wide'>Total: ${cartTotalPrice}</span>
-              <Button text='Checkout' onClick={clickHandler} />
+              <Button bg text='Checkout' onClick={clickHandler} />
             </div>
           </>
         :
