@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import Stars from '../../../../ui/stars'
+import Stars from '../../../../ui/Stars'
 
 const ProductRating = ({ max, rating, className }) => {
   let classes = 'flex flex-row items-center';
