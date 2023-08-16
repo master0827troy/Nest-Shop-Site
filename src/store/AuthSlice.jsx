@@ -11,6 +11,7 @@ const authSlice = createSlice({
   reducers: {
     login(state){
       state.isAuthenticated = true;
+      toast.info('Welcome back!');
     },
     logout(state){
       state.isAuthenticated = false;
