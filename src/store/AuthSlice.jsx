@@ -1,9 +1,7 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import {doc, updateDoc} from 'firebase/firestore';
-import {db} from '../firebase';
-import {getAuth} from 'firebase/auth';
-import {getWishlistItems, addItemToWishlist, removeItemFromWishlist} from './WishlistSlice';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+import { getWishlistItems } from './WishlistSlice';
 import {cartActions, getCartItems} from './cart-slice';
 
 const initialAuthState = {
@@ -12,8 +10,17 @@ const initialAuthState = {
 
 export const login = createAsyncThunk(
   'authentication/login',
-  async (params, thunkAPI) => {
-    return true;
+  async ({email, password}) => {
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+      return !!(userCredential.user);
+    } catch (error) {
+      toast.error('An error occurred!')
+
+      return false;
+    }
   }
 );
 

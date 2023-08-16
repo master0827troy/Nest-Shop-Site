@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import { useDispatch } from 'react-redux';
@@ -13,16 +12,8 @@ const LoginForm = (props) => {
 
   const submitHandler = async(e) => {
     e.preventDefault();
-    try {
-      const auth = getAuth();
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      if (userCredential.user) {
-        dispatch(login())
-        props.onClose();
-      }
-    } catch (error) {
-      console.log(error)
-    }
+    dispatch(login({email, password}))
+    props.onClose();
   }
 
   return (
