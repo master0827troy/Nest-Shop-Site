@@ -17,7 +17,6 @@ import ProfileLayout from './pages/ProfileLayout';
 import ErrorPage from './pages/Error';
 
 import Home from './pages/Home';
-import WhatsNew from './pages/WhatsNew';
 import Category from './pages/Category';
 import Product from './pages/Product';
 import Checkout from './pages/Checkout';
@@ -61,7 +60,6 @@ const App = () => {
       <Routes>
         <Route path='/' element={<RootLayout />}>
           <Route path='/' element={<Home />} />
-          <Route path='/whats-new' element={<WhatsNew />} />
           <Route path='/product/:id' element={<Product />} />
           <Route path='/checkout' element={<Checkout />} />
           <Route path='/category/:id' element={<Category />} />
