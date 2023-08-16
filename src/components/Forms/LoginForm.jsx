@@ -2,8 +2,8 @@ import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
-import {useDispatch} from 'react-redux';
-import {authActions} from '../../store/AuthSlice';
+import { useDispatch } from 'react-redux';
+import { login } from '../../store/AuthSlice';
 
 const LoginForm = (props) => {
   const [email, setEmail] = useState("");
@@ -17,7 +17,7 @@ const LoginForm = (props) => {
       const auth = getAuth();
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       if (userCredential.user) {
-        dispatch(authActions.login())
+        dispatch(login())
         props.onClose();
       }
     } catch (error) {

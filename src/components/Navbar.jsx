@@ -10,7 +10,7 @@ import Form from './Forms/Form'
 import CartIcon from './CartIcon'
 import { BsBoxArrowInRight } from 'react-icons/bs'
 import {useSelector, useDispatch} from 'react-redux';
-import { authActions } from '../store/AuthSlice';
+import { authActions, logout } from '../store/AuthSlice';
 import { getAuth } from 'firebase/auth';
 import useGetFirestoreData from '../hooks/useGetFirestoreData';
 import { toast } from 'react-toastify';
@@ -22,11 +22,9 @@ const Navbar = () => {
   const { data: categories, isLoading, error } = useGetFirestoreData('categories', null, null, 'title')
 
   const dispatch = useDispatch();
-  const auth = getAuth();
 
   const logoutHandler = () => {
-    auth.signOut();
-    dispatch(authActions.logout());
+    dispatch(logout());
   };
 
   const [isOpen, setIsOpen] = useState(false);

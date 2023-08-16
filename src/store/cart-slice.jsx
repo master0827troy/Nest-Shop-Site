@@ -12,8 +12,11 @@ const initialCartState = {
 
 export const getCartItems = createAsyncThunk(
   'cart/getCartItems',
-  async (userId) => {
+  async () => {
     try {
+      const auth = getAuth();
+      const userId = auth.currentUser.uid;
+
       const userData = await getDoc(doc(db, 'users', userId));
       const productsData = await getDocs(collection(db, 'products'));
 
@@ -241,6 +244,13 @@ export const updateItemQuantity = createAsyncThunk(
 const cartSlice = createSlice({
   name: 'cart',
   initialState: initialCartState,
+  reducers: {
+    emptyCart(state) {
+      state.items = initialCartState.items;
+      state.totalQuantity = initialCartState.totalQuantity;
+      state.totalPrice = initialCartState.totalPrice;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getCartItems.fulfilled, (state, action) => {

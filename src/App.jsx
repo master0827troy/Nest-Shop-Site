@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { authActions } from './store/AuthSlice';
+import { authActions, autoLogin, login } from './store/AuthSlice';
 import { getCartItems } from './store/cart-slice';
 import { getWishlistItems } from './store/WishlistSlice';
 
@@ -39,14 +39,9 @@ const App = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        dispatch(authActions.login());
-        dispatch(getCartItems(auth.currentUser.uid));
-        dispatch(getWishlistItems());
-        setIsLoading(false)
-      } else {
-        dispatch(authActions.logout());
-        setIsLoading(false)
+        dispatch(autoLogin());
       }
+      setIsLoading(false)
     });
   }, [auth, dispatch])
   
