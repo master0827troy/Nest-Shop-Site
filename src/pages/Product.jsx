@@ -19,7 +19,7 @@ import SaveToWishlistButton from '../components/Products/Product/ProductButtons/
 import ProductDescription from '../components/Products/Product/ProductDetails/ProductDescription';
 import Heading from '../components/Heading';
 import ProductPrice from '../components/Products/Product/ProductDetails/ProductPrice';
-import RelatedProducts from '../components/Products/relatedProducts';
+import RelatedProducts from '../components/Products/RelatedProducts';
 import ProductRating from '../components/Products/Product/ProductDetails/ProductRating';
 
 const Product = () => {
