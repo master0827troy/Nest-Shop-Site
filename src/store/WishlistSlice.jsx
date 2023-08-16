@@ -2,6 +2,7 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {doc, getDoc, updateDoc} from 'firebase/firestore';
 import {db} from '../firebase';
 import { getAuth } from 'firebase/auth';
+import {toast} from 'react-toastify';
 
 const initialWishlistState = {
   items: []
@@ -27,35 +28,51 @@ export const getWishlistItems = createAsyncThunk(
 export const addItemToWishlist = createAsyncThunk(
   'wishlist/addItemToWishlist',
   async ({ wishlistItems, itemId }) => {
-    const auth = getAuth();
-    const userId = auth.currentUser.uid;
+    try {
+      const auth = getAuth();
+      const userId = auth.currentUser.uid;
 
-    const updatedWishlist = [...wishlistItems];
-    if (!wishlistItems.includes(itemId)) {
-      updatedWishlist.push(itemId);
+      const updatedWishlist = [...wishlistItems];
+      if (!wishlistItems.includes(itemId)) {
+        updatedWishlist.push(itemId);
 
-      await updateDoc(doc(db, 'users', userId), {
-        wishlistItems: updatedWishlist
-      });
+        await updateDoc(doc(db, 'users', userId), {
+          wishlistItems: updatedWishlist
+        });
+      }
+
+      toast.success('Added item to wishlist!')
+        
+      return updatedWishlist;
+    } catch (error) {
+      toast.error('You need to log in first!')
+
+      return initialWishlistState.items;
     }
-
-    return updatedWishlist;
   }
 );
 
 export const removeItemFromWishlist = createAsyncThunk(
   'wishlist/removeItemFromWishlist',
   async ({ wishlistItems, itemId }) => {
-    const auth = getAuth();
-    const userId = auth.currentUser.uid;
-    
-    const updatedWishlist = wishlistItems.filter(item => item !== itemId);
+    try {
+      const auth = getAuth();
+      const userId = auth.currentUser.uid;
+      
+      const updatedWishlist = wishlistItems.filter(item => item !== itemId);
 
-    await updateDoc(doc(db, 'users', userId), {
-      wishlistItems: updatedWishlist
-    });
+      await updateDoc(doc(db, 'users', userId), {
+        wishlistItems: updatedWishlist
+      });
 
-    return updatedWishlist;
+      toast.success('Removed item to wishlist!')
+        
+      return updatedWishlist;
+    } catch (error) {
+      toast.error('You need to log in first!')
+
+      return initialWishlistState.items;
+    }
   }
 );
 
