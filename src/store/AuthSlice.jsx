@@ -51,7 +51,6 @@ export const autoLogin = createAsyncThunk(
       thunkAPI.dispatch(getCartItems())
       thunkAPI.dispatch(getWishlistItems())
       toast.info('Welcome back!');
-      console.log('first')
 
       return true;
     } catch (error) {

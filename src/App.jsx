@@ -37,7 +37,6 @@ const App = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user)
         dispatch(autoLogin());
       }
       setIsLoading(false)
