@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { getWishlistItems, wishlistActions } from './WishlistSlice';
 import { cartActions, getCartItems } from './cart-slice';
+import { getWishlistItems, wishlistActions } from './WishlistSlice';
+import { toast } from 'react-toastify';
 
 const initialAuthState = {
   isAuthenticated: false

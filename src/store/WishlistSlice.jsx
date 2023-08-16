@@ -32,22 +32,22 @@ export const addItemToWishlist = createAsyncThunk(
       const auth = getAuth();
       const userId = auth.currentUser.uid;
 
-      const updatedWishlist = [...wishlistItems];
       if (!wishlistItems.includes(itemId)) {
-        updatedWishlist.push(itemId);
-
+        const updatedWishlist = [itemId, ...wishlistItems];
+        
         await updateDoc(doc(db, 'users', userId), {
           wishlistItems: updatedWishlist
         });
+
+        toast.success('Added product to wishlist!')
+
+        return updatedWishlist;
       }
 
-      toast.success('Added product to wishlist!')
+      toast.info('Product is already in wishlist!')
         
-      return updatedWishlist;
     } catch (error) {
       toast.error('You need to log in first!')
-
-      return initialWishlistState.items;
     }
   }
 );
@@ -58,20 +58,23 @@ export const removeItemFromWishlist = createAsyncThunk(
     try {
       const auth = getAuth();
       const userId = auth.currentUser.uid;
-      
-      const updatedWishlist = wishlistItems.filter(item => item !== itemId);
 
-      await updateDoc(doc(db, 'users', userId), {
-        wishlistItems: updatedWishlist
-      });
-
-      toast.success('Removed product from wishlist!')
+      if (wishlistItems.includes(itemId)) {
+        const updatedWishlist = wishlistItems.filter(item => item !== itemId);
         
-      return updatedWishlist;
+        await updateDoc(doc(db, 'users', userId), {
+          wishlistItems: updatedWishlist
+        });
+
+        toast.success('Removed product from wishlist!')
+
+        return updatedWishlist;
+      }
+      
+      toast.info('Product is not in wishlist!')
+        
     } catch (error) {
       toast.error('You need to log in first!')
-
-      return initialWishlistState.items;
     }
   }
 );
@@ -90,10 +93,14 @@ const wishlistSlice = createSlice({
         state.items = action.payload;
       })
       .addCase(addItemToWishlist.fulfilled, (state, action) => {
-        state.items = action.payload;
+        if (action.payload) {
+          state.items = action.payload;
+        }
       })
       .addCase(removeItemFromWishlist.fulfilled, (state, action) => {
-        state.items = action.payload;
+        if (action.payload) {
+          state.items = action.payload;
+        }
       })
   }
 });
