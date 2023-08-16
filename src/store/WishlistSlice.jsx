@@ -65,7 +65,7 @@ export const removeItemFromWishlist = createAsyncThunk(
         wishlistItems: updatedWishlist
       });
 
-      toast.success('Removed product to wishlist!')
+      toast.success('Removed product from wishlist!')
         
       return updatedWishlist;
     } catch (error) {
