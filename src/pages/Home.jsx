@@ -58,6 +58,7 @@ const Home = () =>{
         </div>
       </div>
 
+            <Promotions promotions={promotionsList1} />
       <div className='mb-12'>
         <div className='-mx-1'>
           <Slider {...settings}>
@@ -71,11 +72,9 @@ const Home = () =>{
               )
             }
           </Slider>
-
         </div>
       </div>
 
-      <Promotions promotions={promotionsList1} />
 
       <div>
         <h2 className='section-heading'>Todays Best Deals For You!</h2>
