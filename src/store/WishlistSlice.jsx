@@ -41,7 +41,7 @@ export const addItemToWishlist = createAsyncThunk(
         });
       }
 
-      toast.success('Added item to wishlist!')
+      toast.success('Added product to wishlist!')
         
       return updatedWishlist;
     } catch (error) {
@@ -65,7 +65,7 @@ export const removeItemFromWishlist = createAsyncThunk(
         wishlistItems: updatedWishlist
       });
 
-      toast.success('Removed item to wishlist!')
+      toast.success('Removed product to wishlist!')
         
       return updatedWishlist;
     } catch (error) {

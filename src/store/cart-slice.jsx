@@ -117,7 +117,7 @@ export const addItemToCart = createAsyncThunk(
         totalQuantity += cartItem.quantity;
       }
 
-      toast.success('Added item to cart!')
+      toast.success('Added product to cart!')
       
       return {
         cartItems: updatedCartItems,
@@ -165,7 +165,7 @@ export const removeItemFromCart = createAsyncThunk(
         totalQuantity += cartItem.quantity;
       }
 
-      toast.success('Removed item from cart!')
+      toast.success('Removed product from cart!')
       
       return {
         cartItems: updatedCartItems,
