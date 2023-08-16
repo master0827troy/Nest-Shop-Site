@@ -1,8 +1,8 @@
-import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {doc, getDoc, updateDoc} from 'firebase/firestore';
-import {db} from '../firebase';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-import {toast} from 'react-toastify';
+import { db } from '../firebase';
+import { toast } from 'react-toastify';
 
 const initialWishlistState = {
   items: []
@@ -79,6 +79,11 @@ export const removeItemFromWishlist = createAsyncThunk(
 const wishlistSlice = createSlice({
   name: 'wishlist',
   initialState: initialWishlistState,
+  reducers: {
+    emptyWishlist(state) {
+      state.items = initialWishlistState.items;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getWishlistItems.fulfilled, (state, action) => {

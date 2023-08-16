@@ -1,8 +1,8 @@
-import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
-import { getWishlistItems } from './WishlistSlice';
-import {cartActions, getCartItems} from './cart-slice';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getWishlistItems, wishlistActions } from './WishlistSlice';
+import { cartActions, getCartItems } from './cart-slice';
 
 const initialAuthState = {
   isAuthenticated: false
@@ -32,6 +32,7 @@ export const logout = createAsyncThunk(
       auth.signOut();
 
       thunkAPI.dispatch(cartActions.emptyCart())
+      thunkAPI.dispatch(wishlistActions.emptyWishlist())
       toast.info('Good bye, we hope to see you again!');
 
       return false;
@@ -44,12 +45,13 @@ export const logout = createAsyncThunk(
 );
 
 export const autoLogin = createAsyncThunk(
-  'authentication/login',
+  'authentication/autoLogin',
   async (params, thunkAPI) => {
     try {
       thunkAPI.dispatch(getCartItems())
       thunkAPI.dispatch(getWishlistItems())
       toast.info('Welcome back!');
+      console.log('first')
 
       return true;
     } catch (error) {
@@ -69,6 +71,9 @@ const authSlice = createSlice({
         state.isAuthenticated = action.payload;
       })
       .addCase(logout.fulfilled, (state, action) => {
+        state.isAuthenticated = action.payload;
+      })
+      .addCase(autoLogin.fulfilled, (state, action) => {
         state.isAuthenticated = action.payload;
       })
   }

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {collection, doc, getDoc, getDocs, updateDoc} from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 import { db } from "../firebase";
-import {getAuth} from 'firebase/auth';
 import { toast } from "react-toastify";
 
 const initialCartState = {
