@@ -15,9 +15,9 @@ const Checkout = () => {
   const cartItems = useSelector(state => state.cart.items);
 
   const addressList = [
-    { id: 1, value: '22 zbi street, Cairo, Egypt' },
-    { id: 2, value: '22 zbi street, Cairo, Egypt' },
-    { id: 3, value: '22 zbi street, Cairo, Egypt' },
+    { id: 1, value: '22 street name, Cairo, Egypt' },
+    { id: 2, value: '22 street name, Cairo, Egypt' },
+    { id: 3, value: '22 street name, Cairo, Egypt' },
   ];
 
   const phoneList = [
