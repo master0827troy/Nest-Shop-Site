@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
-import Products from '../components/Products/CategoryProducts';
+import CategoryProducts from '../components/Products/CategoryProducts';
 import Promotions from '../components/Promotions';
-import {brands, promotionsList1, topCategories, products} from '../data';
+import {brands, promotionsList1, topCategories} from '../data';
 import Slider from 'react-slick';
+import useGetFirestoreData from '../hooks/useGetFirestoreData';
+import Loading from '../ui/Loading';
+import { useEffect, useState } from 'react';
 
 const Home = () =>{
   const settings = {
@@ -17,6 +20,25 @@ const Home = () =>{
     swipeToSlide: true,
     centerMode: true,
   };
+
+  const {
+    data: products,
+    isLoading: productsLoading,
+    error: productsError
+  } = useGetFirestoreData('products');
+
+  const [allProducts, setAllProducts] = useState([])
+
+  useEffect(() => {
+    if (products) {
+      setAllProducts(products)
+    }
+  }, [products])
+  
+
+  if (productsLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -58,7 +80,7 @@ const Home = () =>{
 
       <div>
         <h2 className='section-heading'>Todays Best Deals For You!</h2>
-        <Products products={products} />
+        <CategoryProducts products={allProducts} />
       </div>
     </>
   );
