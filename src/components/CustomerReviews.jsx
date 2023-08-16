@@ -1,4 +1,4 @@
-import Rating from './Rating'
+import Rating from './Products/Product/ProductDetails/ProductRating'
 import usePagination from '../hooks/usePagination'
 import Pagination from '../ui/Pagination';
 

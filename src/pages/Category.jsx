@@ -2,7 +2,7 @@ import { useEffect, useState} from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Promotions from '../components/Promotions';
 import Filters from '../components/Filters';
-import Products from '../components/Products';
+import Products from '../components/Products/CategoryProducts';
 import useFilter from '../hooks/useFilter';
 import useSearch from '../hooks/useSearch';
 import useSort from '../hooks/useSort';

@@ -30,7 +30,7 @@ const SignUpForm = (props) => {
         addresses: [],
         phoneNumbers: [],
         cartItems: [],
-        savedItems: [],
+        wishlistItems: [],
         timestamp: serverTimestamp()
       };
       await setDoc(doc(db, 'users', user.uid), data);

@@ -1,8 +1,10 @@
-import Input from '../../ui/Input';
-import {useState} from 'react';
-import Button from '../../ui/Button';
+import { useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
+import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
+import Input from '../../ui/Input';
+import Button from '../../ui/Button';
 
 const AddressForm = (props) => {
   const [apartment, setApartment] = useState(props.address?.apartment || '')
@@ -12,19 +14,31 @@ const AddressForm = (props) => {
   const [postalNumber, setPostalNumber] = useState(props.address?.postalNumber || '')
 
   const addAddressHandler = async () => {
-    props.changeHandler(prevState => !prevState);
-    await updateDoc(doc(db, 'users', props.userId), {
-      addresses: [...props.addresses, { apartment, street, city, country, postalNumber }]
-    });
+    try {
+      props.changeHandler(prevState => !prevState);
+      await updateDoc(doc(db, 'users', props.userId), {
+        addresses: [...props.addresses, { apartment, street, city, country, postalNumber }]
+      });
+
+      toast.success('Address added successfully!')
+    } catch (error) {
+      toast.error('An error occurred!')
+    }
   };
 
   const editAddressHandler = async () => {
-    const filteredAddresses = props.addresses.filter(ele => props.addresses.indexOf(ele) !== props.addresses.indexOf(props.address));
+    try {
+      const filteredAddresses = props.addresses.filter(ele => props.addresses.indexOf(ele) !== props.addresses.indexOf(props.address));
 
-    props.changeHandler(null);
-    await updateDoc(doc(db, 'users', props.userId), {
-      addresses: [...filteredAddresses, { apartment, street, city, country, postalNumber }]
-    });
+      props.changeHandler(null);
+      await updateDoc(doc(db, 'users', props.userId), {
+        addresses: [...filteredAddresses, { apartment, street, city, country, postalNumber }]
+      });
+
+      toast.success('Updated address successfully!')
+    } catch (error) {
+      toast.error('An error occurred!')
+    }
   };
 
   return (
@@ -51,6 +65,14 @@ const AddressForm = (props) => {
       }
     </>
   );
+};
+
+AddressForm.propTypes = {
+  userId: PropTypes.string,
+  show: PropTypes.bool,
+  addresses: PropTypes.array,
+  address: PropTypes.object,
+  changeHandler: PropTypes.func,
 };
 
 export default AddressForm;

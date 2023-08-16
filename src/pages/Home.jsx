@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Products from '../components/Products';
+import Products from '../components/Products/CategoryProducts';
 import Promotions from '../components/Promotions';
 import {brands, promotionsList1, topCategories, products} from '../data';
 import Slider from 'react-slick';

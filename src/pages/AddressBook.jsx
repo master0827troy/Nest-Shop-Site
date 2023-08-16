@@ -1,18 +1,25 @@
-import {useState, useEffect} from 'react';
-import {FaMapMarkerAlt, FaPen, FaPhoneAlt} from 'react-icons/fa';
-import {FiTrash2} from 'react-icons/fi';
-import {getAuth} from 'firebase/auth';
+import { useState, useEffect } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { db } from '../firebase';
+import { FaMapMarkerAlt, FaPen, FaPhoneAlt } from 'react-icons/fa';
+import { FiTrash2 } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 import useGetFirestoreData from '../hooks/useGetFirestoreData';
+import Loading from '../ui/Loading';
 import Button from '../ui/Button';
 import AddressForm from '../components/Forms/AddressForm';
-import {doc, updateDoc} from 'firebase/firestore';
-import {db} from '../firebase';
 import PhoneForm from '../components/Forms/PhoneForm';
+
 const AddressBook = () => {
   const auth = getAuth();
 
-  //needs to get updated
-  const {data, isLoading, error} = useGetFirestoreData('users', auth.currentUser.uid);
+  const {
+    data: userData,
+    isLoading: userDataLoading,
+    error: userDataError
+  } = useGetFirestoreData('users', auth.currentUser.uid);
+
   const [addresses, setAddresses] = useState([]);
   const [phoneNumbers, setPhoneNumbers] = useState([]);
   const [addressForm, setAddressForm] = useState(false);
@@ -21,35 +28,43 @@ const AddressBook = () => {
   const [editingPhone, setEditingPhone] = useState(null);
 
   useEffect(() => {
-    if (data) {
-      setAddresses(data.addresses);
-      setPhoneNumbers(data.phoneNumbers);
+    if (userData) {
+      setAddresses(userData.addresses);
+      setPhoneNumbers(userData.phoneNumbers);
     }
-  }, [data])
 
-  if (isLoading) {
-    return <h3>Loading...</h3>;
+    if (userDataError && !userDataLoading) {
+      toast.error('An error occurred!');
+    }
+  }, [userData, userDataError, userDataLoading])
+  
+  if (userDataLoading) {
+    return <Loading />;
   }
 
   const deleteAddress = async (address) => {
-    const newAddresses = addresses.filter(ele => addresses.indexOf(ele) !== addresses.indexOf(address));
     try {
+      const newAddresses = addresses.filter(ele => addresses.indexOf(ele) !== addresses.indexOf(address));
       await updateDoc(doc(db, 'users', auth.currentUser.uid), {
         addresses: newAddresses
       });
-    } catch (err) {
-      console.log(err.message);
+
+      toast.success('Address deleted successfully!')
+    } catch (error) {
+      toast.error('An error occurred!')
     }
   };
 
   const deletePhone = async (phone) => {
-    const newPhoneNumber = phoneNumbers.filter(ele => phoneNumbers.indexOf(ele) !== phoneNumbers.indexOf(phone));
     try {
+      const newPhoneNumber = phoneNumbers.filter(ele => phoneNumbers.indexOf(ele) !== phoneNumbers.indexOf(phone));
       await updateDoc(doc(db, 'users', auth.currentUser.uid), {
         phoneNumbers: newPhoneNumber
       });
-    } catch (err) {
-      console.log(err.message);
+
+      toast.success('Number deleted successfully!')
+    } catch (error) {
+      toast.error('An error occurred!')
     }
   };
 
@@ -90,21 +105,24 @@ const AddressBook = () => {
         </div>
         <div className='mb-8 flex flex-col gap-4'>
           {
-            phoneNumbers.map((phoneNumber) =>
-              <div key={phoneNumbers.indexOf(phoneNumber)} className='flex flex-row items-center gap-2'>
-                <FaPhoneAlt className='text-lg text-orange-600' />
-                <p className='font-semibold mr-4'>{phoneNumber}</p>
-                <FaPen className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' />
-                <FiTrash2 className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => deletePhone(phoneNumber)} />
-              </div>
+            phoneNumbers.map((phoneNumber) => 
+              editingPhone !== phoneNumbers.indexOf(phoneNumber) ?
+                <div key={phoneNumbers.indexOf(phoneNumber)} className='flex flex-row items-center gap-2'>
+                  <FaPhoneAlt className='text-lg text-orange-600' />
+                  <p className='font-semibold mr-4'>{phoneNumber}</p>
+                  <FaPen className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => setEditingPhone(phoneNumbers.indexOf(phoneNumber))} />
+                  <FiTrash2 className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => deletePhone(phoneNumber)} />
+                </div>
+              :
+                <PhoneForm key={phoneNumbers.indexOf(phoneNumber)} show={editingPhone !== null} changeHandler={setEditingPhone} userId={auth.currentUser.uid} phoneNumbers={phoneNumbers} phoneNumber={phoneNumber} />
             )
           }
         </div>
         {
-          phoneForm ?
-            <PhoneForm show={phoneForm} changeHandler={setPhoneForm} userId={auth.currentUser.uid} phoneNumbers={phoneNumbers} />
-          :
-            <Button bg text='Add' className='h-fit' onClick={() => setPhoneForm(true)} />
+          phoneForm && <PhoneForm show={phoneForm} changeHandler={setPhoneForm} userId={auth.currentUser.uid} phoneNumbers={phoneNumbers} />
+        }
+        {
+          !phoneForm && editingPhone === null && <Button bg text='Add' className='h-fit' onClick={() => setPhoneForm(true)} />
         }
       </div>
     </div>

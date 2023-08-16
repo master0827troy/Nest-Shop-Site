@@ -1,22 +1,18 @@
 import { FaMapMarkerAlt, FaPhoneAlt, FaAddressBook } from "react-icons/fa"; 
 import Button from '../ui/Button';
-import CartItem from '../components/CartItem';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {RiShoppingCart2Line} from 'react-icons/ri';
 import RadioInput from "../ui/RadioInput";
 import { Link } from "react-router-dom";
-import {cartActions} from '../store/cart-slice';
+import useProductActions from '../hooks/useProductActions';
+import CartProduct from "../components/Products/Product/CartProduct";
 
 const Checkout = () => {
+  const { emptyCart } = useProductActions();
+
   const cartTotalQuantity = useSelector(state => state.cart.totalQuantity);
   const cartTotalPrice = useSelector(state => state.cart.totalPrice);
   const cartItems = useSelector(state => state.cart.items);
-
-  const dispatch = useDispatch();
-
-  const emptyCartHandler = () => {
-    dispatch(cartActions.emptyCart());
-  };
 
   const addressList = [
     { id: 1, value: '22 zbi street, Cairo, Egypt' },
@@ -40,14 +36,16 @@ const Checkout = () => {
             <span className='text-xl'>({cartTotalQuantity})</span>
           </div>
 
-          {
-            cartItems.length > 0 ?
-              cartItems.map(cartItem =>
-                <CartItem key={cartItem.id} cartItem={cartItem} imageSize='w-44 h-44' titleFontSize='text-xl' priceFontSizes={['text-2xl', 'text-xl']} iconSize='text-xl' />
-              )
-            :
-              <p>Your shopping cart is empty! Start adding items.</p>
-          }
+          <div className='grid grid-cols-2 gap-10'>
+            {
+              cartItems.length > 0 ?
+                cartItems.map(cartItem =>
+                  <CartProduct key={cartItem.id} product={cartItem} />
+                )
+              :
+                <p>Your shopping cart is empty! Start adding items.</p>
+            }
+          </div>
         </div>
         <div className='w-80'>
           <h2 className='section-heading !mb-4'>Order Details</h2>
@@ -68,7 +66,7 @@ const Checkout = () => {
             <p>Total: ${cartTotalPrice}</p>
           </div>
           <Button text='Confirm Order' className='text-lg !w-full mb-4' noBg />
-          <Button text='Empty Cart' className='text-lg !w-full' noBg onClick={emptyCartHandler} />
+          <Button text='Empty Cart' className='text-lg !w-full' noBg onClick={() => emptyCart()} />
         </div>
       </div>
     </div>

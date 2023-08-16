@@ -1,9 +1,10 @@
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import Button from '../ui/Button';
 import ScrollableDiv from '../ui/ScrollableDiv';
-import CartItem from './CartItem';
 import {RiShoppingCart2Line} from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
+import CartProduct from './Products/Product/CartProduct';
 
 const Cart = (props) => {
   const cartTotalQuantity = useSelector(state => state.cart.totalQuantity);
@@ -30,7 +31,7 @@ const Cart = (props) => {
             <ScrollableDiv className='max-h-96 mb-6'>
             {
               cartItems.map(cartItem =>
-                <CartItem key={cartItem.id} cartItem={cartItem} />
+                <CartProduct key={cartItem.id} product={cartItem} />
               )
             }
             </ScrollableDiv>
@@ -44,6 +45,10 @@ const Cart = (props) => {
       }
     </>
   );
+};
+
+Cart.propTypes = {
+  onClose: PropTypes.func.isRequired,
 };
 
 export default Cart;

@@ -1,5 +1,5 @@
 import Promotions from '../components/Promotions';
-import Products from '../components/Products';
+import Products from '../components/Products/CategoryProducts';
 import Filters from '../components/Filters';
 
 const whatsNew = () => {

@@ -1,21 +1,26 @@
 import { useEffect, useState } from 'react';
-import Slider from 'react-slick';
-import {RiHeart3Line, RiShoppingCart2Line} from 'react-icons/ri';
-import SingleProduct from '../components/SingleProduct';
-import Button from '../ui/Button';
+import { useNavigate, useParams } from 'react-router-dom';
+import {useSelector} from 'react-redux';
+import {doc, updateDoc} from 'firebase/firestore';
+import {getAuth} from 'firebase/auth';
+import {db} from '../firebase';
 import Badge from '../ui/Badge';
 import CustomerReviews from '../components/CustomerReviews';
-import Rating from '../components/Rating';
-import { products } from '../data';
-import Price from '../components/Price';
 import ReviewForm from '../components/Forms/ReviewForm';
 import CustomerRatings from '../components/CustomerRatings';
 import useGetFirestoreData from '../hooks/useGetFirestoreData';
-import { useNavigate, useParams } from 'react-router-dom';
-import {useSelector} from 'react-redux';
-import {getAuth} from 'firebase/auth';
-import {doc, updateDoc} from 'firebase/firestore';
-import {db} from '../firebase';
+import ProductStock from '../components/Products/Product/ProductDetails/ProductStock';
+import ProductTitle from '../components/Products/Product/ProductDetails/ProductTitle';
+import ProductTotalReviews from '../components/Products/Product/ProductDetails/ProductTotalReviews';
+import ProductImage from '../components/Products/Product/ProductDetails/ProductImage';
+import ProductImageSlider from '../components/Products/Product/ProductDetails/ProductImageSlider';
+import AddToCartButton from '../components/Products/Product/ProductButtons/AddToCartButton';
+import SaveToWishlistButton from '../components/Products/Product/ProductButtons/SaveToWishlistButton';
+import ProductDescription from '../components/Products/Product/ProductDetails/ProductDescription';
+import Heading from '../components/Heading';
+import ProductPrice from '../components/Products/Product/ProductDetails/ProductPrice';
+import RelatedProducts from '../components/Products/relatedProducts';
+import ProductRating from '../components/Products/Product/ProductDetails/ProductRating';
 
 const Product = () => {
   const { id } = useParams();
@@ -43,10 +48,13 @@ const Product = () => {
     error: userDataError
   } = useGetFirestoreData('users', userId);
 
+  const {
+    data: relatedProducts,
+    isLoading: relatedProductsLoading,
+    error: relatedProductsError
+  } = useGetFirestoreData('products', null, null, null, null, 4)
+
   const [productData, setProductData] = useState({});
-  
-  const [nav1, setNav1] = useState();
-  const [nav2, setNav2] = useState();
 
   useEffect(() => {
     const addProductToRecentlyViewed = async () => {
@@ -79,9 +87,9 @@ const Product = () => {
 
   if (totalReviews) {
     for (const review of reviews) {
-      productRating += review.rating;
+      productRating = (productRating + review.rating);
     }
-    productRating /= totalReviews;
+    productRating = (productRating / totalReviews);
   }
   
   const ratings = [];
@@ -93,84 +101,37 @@ const Product = () => {
     ratings.push({ value: i, rating: ratingCount });
   }
 
-  const images = [
-    'https://f.nooncdn.com/p/v1686663857/N41247610A_1.jpg?format=avif&width=240',
-    'https://f.nooncdn.com/p/v1667829013/N41247610A_2.jpg?format=avif&width=240',
-    'https://f.nooncdn.com/p/v1667829014/N41247610A_3.jpg?format=avif&width=240',
-    'https://f.nooncdn.com/p/v1667829014/N41247610A_4.jpg?format=avif&width=240',
-    'https://f.nooncdn.com/p/v1667829014/N41247610A_5.jpg?format=avif&width=240',
-    'https://f.nooncdn.com/p/v1667829014/N41247610A_7.jpg?format=avif&width=240',
-    'https://f.nooncdn.com/p/v1667829014/N41247610A_8.jpg?format=avif&width=240',
-    'https://f.nooncdn.com/p/v1667829014/N41247610A_9.jpg?format=avif&width=240',
-    'https://f.nooncdn.com/p/v1667829014/N41247610A_10.jpg?format=avif&width=240'
-  ];
-
-  const firstSliderSettings = {
-    infinite: true,
-    autoplay: true,
-    speed: 300,
-    autoplaySpeed: 2000,
-    pauseOnHover: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    swipeToSlide: true,
-    asNavFor: nav2
-  };
-
-  const secondSliderSettings = {
-    slidesToShow: 4,
-    swipeToSlide: true,
-    focusOnSelect: true,
-    asNavFor: nav1
-  };
-
   return (
     <div className='my-12'>
       <div className="flex flex-col xl:flex-row justify-between gap-12 lg:gap-14">
         <div className='grow'>
           <div className="mb-12 flex flex-col md:flex-row gap-8">
             <div className='md:w-80 h-full space-y-4'>
-              <Slider {...firstSliderSettings} ref={(slider1) => setNav1(slider1)}>
-                {
-                  images.map((image, index) => 
-                    <img key={index} src={image} alt='' className='w-full h-full object-cover border rounded-lg cursor-pointer' />
-                  )
-                }
-              </Slider>
-              <Slider {...secondSliderSettings} ref={(slider2) => setNav2(slider2)} >
-                {
-                  images.map((image, index) =>
-                    <div key={index}>
-                        <img src={image} alt='' className='w-16 h-16 object-cover border border-slate-200 rounded-lg cursor-pointer transition duration-500 hover:border-slate-400' />
-                    </div>
-                  )
-                }
-              </Slider>
+              {
+                productData.images ?
+                  <ProductImageSlider images={productData.images} />
+                :
+                  <ProductImage title={productData.title} image={productData.image} className='w-full h-full' />
+              }
             </div>
-            <div>
+            <div className='max-w-2xl flex flex-col gap-4'>
               <Badge type='best' />
-              <p className='max-w-2xl mb-4 text-xl font-semibold tracking-wide'>{productData.title}</p>
-              <Rating max={5} rating={productRating}>
-                <span className='text-sm'>({totalReviews})</span>
-              </Rating>
-              <Price className='my-5' newPrice={399} oldPrice={599} fontSizes={['text-2xl', 'text-lg']} />
-              <div className="group mb-4 flex flex-row items-center">
-                <span className="inline-block w-2 h-2 bg-orange-500 rounded-full mt-0.5 mr-2 group-hover:animate-ping"></span>
-                <span>{productData.stock} units left in stock</span>
+              <ProductTitle title={productData.title} />
+              <div className='flex flex-row gap-2'>
+                <ProductRating max={5} rating={productRating} />
+                <ProductTotalReviews reviews={productData.reviews} />
               </div>
-              <p className='max-w-lg mb-6 text-md tracking-wide leading-7'>{productData.description}</p>
+              <ProductPrice vertical price={productData.price} discount={productData.discount} />
+              <ProductStock stock={productData.stock} />
+              <ProductDescription description={productData.description} />
               <div className="flex flex-col lg:flex-row gap-3">
-                <Button text='Save for later' className='text-lg w-60' noBg>
-                  <RiHeart3Line className='text-2xl' />
-                </Button>
-                <Button text='Add to cart' className='text-lg w-60' noBg>
-                  <RiShoppingCart2Line className='text-2xl' />
-                </Button>
+                <SaveToWishlistButton id={id} />
+                <AddToCartButton product={{id, ...productData}} />
               </div>
             </div>
           </div>
           <div>
-            <p className='text-2xl text-center lg:text-left font-semibold mb-10'>Customer reviews</p>
+            <Heading heading='Customer reviews' className='text-center lg:text-left mb-10' />
             <div className='flex flex-col lg:flex-row items-center lg:items-start gap-12'>
               <CustomerRatings productRating={productRating} productReviews={totalReviews} ratings={ratings} />
               <div className='grow'>
@@ -178,7 +139,7 @@ const Product = () => {
                 {
                   isAuthenticated && !currentUserReview &&
                   <>
-                    <p className='text-2xl font-semibold mb-5'>Leave a review</p>
+                    <Heading heading='Leave a review' className='mb-5' />
                     <ReviewForm userId={userId} productId={id} />
                   </>
                 }
@@ -186,17 +147,8 @@ const Product = () => {
             </div>
           </div>
         </div>
-        <div>
-          <p className='text-2xl font-semibold mb-8'>Similar Products</p>
-          <div className='w-full xl:w-64 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:flex xl:flex-col gap-8'>
-            <SingleProduct product={products[0]} />
-            <SingleProduct product={products[1]} />
-            <SingleProduct product={products[6]} />
-            <SingleProduct product={products[4]} />
-          </div>
-        </div>
+        <RelatedProducts products={relatedProducts} />
       </div>
-      
     </div>
   )
 }

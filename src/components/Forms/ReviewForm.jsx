@@ -3,29 +3,40 @@ import {useState} from 'react';
 import {doc, updateDoc, addDoc, collection, serverTimestamp} from 'firebase/firestore';
 import {db} from '../../firebase';
 import StarInput from '../../ui/StarInput';
+import { toast } from 'react-toastify';
 
 const ReviewForm = (props) => {
   const [text, setReview] = useState(props.review?.reviewText || '')
   const [rating, setRating] = useState(props.review?.reviewRating || 0)
 
   const editReviewHandler = async () => {
-    const review = props.review;
+    try {
+      props.changeHandler(null);
+      await updateDoc(doc(db, 'reviews', props.review.reviewId), {
+        text, rating
+      });
 
-    await updateDoc(doc(db, 'reviews', review.reviewId), {
-      text, rating
-    });
-    
-    props.changeHandler(null);
+      toast.success('Review updated successfully!')
+    } catch (error) {
+      toast.error('An error occurred!')
+    }
   };
 
   const submitReviewHandler = async () => {
-    await addDoc(collection(db, 'reviews'), {
-      productId: props.productId,
-      userId: props.userId,
-      rating,
-      text,
-      timestamp: serverTimestamp()
-    });
+    try {
+      props.changeHandler(null);
+      await addDoc(collection(db, 'reviews'), {
+        productId: props.productId,
+        userId: props.userId,
+        rating,
+        text,
+        timestamp: serverTimestamp()
+      });
+
+      toast.success('Review updated successfully!')
+    } catch (error) {
+      toast.error('An error occurred!')
+    }
   };
 
   return (

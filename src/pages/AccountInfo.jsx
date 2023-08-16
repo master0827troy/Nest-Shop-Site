@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import { getAuth, updateEmail, updatePassword, updateProfile } from 'firebase/auth';
-import Button from "../ui/Button";
-import Input from "../ui/Input";
-import { doc, updateDoc } from "firebase/firestore";
+import Button from '../ui/Button';
+import Input from '../ui/Input';
+import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import useGetFirestoreData from '../hooks/useGetFirestoreData';
+import Loading from '../ui/Loading';
 
 const AccountInfo = () => {
   const auth = getAuth();
@@ -27,7 +28,7 @@ const AccountInfo = () => {
   }, [data])
   
   if (isLoading) {
-    return <h3>Loading...</h3>;
+    return <Loading />;
   }
 
   const submitHandler = async () => {
@@ -37,8 +38,6 @@ const AccountInfo = () => {
       });
 
       await updateEmail(auth.currentUser, email)
-
-      // update name in the firestore
 
       const docRef = doc(db, 'users', auth.currentUser.uid);
       await updateDoc(docRef, {

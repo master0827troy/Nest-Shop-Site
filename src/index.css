@@ -59,3 +59,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.Toastify__toast-icon > svg {
+  @apply fill-orange-600;
+}

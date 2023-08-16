@@ -1,80 +1,96 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { authActions } from './store/AuthSlice';
+import { getCartItems } from './store/cart-slice';
+import { getWishlistItems } from './store/WishlistSlice';
 
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
+import 'slick-carousel/slick/slick.css'; 
+import 'slick-carousel/slick/slick-theme.css';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import RootLayout from './pages/RootLayout'
-import ErrorPage from "./pages/Error";
+import ProfileLayout from './pages/ProfileLayout';
+import ErrorPage from './pages/Error';
 
 import Home from './pages/Home';
-import WhatsNew from "./pages/WhatsNew";
-import Category from "./pages/Category";
-import Product from "./pages/Product";
-import Checkout from "./pages/Checkout";
-import Orders from "./pages/Orders";
-import Order from "./pages/Order";
-import ProfileLayout from "./pages/ProfileLayout";
-import AccountInfo from "./pages/AccountInfo";
-import AddressBook from "./pages/AddressBook";
-import SavedItems from "./pages/SavedItems";
-import Reviews from "./pages/Reviews";
-import RecentlyViewed from "./pages/RecentlyViewed";
-import PrivateRoute from "./components/PrivateRoute";
-import { useDispatch } from "react-redux";
-import { getAuth } from 'firebase/auth';
-import { onAuthStateChanged } from "firebase/auth";
-import {authActions} from './store/AuthSlice';
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <RootLayout />,
-    errorElement: <ErrorPage />,
-    children: [
-      { index: true, element: <Home />},
-      { path: 'whats-new', element: <WhatsNew />},
-      { path: 'category/:id', element: <Category />},
-      { path: 'product/:id', element: <Product />},
-      { path: 'checkout', element: <Checkout />},
-      { path: 'order/:id', element: <Order />},
-      { 
-        path: 'profile',
-        element: <PrivateRoute />,
-        children: [
-          { 
-            path: '/profile',
-            element: <ProfileLayout />,
-            children: [
-              { index: true, element: <AccountInfo /> },
-              { path: 'address-book', element: <AddressBook />},
-              { path: 'orders', element: <Orders />},
-              { path: 'saved-items', element: <SavedItems />},
-              { path: 'recently-viewed', element: <RecentlyViewed />},
-              { path: 'reviews', element: <Reviews />},
-            ]
-          }
-        ]
-      }
-    ]
-  },
-]);
+import WhatsNew from './pages/WhatsNew';
+import Category from './pages/Category';
+import Product from './pages/Product';
+import Checkout from './pages/Checkout';
+import AccountInfo from './pages/AccountInfo';
+import AddressBook from './pages/AddressBook';
+import Orders from './pages/Orders';
+import SavedItems from './pages/SavedItems';
+import RecentlyViewed from './pages/RecentlyViewed';
+import Reviews from './pages/Reviews';
+import Loading from './ui/Loading';
 
 const App = () => {
   const dispatch = useDispatch();
   const auth = getAuth();
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      dispatch(authActions.login());
-    } else {
-      dispatch(authActions.logout());
-    }
-  });
+  const [isLoading, setIsLoading] = useState(true)
+
+  const isAuthenticated = useSelector(state => state.authentication.isAuthenticated);
+  
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(authActions.login());
+        dispatch(getCartItems(auth.currentUser.uid));
+        dispatch(getWishlistItems());
+        setIsLoading(false)
+      } else {
+        dispatch(authActions.logout());
+        setIsLoading(false)
+      }
+    });
+  }, [auth, dispatch])
+  
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   return (
-    <RouterProvider router={router} />
-    );
-  };
+    <>
+      <Routes>
+        <Route path='/' element={<RootLayout />}>
+          <Route path='/' element={<Home />} />
+          <Route path='/whats-new' element={<WhatsNew />} />
+          <Route path='/product/:id' element={<Product />} />
+          <Route path='/checkout' element={<Checkout />} />
+          <Route path='/category/:id' element={<Category />} />
+          <Route path='/profile' element={isAuthenticated ? <ProfileLayout /> : <Navigate to='/' />}>
+            <Route path='/profile' element={<AccountInfo />} />
+            <Route path='address-book' element={<AddressBook />} />
+            <Route path='orders' element={<Orders />} />
+            <Route path='saved-items' element={<SavedItems />} />
+            <Route path='recently-viewed' element={<RecentlyViewed />} />
+            <Route path='reviews' element={<Reviews />} />
+          </Route>
+          <Route path='*' element={<ErrorPage />} />
+        </Route>
+      </Routes>
+      <ToastContainer
+        position='bottom-right'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='light'
+        progressStyle={{ backgroundColor: '#ea580c' }}
+      />
+    </>
+  );
+};
   
   export default App;
-  

@@ -1,21 +1,39 @@
-import Input from '../../ui/Input';
-import {useState} from 'react';
-import Button from '../../ui/Button';
+import { useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
+import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
+import Input from '../../ui/Input';
+import Button from '../../ui/Button';
 
 const PhoneForm = (props) => {
-  const [phoneNumber, setPhoneNumber] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState(props.phoneNumber || '')
 
   const addPhoneHandler = async () => {
-    if (props.show) {
+    try {
+      props.changeHandler(prevState => !prevState);
       await updateDoc(doc(db, 'users', props.userId), {
         phoneNumbers: [...props.phoneNumbers, phoneNumber]
       });
 
-      props.changeHandler(false);
-    } else {
-      props.changeHandler(prevState => !prevState);
+      toast.success('Phone number added successfully!')
+    } catch (error) {
+      toast.error('An error occurred!')
+    }
+  };
+
+  const editAddressHandler = async () => {
+    try {
+      const filteredPhoneNumbers = props.phoneNumbers.filter(ele => props.phoneNumbers.indexOf(ele) !== props.phoneNumbers.indexOf(props.phoneNumber));
+
+      props.changeHandler(null);
+      await updateDoc(doc(db, 'users', props.userId), {
+        phoneNumbers: [...filteredPhoneNumbers, phoneNumber]
+      });
+
+      toast.success('Updated phone number successfully!')
+    } catch (error) {
+      toast.error('An error occurred!')
     }
   };
 
@@ -28,13 +46,21 @@ const PhoneForm = (props) => {
             <Input label='Phone' className='w-fit' bgColor='!bg-gray-100' value={phoneNumber} setValue={setPhoneNumber} />
           </div>
           <div className='flex flex-row gap-5'>
-            <Button bg text='Cancel' className='h-fit' onClick={() => props.changeHandler(false)} />
-            <Button bg text='Save' className='h-fit' onClick={addPhoneHandler} />
+            <Button bg text='Cancel' className='h-fit' onClick={() => props.phoneNumber ? props.changeHandler(null) : props.changeHandler(false)} />
+            <Button bg text='Save' className='h-fit' onClick={props.phoneNumber ? editAddressHandler : addPhoneHandler} />
           </div>
         </form>
       }
     </>
   );
+};
+
+PhoneForm.propTypes = {
+  userId: PropTypes.string,
+  show: PropTypes.bool,
+  phoneNumbers: PropTypes.array,
+  phoneNumber: PropTypes.string,
+  changeHandler: PropTypes.func,
 };
 
 export default PhoneForm;

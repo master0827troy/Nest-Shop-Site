@@ -1,47 +1,68 @@
-import Rating from "../components/Rating";
+import ProductRating from "../components/Products/Product/ProductDetails/ProductRating";
 import {FaPen} from 'react-icons/fa';
 import {FiTrash2} from 'react-icons/fi';
 import useGetFirestoreData from "../hooks/useGetFirestoreData";
 import {getAuth} from 'firebase/auth';
 import {doc, deleteDoc} from 'firebase/firestore';
 import {db} from '../firebase';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import ReviewForm from "../components/Forms/ReviewForm";
 import Loading from "../ui/Loading";
 import { Link } from "react-router-dom";
+import {toast} from 'react-toastify';
 
 const Reviews = () => {
   const [editingReview, setEditingReview] = useState(null);
 
   const auth = getAuth();
-  const {data: reviews, isLoading, error} = useGetFirestoreData('reviews', null, {lhs: 'userId', op: '==', rhs: auth.currentUser.uid});
-  const {data: products, isLoading:x, error:xx} = useGetFirestoreData('products');
   
-  if (isLoading || x) {
+  const {
+    data: reviews,
+    isLoading: reviewsLoading,
+    error: reviewsError
+  } = useGetFirestoreData('reviews', null, {lhs: 'userId', op: '==', rhs: auth.currentUser.uid});
+  console.log(reviews)
+
+  const {
+    data: products,
+    isLoading: productsLoading,
+    error: productsError
+  } = useGetFirestoreData('products');
+
+  const [userReviews, setUserReviews] = useState([]);
+  
+  useEffect(() => {
+    if (reviews && products) {
+      setUserReviews(reviews.map(review => {
+        const matchingProduct = products.find(product => product.id === review.productId);
+        return {
+          reviewId: review.id,
+          reviewText: review.text,
+          reviewRating: review.rating,
+          productId: matchingProduct.id,
+          productImage: matchingProduct.image,
+          productTitle: matchingProduct.title
+        };
+      }));
+    }
+
+    if ((reviewsError || productsError) && (!reviewsLoading && !productsLoading)) {
+      toast.error('An error occurred!');
+    }
+  }, [products, productsError, productsLoading, reviews, reviewsError, reviewsLoading])
+  
+  if (reviewsLoading || productsLoading) {
     return <Loading />;
-  }
-  
-  let combinedArray = [];
-  if (reviews && products) {
-    combinedArray = reviews.map(review => {
-      const matchingProduct = products.find(product => product.id === review.productId);
-      return {
-        reviewId: review.id,
-        reviewText: review.text,
-        reviewRating: review.rating,
-        productId: matchingProduct.id,
-        productImage: matchingProduct.image,
-        productTitle: matchingProduct.title
-      };
-    });
   }
 
   const deleteReviewHandler = async (review) => {
-    const ref = doc(db, 'reviews', review.reviewId);
     try {
+      const ref = doc(db, 'reviews', review.reviewId);
       await deleteDoc(ref);
-    } catch (err) {
-      console.log(err.message);
+
+      toast.success('Review deleted successfully!')
+    } catch (error) {
+      toast.error('An error occurred!')
     }
   };
 
@@ -53,8 +74,8 @@ const Reviews = () => {
           <div className='w-1/2 border border-orange-600'></div>
         </div>
           {
-            combinedArray.map(review => 
-              editingReview !== combinedArray.indexOf(review) ?
+            userReviews.map(review => 
+              editingReview !== userReviews.indexOf(review) ?
                 <div key={review.productId} className='mb-6'>
                   <div className='flex flex-row gap-6'>
                     <Link to={`/product/${review.productId}`}>
@@ -64,12 +85,12 @@ const Reviews = () => {
                       <Link to={`/product/${review.productId}`}>
                         <p className='mb-2 text-xl font-semibold tracking-wide'>{review.productTitle}</p>
                       </Link>
-                      <Rating max={5} rating={review.reviewRating} className='mb-3 justify-center lg:justify-start'>
+                      <ProductRating max={5} rating={review.reviewRating} className='mb-3 justify-center lg:justify-start'>
                         <p className='text-sm'>{review.date}</p>
-                      </Rating>
+                      </ProductRating>
                       <p className='max-w-3xl text-center lg:text-left tracking-wider leading-7'>{review.reviewText}</p>
                     </div>
-                    <FaPen className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => setEditingReview(combinedArray.indexOf(review))}  />
+                    <FaPen className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => setEditingReview(userReviews.indexOf(review))}  />
                     <FiTrash2 className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => deleteReviewHandler(review)} />
                   </div>
                 </div>
