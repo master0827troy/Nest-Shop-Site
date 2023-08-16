@@ -61,7 +61,7 @@ const App = () => {
         <Route path='/' element={<RootLayout />}>
           <Route path='/' element={<Home />} />
           <Route path='/product/:id' element={<Product />} />
-          <Route path='/checkout' element={<Checkout />} />
+          <Route path='/checkout' element={isAuthenticated ? <Checkout /> : <Navigate to='/' />} />
           <Route path='/category/:id' element={<Category />} />
           <Route path='/profile' element={isAuthenticated ? <ProfileLayout /> : <Navigate to='/' />}>
             <Route path='/profile' element={<AccountInfo />} />
