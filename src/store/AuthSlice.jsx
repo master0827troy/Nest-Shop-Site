@@ -33,7 +33,7 @@ export const logout = createAsyncThunk(
 
       thunkAPI.dispatch(cartActions.emptyCart())
       thunkAPI.dispatch(wishlistActions.emptyWishlist())
-      toast.info('Good bye, we hope to see you again!');
+      toast.info('You\'ve logged out successfully!');
 
       return false;
     } catch (error) {

@@ -83,54 +83,58 @@ export const addItemToCart = createAsyncThunk(
       const auth = getAuth();
       const userId = auth.currentUser.uid;
 
-      const updatedFirestoreCartItems = [{id: product.id, quantity: 1}]
+      if (!cartItems.find(cartItem => cartItem.id === product.id) && product.stock >= 1) {
+        const updatedCartItems = [
+          {
+            id: product.id,
+            image: product.image,
+            price: product.price,
+            quantity: 1,
+            rating: product.rating,
+            stock: product.stock,
+            title: product.title,
+          },
+          ...cartItems
+        ]
 
-      for (const cartItem of cartItems) {
-        const newItem = {};
-        for (let key in cartItem) {
-          if (key === 'id' || key === 'quantity') {
-            newItem[key] = cartItem[key];
+        const updatedFirestoreCartItems = [];
+        for (const cartItem of updatedCartItems) {
+          const newItem = {};
+          for (let key in cartItem) {
+            if (key === 'id' || key === 'quantity') {
+              newItem[key] = cartItem[key];
+            }
           }
+          updatedFirestoreCartItems.push(newItem);
         }
-        updatedFirestoreCartItems.push(newItem);
+
+        await updateDoc(doc(db, 'users', userId), {
+          cartItems: updatedFirestoreCartItems
+        });
+
+        let totalQuantity = 0;
+        let totalPrice = 0;
+  
+        for (const cartItem of updatedCartItems) {
+          totalPrice += cartItem.price * cartItem.quantity;
+          totalQuantity += cartItem.quantity;
+        }
+  
+        toast.success('Added product to cart!')
+        
+        return {
+          cartItems: updatedCartItems,
+          totalQuantity,
+          totalPrice,
+        };
+      } else if (product.stock < 1) {
+        toast.error('Product is not available!');
+      } else {
+        toast.info('Product is already in cart!')
       }
 
-      await updateDoc(doc(db, 'users', userId), {
-        cartItems: updatedFirestoreCartItems
-      });
-
-      const updatedCartItems = [
-        ...cartItems,
-        {
-          id: product.id,
-          image: product.image,
-          price: product.price,
-          quantity: 1,
-          rating: product.rating,
-          stock: product.stock,
-          title: product.title,
-        }
-      ]
-
-      let totalQuantity = 0;
-      let totalPrice = 0;
-
-      for (const cartItem of updatedCartItems) {
-        totalPrice += cartItem.price * cartItem.quantity;
-        totalQuantity += cartItem.quantity;
-      }
-
-      toast.success('Added product to cart!')
-      
-      return {
-        cartItems: updatedCartItems,
-        totalQuantity,
-        totalPrice,
-      };
     } catch (error) {
       toast.error('You need to log in first!')
-
-      return {...initialCartState, cartItems: initialCartState.items};
     }
   }
 )
@@ -142,101 +146,108 @@ export const removeItemFromCart = createAsyncThunk(
       const auth = getAuth();
       const userId = auth.currentUser.uid;
 
-      const updatedFirestoreCartItems = [];
+      if (cartItems.find(cartItem => cartItem.id === productId)) {
+        const updatedFirestoreCartItems = [];
 
-      for (const cartItem of cartItems) {
-        const newItem = {};
-        for (let key in cartItem) {
-          if (key === 'id' || key === 'quantity') {
-            newItem[key] = cartItem[key];
+        for (const cartItem of cartItems) {
+          const newItem = {};
+          for (let key in cartItem) {
+            if (key === 'id' || key === 'quantity') {
+              newItem[key] = cartItem[key];
+            }
           }
+          updatedFirestoreCartItems.push(newItem);
         }
-        updatedFirestoreCartItems.push(newItem);
+
+        await updateDoc(doc(db, 'users', userId), {
+          cartItems: updatedFirestoreCartItems.filter(item => item.id !== productId)
+        });
+
+        const updatedCartItems = cartItems.filter(item => item.id !== productId);
+
+        let totalQuantity = 0;
+        let totalPrice = 0;
+
+        for (const cartItem of updatedCartItems) {
+          totalPrice += cartItem.price * cartItem.quantity;
+          totalQuantity += cartItem.quantity;
+        }
+
+        toast.success('Removed product from cart!')
+        
+        return {
+          cartItems: updatedCartItems,
+          totalQuantity,
+          totalPrice,
+        };
       }
 
-      await updateDoc(doc(db, 'users', userId), {
-        cartItems: updatedFirestoreCartItems.filter(item => item.id !== productId)
-      });
+      toast.info('Product is not in cart!')
 
-      const updatedCartItems = cartItems.filter(item => item.id !== productId);
-
-      let totalQuantity = 0;
-      let totalPrice = 0;
-
-      for (const cartItem of updatedCartItems) {
-        totalPrice += cartItem.price * cartItem.quantity;
-        totalQuantity += cartItem.quantity;
-      }
-
-      toast.success('Removed product from cart!')
-      
-      return {
-        cartItems: updatedCartItems,
-        totalQuantity,
-        totalPrice,
-      };
     } catch (error) {
       toast.error('You need to log in first!')
-
-      return {...initialCartState, cartItems: initialCartState.items};
     }
   }
 )
 
 export const updateItemQuantity = createAsyncThunk(
   'cart/updateItemQuantity',
-  async ({ cartItems, productId, quantity }) => {
+  async ({ cartItems, productId, quantity }, thunkAPI) => {
     try {
       const auth = getAuth();
       const userId = auth.currentUser.uid;
 
-      const existingProduct = cartItems.find(cartItem => cartItem.id === productId)
-      const remainingProducts = cartItems.filter(cartItem => cartItem.id !== productId);
-      const updatedFirestoreCartItems = []
+      const existingProduct = cartItems.find(cartItem => cartItem.id === productId);
+      const updatedQuantity = existingProduct.quantity + quantity;
 
-      for (const cartItem of remainingProducts) {
-        const newItem = {};
-        for (let key in cartItem) {
-          if (key === 'id' || key === 'quantity') {
-            newItem[key] = cartItem[key];
+      if(updatedQuantity > 0 && updatedQuantity <= existingProduct.stock) {
+        const updatedCartItems = [];
+        for (const cartItem of cartItems) {
+          let itemQuantity = cartItem.quantity;
+          if (cartItem.id === productId) {
+            itemQuantity += quantity;
           }
+          updatedCartItems.push({...cartItem, quantity: itemQuantity});
         }
-        updatedFirestoreCartItems.push(newItem);
+
+        const updatedFirestoreCartItems = []
+        for (const cartItem of updatedCartItems) {
+          const newItem = {};
+          for (let key in cartItem) {
+            if (key === 'id' || key === 'quantity') {
+              newItem[key] = cartItem[key];
+            }
+          }
+          updatedFirestoreCartItems.push(newItem);
+        }
+
+        await updateDoc(doc(db, 'users', userId), {
+          cartItems: updatedFirestoreCartItems
+        });
+
+        let totalQuantity = 0;
+        let totalPrice = 0;
+
+        for (const cartItem of updatedCartItems) {
+          totalPrice += cartItem.price * cartItem.quantity;
+          totalQuantity += cartItem.quantity;
+        }
+
+        toast.success('Updated product quantity!')
+        
+        return {
+          cartItems: updatedCartItems,
+          totalQuantity,
+          totalPrice,
+        };
+      } else if (updatedQuantity > existingProduct.stock) {
+        toast.error('Exceeded stock!')
+      } else if (updatedQuantity < 1) {
+        thunkAPI.dispatch(removeItemFromCart({cartItems, productId}))
       }
 
-      updatedFirestoreCartItems.push({ id: existingProduct.id, quantity: existingProduct.quantity + quantity })
-
-      await updateDoc(doc(db, 'users', userId), {
-        cartItems: updatedFirestoreCartItems
-      });
-
-      const updatedCartItems = [
-        ...remainingProducts,
-        {
-          ...existingProduct,
-          quantity: existingProduct.quantity + quantity
-        }
-      ]
-
-      let totalQuantity = 0;
-      let totalPrice = 0;
-
-      for (const cartItem of updatedCartItems) {
-        totalPrice += cartItem.price * cartItem.quantity;
-        totalQuantity += cartItem.quantity;
-      }
-
-      toast.success('Updated product quantity!')
-      
-      return {
-        cartItems: updatedCartItems,
-        totalQuantity,
-        totalPrice,
-      };
     } catch (error) {
       toast.error('You need to log in first!')
-
-      return {...initialCartState, cartItems: initialCartState.items};
     }
   }
 )
@@ -264,19 +275,25 @@ const cartSlice = createSlice({
         state.totalPrice = initialCartState.totalPrice;
       })
       .addCase(addItemToCart.fulfilled, (state, action) => {
-        state.items = action.payload.cartItems;
-        state.totalQuantity = action.payload.totalQuantity;
-        state.totalPrice = action.payload.totalPrice;
+        if (action.payload) {
+          state.items = action.payload.cartItems;
+          state.totalQuantity = action.payload.totalQuantity;
+          state.totalPrice = action.payload.totalPrice;
+        }
       })
       .addCase(removeItemFromCart.fulfilled, (state, action) => {
-        state.items = action.payload.cartItems;
-        state.totalQuantity = action.payload.totalQuantity;
-        state.totalPrice = action.payload.totalPrice;
+        if (action.payload) {
+          state.items = action.payload.cartItems;
+          state.totalQuantity = action.payload.totalQuantity;
+          state.totalPrice = action.payload.totalPrice;
+        }
       })
       .addCase(updateItemQuantity.fulfilled, (state, action) => {
-        state.items = action.payload.cartItems;
-        state.totalQuantity = action.payload.totalQuantity;
-        state.totalPrice = action.payload.totalPrice;
+        if (action.payload) {
+          state.items = action.payload.cartItems;
+          state.totalQuantity = action.payload.totalQuantity;
+          state.totalPrice = action.payload.totalPrice;
+        }
       })
   }
 });

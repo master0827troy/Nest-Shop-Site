@@ -10,8 +10,7 @@ import Form from './Forms/Form'
 import CartIcon from './CartIcon'
 import { BsBoxArrowInRight } from 'react-icons/bs'
 import {useSelector, useDispatch} from 'react-redux';
-import { authActions, logout } from '../store/AuthSlice';
-import { getAuth } from 'firebase/auth';
+import { logout } from '../store/AuthSlice';
 import useGetFirestoreData from '../hooks/useGetFirestoreData';
 import { toast } from 'react-toastify';
 
