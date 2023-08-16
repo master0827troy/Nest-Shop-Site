@@ -25,7 +25,7 @@ const Home = () =>{
     data: products,
     isLoading: productsLoading,
     error: productsError
-  } = useGetFirestoreData('products');
+  } = useGetFirestoreData('products', null, null, null, null, 8);
 
   const [allProducts, setAllProducts] = useState([])
 
@@ -75,7 +75,7 @@ const Home = () =>{
       </div>
 
 
-      <div>
+      <div className='mb-12'>
         <h2 className='section-heading'>Todays Best Deals For You!</h2>
         <CategoryProducts products={allProducts} />
       </div>
