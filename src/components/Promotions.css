@@ -7,11 +7,11 @@
 }
 
 .promotions .promotion .promotion-content {
-  @apply w-full h-full flex flex-col pt-32 md:pt-24 lg:pt-56 gap-3 px-14 lg:px-10 xl:px-12 py-10 bg-[#00000073];
+  @apply w-full h-full flex flex-col pt-32 md:pt-24 lg:pt-52 gap-3 px-14 lg:px-10 xl:px-12 py-10 bg-[#00000073];
 }
 
 .promotions .promotion .promotion-title {
-  @apply text-white text-2xl lg:text-xl xl:text-2xl font-semibold;
+  @apply w-3/5 text-white text-2xl lg:text-xl xl:text-3xl font-semibold;
 }
 
 .promotions .promotion .promotion-text {
