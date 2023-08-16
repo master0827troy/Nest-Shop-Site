@@ -11,11 +11,9 @@ const authSlice = createSlice({
   reducers: {
     login(state){
       state.isAuthenticated = true;
-      toast.success('Welcome Back!')
     },
     logout(state){
       state.isAuthenticated = false;
-      toast.success('كسمك.')
     }
   }
 });
