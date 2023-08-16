@@ -373,11 +373,13 @@ export const promotionsList1 = [
     title: 'Awesome Makeup Kit Gift Sets',
     text: 'Find your unique style.',
     image: 'https://websitedemos.net/be-bold-beauty-store-04/wp-content/uploads/sites/1117/2022/08/bg-001.jpg',
+    path: '/category/enxCGyQVooEX52CxXPTQ'
   },
   {
     id: 2,
     title: 'The Ultimate Skincare Regime',
     text: 'Find your unique style.',
     image: 'https://websitedemos.net/be-bold-beauty-store-04/wp-content/uploads/sites/1117/2022/08/bg-02.jpg',
+    path: '/category/j6kHeFy8Ytyl0Yx2v2ZU'
   }
 ];

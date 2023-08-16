@@ -1,8 +1,10 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../ui/Button';
 import './Promotions.css';
 
 const promotions = (props) => {
+  const navigate = useNavigate();
+
   return (
     <div className='promotions'>
       {
@@ -11,7 +13,7 @@ const promotions = (props) => {
             <div className='promotion-content'>
               <h3 className='promotion-title'>{promotion.title}</h3>
               <p className='promotion-text'>{promotion.text}</p>
-              <Button text='Shop now' className='text-white !border-orange-600 rounded-sm' noBg />
+              <Button text='Shop now' className='text-white !border-orange-600 rounded-sm' noBg onClick={() => navigate(promotion.path)} />
             </div>
           </div>
         )
