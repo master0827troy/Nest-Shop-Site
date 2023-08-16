@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import './SearchBar.css';
+import './SearchBar.css'
 
 const SearchBar = (props) => {
   const [isActive, setIsActive] = useState(null);
