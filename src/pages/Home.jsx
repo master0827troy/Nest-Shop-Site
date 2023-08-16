@@ -43,7 +43,7 @@ const Home = () =>{
   return (
     <>
       <div className='my-12'>
-        <h2 className='section-heading'>shop from our top categories</h2>
+        <h2 className='section-heading !text-center'>top categories</h2>
         <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-6'>
           {
             topCategories.map(category => 
@@ -59,7 +59,6 @@ const Home = () =>{
       </div>
 
       <div className='mb-12'>
-        <h2 className='section-heading'>choose from our top brands</h2>
         <div className='-mx-1'>
           <Slider {...settings}>
             {
