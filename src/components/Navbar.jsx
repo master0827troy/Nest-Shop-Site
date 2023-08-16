@@ -13,6 +13,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import { authActions } from '../store/AuthSlice';
 import { getAuth } from 'firebase/auth';
 import useGetFirestoreData from '../hooks/useGetFirestoreData';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -38,6 +39,10 @@ const Navbar = () => {
 
   const iconClasses = 'text-3xl cursor-pointer transition duration-700 hover:text-orange-600 hover:scale-110';
 
+  const toastFunction = () => {
+    toast.error('You need to log in first!')
+  };
+
   return (
     <div className="text-slate-900 bg-gray-300 bg-opacity-10 shadow-md">
       <div className="section-container">
@@ -55,7 +60,7 @@ const Navbar = () => {
           </Link>
           <SearchBar placeholder='Search' inputClass = '!py-2 rounded-sm' containerClass='w-1/3' />
           <ul className="flex flex-col lg:flex-row items-center gap-3">
-            <li className={iconClasses + ' mr-2'} onClick={() => setModalIsOpen(true)}>
+            <li className={iconClasses + ' mr-2'} onClick={() => isAuthenticated ? setModalIsOpen(true) : toastFunction()}>
               <CartIcon />
             </li>
             {
