@@ -6,6 +6,7 @@ import Slider from 'react-slick';
 import useGetFirestoreData from '../hooks/useGetFirestoreData';
 import Loading from '../ui/Loading';
 import { useEffect, useState } from 'react';
+import {toast} from 'react-toastify';
 
 const Home = () =>{
   const settings = {
@@ -33,13 +34,12 @@ const Home = () =>{
     if (products) {
       setAllProducts(products)
     }
-  }, [products])
+
+    if (productsError && !productsLoading) {
+      toast.error('An error occurred!');
+    }
+  }, [products, productsError, productsLoading])
   
-
-  if (productsLoading) {
-    return <Loading />;
-  }
-
   return (
     <>
       <div className='my-12'>
@@ -57,12 +57,13 @@ const Home = () =>{
         </div>
       </div>
 
-            <Promotions promotions={promotionsList1} />
+      <Promotions promotions={promotionsList1} />
+      
       <div className='mb-12'>
         <div className='-mx-1'>
           <Slider {...settings}>
             {
-              brands.map((brand, index) => 
+              brands.map(brand => 
                 <Link key={brand.id} to='/'>
                   <div className='rounded-xl overflow-hidden'>
                     <img src={brand.image} alt="" className='w-full' />
@@ -74,10 +75,11 @@ const Home = () =>{
         </div>
       </div>
 
-
       <div className='mb-12'>
         <h2 className='section-heading'>Todays Best Deals For You!</h2>
-        <CategoryProducts products={allProducts} />
+        {
+          productsLoading ? <Loading /> : <CategoryProducts products={allProducts} />
+        }
       </div>
     </>
   );
