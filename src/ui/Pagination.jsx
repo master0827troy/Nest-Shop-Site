@@ -12,7 +12,7 @@ const Pagination = ({ modifiedPages, pagesNumber, currentPage, hideArrows, chang
 
   const prevPage = hideArrows ? ( currentPage !== 1 && prev ) : ( currentPage !== 1 ? prev : prevDisabled );
   const nextPage = hideArrows ? ( currentPage !== pagesNumber && next ) : ( currentPage !== pagesNumber ? next : nextDisabled )
-  console.log(modifiedPages)
+
   return (
     <div className={containerClasses}>
       <ul className={listClasses}>

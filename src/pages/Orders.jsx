@@ -50,6 +50,8 @@ const Orders = () => {
     return <Loading />;
   }
 
+  console.log(userOrders)
+
   return (
     <>
       {
@@ -66,7 +68,7 @@ const Orders = () => {
               </div>
               <div className='flex flex-col items-center'>
                 <p className='text-xl font-semibold'>Shipped To</p>
-                <p>22 zbi street, Cairo, Egypt, 11777</p>
+                <p>{order.address.apartment} {order.address.street}, {order.address.city}, {order.address.country}, {order.address.postalNumber}</p>
               </div>
               <div className='flex flex-col items-center'>
                 <p className='text-xl font-semibold'>Items</p>

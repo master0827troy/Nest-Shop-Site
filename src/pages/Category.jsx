@@ -136,7 +136,7 @@ const Category = () => {
         activeLayout={activeLayout} setActiveLayout={setActiveLayout}
       />
       { categoryProductsLoading && <Loading /> }
-      { modifiedData.length === 0 && <p>Found no products</p> }
+      { !categoryProductsLoading && modifiedData.length === 0 && <p>Found no products</p> }
       { 
         !categoryDataLoading && modifiedData.length > 0 && activeLayout === 'grid' &&
         <CategoryProducts products={modifiedData} paginationOptions={paginationOptions} activeLayout={activeLayout} />
