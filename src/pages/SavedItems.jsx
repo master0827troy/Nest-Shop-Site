@@ -24,7 +24,7 @@ const SavedItems = () => {
   useEffect(() => {
     if (userData?.wishlistItems && products) {
       setSavedItems(userData.wishlistItems.map(item => {
-        const matchingProduct = products?.find(product => product.id === item);
+        const matchingProduct = products.find(product => product.id === item);
         return { ...matchingProduct };
       }));
     }

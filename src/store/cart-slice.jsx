@@ -39,7 +39,7 @@ export const getCartItems = createAsyncThunk(
               price: matchingProduct.price,
               rating: matchingProduct.rating,
               stock: matchingProduct.stock,
-              quantity: item.quantity,
+              quantity: item.quantity < matchingProduct.stock ? item.quantity : matchingProduct.stock,
             };
           }));
         }

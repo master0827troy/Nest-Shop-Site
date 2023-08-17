@@ -2,13 +2,15 @@ import { useEffect, useState} from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Promotions from '../components/Promotions';
 import Filters from '../components/Filters';
-import Products from '../components/Products/CategoryProducts';
+import CategoryProducts from '../components/Products/CategoryProducts';
+import ProfileProducts from '../components/Products/ProfileProducts';
 import useFilter from '../hooks/useFilter';
 import useSearch from '../hooks/useSearch';
 import useSort from '../hooks/useSort';
 import usePagination from '../hooks/usePagination';
 import useGetFirestoreData from '../hooks/useGetFirestoreData';
 import Loading from '../ui/Loading';
+import {toast} from 'react-toastify';
 
 const Category = () => {
   const promotionsList = [
@@ -115,7 +117,7 @@ const Category = () => {
 
   useEffect(() => {
     if (categoryDataError || categoryProductsError) {
-      navigate('/')
+      toast.error('An error occurred!');
     }
   }, [categoryDataError, categoryProductsError, navigate])
 
@@ -131,15 +133,17 @@ const Category = () => {
         searchInputValue={inputValue} onSearch={searchHandler}
         sortBy={sortBy} sortOrder={sortOrder} setSortBy={setSortBy} setSortOrder={setSortOrder}
         elementsPerPage={elementsPerPage} setElementsPerPage={setElementsPerPage}
+        activeLayout={activeLayout} setActiveLayout={setActiveLayout}
       />
-      {
-        categoryProductsLoading ?
-          <Loading />
-        :
-        modifiedData.length > 0 ?
-          <Products products={modifiedData} paginationOptions={paginationOptions} activeLayout={activeLayout} />
-        :
-          <p>Found no products</p>
+      { categoryProductsLoading && <Loading /> }
+      { modifiedData.length === 0 && <p>Found no products</p> }
+      { 
+        !categoryDataLoading && modifiedData.length > 0 && activeLayout === 'grid' &&
+        <CategoryProducts products={modifiedData} paginationOptions={paginationOptions} activeLayout={activeLayout} />
+      }
+      { 
+        !categoryDataLoading && modifiedData.length > 0 && activeLayout === 'list' &&
+        <ProfileProducts products={modifiedData} paginationOptions={paginationOptions} activeLayout={activeLayout} />
       }
     </div>
   )

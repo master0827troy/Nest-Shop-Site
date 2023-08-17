@@ -13,7 +13,9 @@ const ReviewForm = (props) => {
     try {
       props.changeHandler(null);
       await updateDoc(doc(db, 'reviews', props.review.reviewId), {
-        text, rating
+        text,
+        rating,
+        timestamp: serverTimestamp()
       });
 
       toast.success('Review updated successfully!')
