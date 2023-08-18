@@ -5,14 +5,17 @@ import { RiCloseLine } from 'react-icons/ri';
 import Backdrop from './Backdrop';
 import './Sidebar.css';
 import ScrollableDiv from './ScrollableDiv';
+import useScrollBlock from '../hooks/useScrollBlock';
 
 const Sidebar = (props) => {
-  const [sidebarClasses, setSidebarClasses] = useState('sidebar sidebar-hidden')
-  const [backdropClasses, setBackdropClasses] = useState('backdrop backdrop-hidden')
+  const [sidebarClasses, setSidebarClasses] = useState(props.className ? props.className + ' sidebar sidebar-hidden' : 'sidebar sidebar-hidden');
+  const [backdropClasses, setBackdropClasses] = useState('backdrop backdrop-hidden');
+
+  const [blockScroll, allowScroll] = useScrollBlock();
 
   const closeSidebar = () => {
-    setSidebarClasses('sidebar sidebar-hidden')
-    setBackdropClasses('backdrop backdrop-hidden')
+    setSidebarClasses(props.className ? props.className + ' sidebar sidebar-hidden' : 'sidebar sidebar-hidden');
+    setBackdropClasses('backdrop backdrop-hidden');
 
     /*
     * This setTimeout will delay the execution of the props.onClose() function by 0.7s
@@ -20,18 +23,22 @@ const Sidebar = (props) => {
     ! Make sure both have the same value
     ! And this will ensure that the Sidebar will get unmounted once the transition is done
     */
-    setTimeout(() => props.onClose(), 700)
+    setTimeout(() => props.onClose(), 700);
   };
 
   useEffect(() => {
     if (props.isOpen) {
-      setSidebarClasses('sidebar sidebar-visible')
-      setBackdropClasses('backdrop backdrop-visible')
+      setSidebarClasses(props.className ? props.className + ' sidebar sidebar-visible' : 'sidebar sidebar-visible');
+      setBackdropClasses('backdrop backdrop-visible');
+
+      blockScroll();
     } else {
-      setSidebarClasses('sidebar sidebar-hidden')
-      setBackdropClasses('backdrop backdrop-hidden')
+      setSidebarClasses(props.className ? props.className + ' sidebar sidebar-hidden' : 'sidebar sidebar-hidden');
+      setBackdropClasses('backdrop backdrop-hidden');
+
+      allowScroll();
     }
-  }, [props.isOpen])
+  }, [props.isOpen]);
 
   if (!props.isOpen) return;
 

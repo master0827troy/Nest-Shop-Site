@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import {doc, updateDoc} from 'firebase/firestore';
 import {getAuth} from 'firebase/auth';
 import {db} from '../firebase';
-import Badge from '../ui/Badge';
 import CustomerReviews from '../components/CustomerReviews';
 import ReviewForm from '../components/Forms/ReviewForm';
 import CustomerRatings from '../components/CustomerRatings';
@@ -21,26 +20,28 @@ import Heading from '../components/Heading';
 import ProductPrice from '../components/Products/Product/ProductDetails/ProductPrice';
 import RelatedProducts from '../components/Products/RelatedProducts';
 import ProductRating from '../components/Products/Product/ProductDetails/ProductRating';
+import Loading from '../ui/Loading';
+import {toast} from 'react-toastify';
+import ProductBadge from '../components/Products/Product/ProductDetails/ProductBadge';
 
 const Product = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const auth = getAuth();
   
   const isAuthenticated = useSelector(state => state.authentication.isAuthenticated);
   const userId = auth.currentUser?.uid;
   
   const {
-    data,
-    isLoading,
-    error
+    data: product,
+    isLoading: productLoading,
+    error: productError
   } = useGetFirestoreData('products', id)
 
   const {
     data: reviews,
     isLoading: reviewsLoading,
     error: reviewsError
-  } = useGetFirestoreData('reviews', null, {lhs: 'productId', op: '==', rhs: id});
+  } = useGetFirestoreData('reviews');
 
   const {
     data: userData,
@@ -55,38 +56,80 @@ const Product = () => {
   } = useGetFirestoreData('products', null, null, null, null, 4)
 
   const [productData, setProductData] = useState({});
+  const [productReviews, setProductReviews] = useState([]);
+  const [rProducts, setRProducts] = useState([]);
 
   useEffect(() => {
-    const addProductToRecentlyViewed = async () => {
-      let updatedRecentlyViewed = userData.recentlyViewed.includes(id) ?
-          [id, ...userData.recentlyViewed.filter(item => item !== id)]
-        :
-          [id, ...userData.recentlyViewed];
-      
-      if (updatedRecentlyViewed.length > 8) {
-        updatedRecentlyViewed = updatedRecentlyViewed.slice(0, 8);
+    if (userData?.recentlyViewed) {
+      const addProductToRecentlyViewed = async () => {
+        let updatedRecentlyViewed = userData.recentlyViewed.includes(id) ?
+            [id, ...userData.recentlyViewed.filter(item => item !== id)]
+          :
+            [id, ...userData.recentlyViewed];
+        
+        if (updatedRecentlyViewed.length > 8) {
+          updatedRecentlyViewed = updatedRecentlyViewed.slice(0, 8);
+        }
+  
+        await updateDoc(doc(db, 'users', userId), {
+          recentlyViewed: updatedRecentlyViewed
+        });
       }
 
-      await updateDoc(doc(db, 'users', userId), {
-        recentlyViewed: updatedRecentlyViewed
-      });
-    }
-    
-    if (data && userData) {
-      setProductData(data);
       addProductToRecentlyViewed();
     }
-  }, [data, id, userData, userId])
+  }, [id, userData?.recentlyViewed, userId])
   
-  if (isLoading || !reviews) return <h3>Loading...</h3>;
-  if (error) navigate('/');
+
+  useEffect(() => {
+    if (product && reviews) {
+      setProductData(product);
+
+      const productReviews = [];
+      for (const review of reviews) {
+        if (review.productId === id) {
+          productReviews.push(review);
+        }
+      }
+
+      setProductReviews(productReviews)
+    }
+
+    if (relatedProducts && reviews) {
+      const updatedProducts = relatedProducts.map(product => {
+        let productRating = 0;
+        let productReviews = 0;
+        for (const review of reviews) {
+          if (review.productId === product.id) {
+            productRating += review.rating;
+            productReviews += 1;
+          }
+        }
+
+        return {
+          ...product,
+          rating: productRating ? productRating / productReviews : 0,
+          reviews: productReviews
+        };
+      })
+
+      setRProducts(updatedProducts)
+    }
+
+    if (productError || reviewsError || userDataError || relatedProductsError && 
+      (!productLoading && !reviewsLoading && userDataLoading && relatedProductsLoading)) {
+      toast.error('An error occurred!');
+    }
+  }, [id, product, productError, productLoading, relatedProducts, relatedProductsError, relatedProductsLoading, reviews, reviewsError, reviewsLoading, userDataError, userDataLoading])
+  
+  if (productLoading || reviewsLoading || userDataLoading || relatedProductsLoading) return <Loading />;
 
   let productRating = 0;
-  const totalReviews = reviews.length;
-  const currentUserReview = reviews.find(review => review?.userId === userId);
+  const totalReviews = productReviews.length;
+  const currentUserReview = reviews?.find(review => review?.userId === userId && review?.productId === id);
 
   if (totalReviews) {
-    for (const review of reviews) {
+    for (const review of productReviews) {
       productRating = (productRating + review.rating);
     }
     productRating = (productRating / totalReviews);
@@ -94,7 +137,7 @@ const Product = () => {
   
   const ratings = [];
   for (let i = 5; i >= 1; i--) {
-    const ratingCount = reviews.reduce(function(acc, obj) {
+    const ratingCount = productReviews?.reduce(function(acc, obj) {
       return acc + (obj.rating === i ? 1 : 0);
     }, 0);
 
@@ -115,11 +158,11 @@ const Product = () => {
               }
             </div>
             <div className='max-w-2xl flex flex-col gap-4'>
-              <Badge type='best' />
+              <ProductBadge />
               <ProductTitle title={productData.title} />
               <div className='flex flex-row gap-2'>
                 <ProductRating max={5} rating={productRating} />
-                <ProductTotalReviews reviews={productData.reviews} />
+                <ProductTotalReviews reviews={totalReviews} />
               </div>
               <ProductPrice vertical price={productData.price} discount={productData.discount} />
               <ProductStock stock={productData.stock} />
@@ -135,7 +178,7 @@ const Product = () => {
             <div className='flex flex-col lg:flex-row items-center lg:items-start gap-12'>
               <CustomerRatings productRating={productRating} productReviews={totalReviews} ratings={ratings} />
               <div className='grow'>
-                <CustomerReviews customerReviews={reviews} />
+                <CustomerReviews customerReviews={productReviews} />
                 {
                   isAuthenticated && !currentUserReview &&
                   <>
@@ -147,7 +190,7 @@ const Product = () => {
             </div>
           </div>
         </div>
-        <RelatedProducts products={relatedProducts} />
+        <RelatedProducts products={rProducts} />
       </div>
     </div>
   )

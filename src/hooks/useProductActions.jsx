@@ -46,12 +46,12 @@ const useProductActions = () => {
 
   return {
     isInCart,
-    isInWishlist,
     addToCart,
     removeFromCart,
     increaseItem,
     decreaseItem,
     emptyCart,
+    isInWishlist,
     addToWishlist,
     removeFromWishlist
   }

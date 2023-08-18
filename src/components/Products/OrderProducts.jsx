@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import OrderProduct from './Product/OrderProduct';
 
 const OrderProducts = ({ products }) => {
+  console.log(products)
+
   return (
     <>
       {

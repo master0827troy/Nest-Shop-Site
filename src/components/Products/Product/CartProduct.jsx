@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import ProductImage from './ProductDetails/ProductImage';
-import Badge from '../../../ui/Badge';
+import ProductBadge from './ProductDetails/ProductBadge';
 import ProductTitle from './ProductDetails/ProductTitle';
 import ProductRating from './ProductDetails/ProductRating';
 import ProductStock from './ProductDetails/ProductStock';
@@ -12,17 +12,19 @@ import ProductDeleteIcon from './ProductIcons/ProductDeleteIcon';
 
 const CartProduct = ({ product }) => {
   return (
-    <div className='flex flex-row gap-5 justify-between mb-10'>
-      <div className='flex flex-row gap-5 justify-between'>
+    <div className='grid grid-flow-col grid-cols-6 gap-5 justify-between mb-10'>
+      <div className='grid col-span-2'>
         <ProductImage id={product.id} title={product.title} image={product.image} className='w-36 h-36' />
+      </div>
+      <div className='col-span-3'>
         <div className='flex flex-col'>
-          <Badge type='best' />
+          <ProductBadge />
           <ProductTitle id={product.id} title={product.title} />
           <ProductRating className='mb-2' max={5} rating={product.rating} />
           <ProductStock stock={product.stock} />
         </div>
       </div>
-      <div className='text-center'>
+      <div className='col-span-1 text-center'>
         <ProductPrice price={product.price} discount={product.discount} />
         <div className='mt-2 flex flex-row items-center justify-center gap-2 mb-3'>
           <ProductDecreaseIcon id={product.id} />

@@ -18,7 +18,7 @@ const ReviewForm = (props) => {
         timestamp: serverTimestamp()
       });
 
-      toast.success('Review updated successfully!')
+      toast.success('Updated review successfully!')
     } catch (error) {
       toast.error('An error occurred!')
     }
@@ -26,7 +26,6 @@ const ReviewForm = (props) => {
 
   const submitReviewHandler = async () => {
     try {
-      props.changeHandler(null);
       await addDoc(collection(db, 'reviews'), {
         productId: props.productId,
         userId: props.userId,
@@ -35,9 +34,9 @@ const ReviewForm = (props) => {
         timestamp: serverTimestamp()
       });
 
-      toast.success('Review updated successfully!')
+      toast.success('Added review successfully!')
     } catch (error) {
-      toast.error('An error occurred!')
+      console.log(error)
     }
   };
 

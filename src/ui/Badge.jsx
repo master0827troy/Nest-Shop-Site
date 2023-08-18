@@ -4,13 +4,15 @@ import './Badge.css';
 const Badge = (props) => {
   let badgeClasses = 'badge';
 
-  badgeClasses += props.type === 'best' ? ' best' : '';
+  console.log(props)
+
+  badgeClasses += props.type === 'top' ? ' top' : '';
   badgeClasses += props.type === 'new' ? ' new' : '';
 
   return (
     <div className={badgeClasses}>
       <FaStar className='badge-icon' />
-      <span className='badge-text'>best seller</span>
+      <span className='badge-text'>Top Rated</span>
     </div>
   )
 };

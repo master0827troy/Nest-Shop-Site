@@ -4,7 +4,7 @@ import Button from '../ui/Button';
 import ScrollableDiv from '../ui/ScrollableDiv';
 import {RiShoppingCart2Line} from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
-import CartProduct from './Products/Product/CartProduct';
+import CartProducts from './Products/CartProducts';
 
 const Cart = (props) => {
   const cartTotalQuantity = useSelector(state => state.cart.totalQuantity);
@@ -29,11 +29,7 @@ const Cart = (props) => {
         cartItems.length > 0 ?
           <>
             <ScrollableDiv className='max-h-96 mb-6'>
-            {
-              cartItems.map(cartItem =>
-                <CartProduct key={cartItem.id} product={cartItem} />
-              )
-            }
+              <CartProducts products={cartItems} />
             </ScrollableDiv>
             <div className="flex flex-row items-center justify-between gap-4">
               <span className='text-xl font-semibold tracking-wide'>Total: ${cartTotalPrice}</span>

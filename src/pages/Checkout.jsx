@@ -1,18 +1,19 @@
-import { FaMapMarkerAlt, FaPhoneAlt, FaAddressBook } from "react-icons/fa"; 
-import Button from '../ui/Button';
-import { useSelector } from 'react-redux';
-import {RiShoppingCart2Line} from 'react-icons/ri';
-import RadioInput from "../ui/RadioInput";
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import useProductActions from '../hooks/useProductActions';
-import CartProduct from "../components/Products/Product/CartProduct";
-import {useState, useEffect} from 'react';
-import {getAuth} from 'firebase/auth';
-import {toast} from 'react-toastify';
-import useGetFirestoreData from '../hooks/useGetFirestoreData';
-import Loading from '../ui/Loading';
-import {addDoc, Timestamp, doc, collection, serverTimestamp} from 'firebase/firestore';
+import { useSelector } from 'react-redux';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 import { db } from "../firebase";
+import { FaMapMarkerAlt, FaPhoneAlt, FaAddressBook } from "react-icons/fa"; 
+import { RiShoppingCart2Line } from 'react-icons/ri';
+import { toast } from 'react-toastify';
+import useGetFirestoreData from '../hooks/useGetFirestoreData';
+import useProductActions from '../hooks/useProductActions';
+import Button from '../ui/Button';
+import RadioInput from "../ui/RadioInput";
+import CartProduct from "../components/Products/Product/CartProduct";
+import Loading from '../ui/Loading';
+import CheckoutProducts from '../components/Products/CheckoutProducts';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -21,6 +22,8 @@ const Checkout = () => {
   const cartTotalQuantity = useSelector(state => state.cart.totalQuantity);
   const cartTotalPrice = useSelector(state => state.cart.totalPrice);
   const cartItems = useSelector(state => state.cart.items);
+
+  console.log(cartItems)
 
   const auth = getAuth();
   const userId = auth.currentUser.uid;
@@ -91,24 +94,14 @@ const Checkout = () => {
 
   return (
     <div className='mt-12'>
-      <div className='flex flex-row justify-between gap-20'>
+      <div className='grid grid-flow-col justify-between gap-20'>
         <div className='grow'>
           <div className='flex flex-row items-center gap-2 mb-6 text-3xl font-semibold tracking-wide'>
             <RiShoppingCart2Line className='text-4xl' />
             Shopping Cart
             <span className='text-xl'>({cartTotalQuantity})</span>
           </div>
-
-          <div className='grid grid-cols-2 gap-10'>
-            {
-              cartItems.length > 0 ?
-                cartItems.map(cartItem =>
-                  <CartProduct key={cartItem.id} product={cartItem} />
-                )
-              :
-                <p>Your shopping cart is empty! Start adding items.</p>
-            }
-          </div>
+          <CheckoutProducts products={cartItems} />
         </div>
         <div className='w-80'>
           <h2 className='section-heading !mb-4'>Order Details</h2>
@@ -121,10 +114,12 @@ const Checkout = () => {
                 <FaPhoneAlt />
               </RadioInput>
 
-              <div className='flex flex-row items-center gap-2 text-orange-600 cursor-pointer transition duration-500 hover:text-orange-700'>
-                <FaAddressBook />
-                <Link to='/profile/address-book' className='text-base font-semibold'>Edit your addresses</Link>
-              </div>
+              <Link to='/profile/address-book'>
+                <div className='flex flex-row items-center gap-2 text-orange-600 cursor-pointer transition duration-500 hover:text-orange-700'>
+                  <FaAddressBook />
+                  <span className='text-base font-semibold'>Edit your addresses</span>
+                </div>
+              </Link>
             </div>
             <p>Items: {cartTotalQuantity}</p>
             <p>Total: ${cartTotalPrice}</p>

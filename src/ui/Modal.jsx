@@ -1,20 +1,20 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { RiCloseLine } from 'react-icons/ri';
+import useScrollBlock from '../hooks/useScrollBlock';
 import Backdrop from './Backdrop';
 import './Modal.css';
-import useScrollBlock from '../hooks/useScrollBlock';
 
 const Modal = (props) => {
-  const [modalClasses, setModalClasses] = useState('modal modal-hidden')
-  const [backdropClasses, setBackdropClasses] = useState('backdrop backdrop-hidden')
+  const [modalClasses, setModalClasses] = useState(props.className ? props.className + ' modal modal-hidden' : ' modal modal-hidden');
+  const [backdropClasses, setBackdropClasses] = useState('backdrop backdrop-hidden');
 
   const [blockScroll, allowScroll] = useScrollBlock();
 
   const closeModal = () => {
-    setModalClasses('modal modal-hidden')
-    setBackdropClasses('backdrop backdrop-hidden')
+    setModalClasses(props.className ? props.className + ' modal modal-hidden' : 'modal modal-hidden');
+    setBackdropClasses('backdrop backdrop-hidden');
 
     allowScroll();
 
@@ -24,22 +24,22 @@ const Modal = (props) => {
     ! Make sure both have the same value
     ! And this will ensure that the Modal will get unmounted once the transition is done
     */
-    setTimeout(() => props.onClose(), 700)
+    setTimeout(() => props.onClose(), 700);
   };
 
   useEffect(() => {
     if (props.isOpen) {
-      setModalClasses('modal modal-visible')
-      setBackdropClasses('backdrop backdrop-visible')
+      setModalClasses(props.className ? props.className + ' modal modal-visible' : 'modal modal-visible')
+      setBackdropClasses('backdrop backdrop-visible');
 
       blockScroll();
     } else {
-      setModalClasses('modal modal-hidden')
-      setBackdropClasses('backdrop backdrop-hidden')
+      setModalClasses(props.className ? props.className + ' modal modal-hidden' : 'modal modal-hidden')
+      setBackdropClasses('backdrop backdrop-hidden');
 
       allowScroll();
     }
-  }, [props.isOpen])
+  }, [props.isOpen]);
 
   if (!props.isOpen) return;
 

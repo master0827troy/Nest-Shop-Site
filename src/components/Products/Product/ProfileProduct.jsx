@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import ProductImage from './ProductDetails/ProductImage';
-import Badge from '../../../ui/Badge';
+import ProductBadge from './ProductDetails/ProductBadge';
 import ProductTitle from './ProductDetails/ProductTitle';
 import ProductRating from './ProductDetails/ProductRating';
 import ProductStock from './ProductDetails/ProductStock';
@@ -14,7 +14,7 @@ const ProfileProduct = ({ product }) => {
       <ProductImage id={product.id} title={product.title} image={product.image} className='w-52 h-36' />
       <div className='w-full flex flex-row justify-between gap-10'>
         <div>
-          <Badge type='best' />
+          <ProductBadge />
           <ProductTitle id={product.id} title={product.title} />
           <ProductRating max={5} rating={product.rating} className='mb-2' />
           <ProductStock stock={product.stock} />

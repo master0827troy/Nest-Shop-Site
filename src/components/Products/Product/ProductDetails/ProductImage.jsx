@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const ProductImage = ({ id, title, image, className }) => {
-  const imageClasses = className ? 'object-fill border rounded-lg ' + className : 'object-fill border rounded-lg ';
+  const imageClasses = className ? 'object-contain  rounded-lg ' + className : 'object-contain  rounded-lg ';
 
   return (
     <>

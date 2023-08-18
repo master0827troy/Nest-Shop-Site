@@ -6,8 +6,8 @@ const ProductTitle = ({ id, title }) => {
     <>
       {
         id ?
-          <Link to={`/product/${id}`}>
-            <p className='mb-1 text-xl font-semibold tracking-wide'>{title}</p>
+          <Link to={`/product/${id}`} className='block w-fit mx-auto'>
+            <p className='max-w-xs w-fit mb-1 text-xl font-semibold tracking-wide'>{title.length > 30 ? title.substring(0, 62) + '...' : title}</p>
           </Link>
         :
           <p className='mb-1 text-xl font-semibold tracking-wide'>{title}</p>

@@ -56,6 +56,12 @@ const Category = () => {
     isLoading: categoryProductsLoading,
     error: categoryProductsError
   } = useGetFirestoreData('products' , null, {lhs: 'categoryId', op: '==', rhs: id});
+
+  const {
+    data: reviews,
+    isLoading: reviewsLoading,
+    error: reviewsError
+  } = useGetFirestoreData('reviews');
   
   const defaultPriceValues = [0, 1000]
   const [priceValues, setPriceValues] = useState([
@@ -112,8 +118,31 @@ const Category = () => {
   };
 
   useEffect(() => {
-    setProducts(categoryProducts)
-  }, [categoryProducts])  
+    if (categoryProducts && reviews) {
+      const updatedProducts = categoryProducts.map(product => {
+        let productRating = 0;
+        let productReviews = 0;
+        for (const review of reviews) {
+          if (review.productId === product.id) {
+            productRating += review.rating;
+            productReviews += 1;
+          }
+        }
+
+        return {
+          ...product,
+          rating: productRating ? productRating / productReviews : 0,
+          reviews: productReviews
+        };
+      })
+
+      setProducts(updatedProducts)
+    }
+
+    if (categoryProductsError || reviewsError && (!reviewsLoading && !categoryProductsLoading)) {
+      toast.error('An error occurred!');
+    }
+  }, [categoryProducts, categoryProductsError, categoryProductsLoading, reviews, reviewsError, reviewsLoading])
 
   useEffect(() => {
     if (categoryDataError || categoryProductsError) {

@@ -12,15 +12,17 @@ const CategoryProduct = ({ product }) => {
     <div className='relative max-w-full'>
         <div className="h-auto">
           <div className='mb-2 pb-3 relative overflow-hidden  rounded-lg text-center shadow-lg text-gray-900 group'>
-            <ProductImage id={product.id} title={product.title} image={product.image} className='w-full h-56 mb-2' />
+            <ProductImage id={product.id} title={product.title} image={product.image} className='w-full h-80 mb-2' />
             <div className='flex flex-row items-center justify-between mx-10 mb-2'>
               <ProductWishlistIcon id={product.id} />
               <ProductPrice price={product.price} discount={product.discount} />
               <ProductCartIcon product={product} />
             </div>
-            <ProductTitle id={product.id} title={product.title} />
-            <ProductRating max={5} rating={product.rating} className='w-fit mx-auto mb-2' />
-            <ProductTotalReviews reviews={product.reviews} />
+            <div className='px-4'>
+              <ProductTitle id={product.id} title={product.title} />
+              <ProductRating max={5} rating={product.rating} className='w-fit mx-auto mb-2' />
+              <ProductTotalReviews reviews={product.reviews} />
+            </div>
           </div>
         </div>
     </div>

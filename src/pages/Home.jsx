@@ -28,18 +28,41 @@ const Home = () =>{
     error: productsError
   } = useGetFirestoreData('products', null, null, null, null, 8);
 
+  const {
+    data: reviews,
+    isLoading: reviewsLoading,
+    error: reviewsError
+  } = useGetFirestoreData('reviews');
+
   const [allProducts, setAllProducts] = useState([])
 
   useEffect(() => {
-    if (products) {
-      setAllProducts(products)
+    if (products && reviews) {
+      const updatedProducts = products.map(product => {
+        let productRating = 0;
+        let productReviews = 0;
+        for (const review of reviews) {
+          if (review.productId === product.id) {
+            productRating += review.rating;
+            productReviews += 1;
+          }
+        }
+
+        return {
+          ...product,
+          rating: productRating ? productRating / productReviews : 0,
+          reviews: productReviews
+        };
+      })
+
+      setAllProducts(updatedProducts)
     }
 
-    if (productsError && !productsLoading) {
+    if (productsError || reviewsError && (!reviewsLoading && !productsLoading)) {
       toast.error('An error occurred!');
     }
-  }, [products, productsError, productsLoading])
-  
+  }, [products, productsError, productsLoading, reviews, reviewsError, reviewsLoading])
+
   return (
     <>
       <div className='my-12'>
@@ -78,7 +101,7 @@ const Home = () =>{
       <div className='mb-12'>
         <h2 className='section-heading'>Todays Best Deals For You!</h2>
         {
-          productsLoading ? <Loading /> : <CategoryProducts products={allProducts} />
+          (productsLoading || reviewsLoading) ? <Loading /> : <CategoryProducts products={allProducts} />
         }
       </div>
     </>
