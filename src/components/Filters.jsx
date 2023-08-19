@@ -93,9 +93,6 @@ const Filters = (props) => {
       <div className='flex flex-col lg:flex-row items-center gap-12'>
           <div className="flex flex-col md:flex-row gap-8">
             <div className="w-80">
-              {
-                console.log(props.priceValues)
-              }
               <ReactSlider
                 className="slider"
                 thumbClassName="slider-thumb"
@@ -105,14 +102,15 @@ const Filters = (props) => {
                 min={props.minPrice}
                 max={props.maxPrice}
                 step={1}
+                minDistance={Math.ceil((props.maxPrice - props.minPrice) / 10)}
                 onChange={(newValues) => props.setPriceValues(newValues)}
               />
             </div>
             <div className="flex flex-row justify-center gap-4">
-              <input type="number" className={inputNumberClasses} value={props.priceValues[0]} 
+              <input type="number" min={props.minPrice} className={inputNumberClasses} value={props.priceValues[0]} 
               onChange={(e) => props.setPriceValues(prevState => [+e.target.value, prevState[1]])} />
               <span className='text-lg select-none'>-</span>
-              <input type="number" className={inputNumberClasses} value={props.priceValues[1]} 
+              <input type="number" max={props.maxPrice} className={inputNumberClasses} value={props.priceValues[1]} 
               onChange={(e) => props.setPriceValues(prevState => [prevState[0], +e.target.value])} />
               <Button bg text='Apply' onClick={() => props.filterFunction()} className='rounded-sm py-1' />
             </div>

@@ -83,12 +83,18 @@ export const getCartItems = createAsyncThunk(
 export const removeAllItemsInCart = createAsyncThunk(
   'cart/removeAllItemsInCart',
   async () => {
-    const auth = getAuth();
-    const userId = auth.currentUser.uid;
+    try {
+      const auth = getAuth();
+      const userId = auth.currentUser.uid;
 
-    await updateDoc(doc(db, 'users', userId), {
-      cartItems: []
-    });
+      await updateDoc(doc(db, 'users', userId), {
+        cartItems: []
+      });
+
+      toast.info('Removed all products from your cart!')
+    } catch (error) {
+      toast.error('An error occurred!')
+    }
   }
 );
 

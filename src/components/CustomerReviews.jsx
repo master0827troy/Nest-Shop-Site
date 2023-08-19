@@ -6,7 +6,7 @@ const CustomerReviews = (props) => {
   const [modifiedData, paginationOptions] = usePagination(props.customerReviews || [], 3, null, null, null, null, '!justify-center lg:justify-start');
 
   return (
-    <div className={modifiedData.length > 0 && 'mb-12'}>
+    <div className={modifiedData.length > 0 ? 'mb-12' : ''}>
       {
         modifiedData.map(review => 
           <div key={review.id} className='mb-6'>

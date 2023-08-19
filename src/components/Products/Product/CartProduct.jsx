@@ -18,7 +18,7 @@ const CartProduct = ({ product }) => {
       </div>
       <div className='col-span-3'>
         <div className='flex flex-col'>
-          <ProductBadge />
+          <ProductBadge rating={product.rating} />
           <ProductTitle id={product.id} title={product.title} />
           <ProductRating className='mb-2' max={5} rating={product.rating} />
           <ProductStock stock={product.stock} />

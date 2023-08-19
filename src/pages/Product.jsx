@@ -55,7 +55,7 @@ const Product = () => {
     error: relatedProductsError
   } = useGetFirestoreData('products', null, null, null, null, 4)
 
-  const [productData, setProductData] = useState({});
+  const [productData, setProductData] = useState();
   const [productReviews, setProductReviews] = useState([]);
   const [rProducts, setRProducts] = useState([]);
 
@@ -122,12 +122,11 @@ const Product = () => {
     }
   }, [id, product, productError, productLoading, relatedProducts, relatedProductsError, relatedProductsLoading, reviews, reviewsError, reviewsLoading, userDataError, userDataLoading])
   
-  if (productLoading || reviewsLoading || userDataLoading || relatedProductsLoading) return <Loading />;
-
+  
   let productRating = 0;
   const totalReviews = productReviews.length;
   const currentUserReview = reviews?.find(review => review?.userId === userId && review?.productId === id);
-
+  
   if (totalReviews) {
     for (const review of productReviews) {
       productRating = (productRating + review.rating);
@@ -140,10 +139,12 @@ const Product = () => {
     const ratingCount = productReviews?.reduce(function(acc, obj) {
       return acc + (obj.rating === i ? 1 : 0);
     }, 0);
-
+    
     ratings.push({ value: i, rating: ratingCount });
   }
-
+  
+  if (!productData || productLoading || reviewsLoading || userDataLoading || relatedProductsLoading) return <Loading />;
+  console.log(!!productData)
   return (
     <div className='my-12'>
       <div className="flex flex-col xl:flex-row justify-between gap-12 lg:gap-14">
@@ -158,7 +159,7 @@ const Product = () => {
               }
             </div>
             <div className='max-w-2xl flex flex-col gap-4'>
-              <ProductBadge />
+              <ProductBadge rating={productRating} />
               <ProductTitle title={productData.title} />
               <div className='flex flex-row gap-2'>
                 <ProductRating max={5} rating={productRating} />

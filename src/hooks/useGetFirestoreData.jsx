@@ -92,7 +92,6 @@ const useGetFirestoreData = (
     } catch (error) {
       setError(error);
       setIsLoading(false);
-
     }
   }, [c, documentId, whereStatementProperty, whereStatementOperator, whereStatementValue, orderBy_, orderType, limit_]);
 

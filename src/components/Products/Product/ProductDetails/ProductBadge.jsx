@@ -1,9 +1,19 @@
+import PropTypes from 'prop-types';
 import Badge from "../../../../ui/Badge";
 
-const ProductBadge = () => {
+const ProductBadge = ({ rating }) => {
   return (
-    <Badge type='top' />
+    <>
+      {
+        rating >= 3.5 &&
+        <Badge type='top' />
+      }
+    </>
   );
+};
+
+ProductBadge.propTypes = {
+  rating: PropTypes.number.isRequired,
 };
 
 export default ProductBadge;

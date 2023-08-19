@@ -14,7 +14,7 @@ const ProfileProduct = ({ product }) => {
       <ProductImage id={product.id} title={product.title} image={product.image} className='w-52 h-36' />
       <div className='w-full flex flex-row justify-between gap-10'>
         <div>
-          <ProductBadge />
+          <ProductBadge rating={product.rating} />
           <ProductTitle id={product.id} title={product.title} />
           <ProductRating max={5} rating={product.rating} className='mb-2' />
           <ProductStock stock={product.stock} />

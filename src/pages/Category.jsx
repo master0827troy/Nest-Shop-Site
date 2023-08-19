@@ -139,29 +139,6 @@ const Category = () => {
       })
 
       setProducts(updatedProducts);
-
-      let newMin = categoryProducts?.reduce((min, product) => {
-        return product.price < min ? product.price : min;
-      }, Infinity) || 0;
-
-      newMin = newMin === Infinity ? 0 : newMin;
-      setMinPrice(newMin)
-      
-      const newMax = categoryProducts?.reduce((max, product) => {
-        return product.price > max ? product.price : max;
-      }, 0) || 0;
-      setMaxPrice(newMax)
-
-      setPriceValues([newMin, newMax])
-      setDefaultValues([newMin, newMax])
-
-      const searchParams = new URLSearchParams(window.location.search);
-      searchParams.set('minPrice', newMin);
-      searchParams.set('maxPrice', newMax);
-      console.log(newMin)
-      const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
-    navigate(newUrl, { replace: true });
-
     }
 
     if (categoryProductsError || reviewsError && (!reviewsLoading && !categoryProductsLoading)) {
@@ -169,8 +146,33 @@ const Category = () => {
     }
   }, [categoryProducts, categoryProductsError, categoryProductsLoading, reviews, reviewsError, reviewsLoading])
 
-  console.log(defaultPriceValues)
-  if (categoryDataLoading || categoryProductsLoading || reviewsLoading || !Number.isInteger(defaultPriceValues[0]) || !Number.isInteger(defaultPriceValues[1])) return <Loading />;
+  useEffect(() => {
+    let newMin = categoryProducts?.reduce((min, product) => {
+      return product.price < min ? product.price : min;
+    }, Infinity) || 0;
+
+    newMin = newMin === Infinity ? 0 : newMin;
+    setMinPrice(newMin)
+    
+    const newMax = categoryProducts?.reduce((max, product) => {
+      return product.price > max ? product.price : max;
+    }, 0) || 0;
+    setMaxPrice(newMax)
+
+    setPriceValues([newMin, newMax])
+    setDefaultValues([newMin, newMax])
+
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set('minPrice', newMin);
+    searchParams.set('maxPrice', newMax);
+    const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+    navigate(newUrl, { replace: true });
+  }, [categoryProducts, id, navigate])
+
+  if (categoryDataLoading || categoryProductsLoading || reviewsLoading ||
+    (categoryProducts?.length > 0 && defaultPriceValues[1] === 0) ||
+    !Number.isInteger(defaultPriceValues[0]) || !Number.isInteger(defaultPriceValues[1])
+  ) return <Loading />;
 
   return (
     <div className='my-12'>
