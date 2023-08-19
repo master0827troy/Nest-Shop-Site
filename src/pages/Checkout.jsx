@@ -11,7 +11,6 @@ import useGetFirestoreData from '../hooks/useGetFirestoreData';
 import useProductActions from '../hooks/useProductActions';
 import Button from '../ui/Button';
 import RadioInput from "../ui/RadioInput";
-import CartProduct from "../components/Products/Product/CartProduct";
 import Loading from '../ui/Loading';
 import CheckoutProducts from '../components/Products/CheckoutProducts';
 
@@ -22,8 +21,6 @@ const Checkout = () => {
   const cartTotalQuantity = useSelector(state => state.cart.totalQuantity);
   const cartTotalPrice = useSelector(state => state.cart.totalPrice);
   const cartItems = useSelector(state => state.cart.items);
-
-  console.log(cartItems)
 
   const auth = getAuth();
   const userId = auth.currentUser.uid;

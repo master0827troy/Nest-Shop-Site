@@ -3,9 +3,6 @@ import CategoryProduct from './Product/CategoryProduct';
 import Heading from '../Heading';
 
 const RelatedProducts = ({ products }) => {
-  console.log(products)
-
-  console.log(products)
   return (
     <div className='flex flex-col'>
       <Heading heading='Similar Products' className='mb-8' />

@@ -19,10 +19,16 @@ export const getCartItems = createAsyncThunk(
 
       const userData = await getDoc(doc(db, 'users', userId));
       const productsData = await getDocs(collection(db, 'products'));
+      const reviews = await getDocs(collection(db, 'reviews'));
 
       const allProducts = [];
       productsData.forEach((doc) => {
         allProducts.push({ ...doc.data(), id: doc.id });
+      });
+
+      const allReviews = [];
+      reviews.forEach((doc) => {
+        allReviews.push({ ...doc.data() });
       });
 
       if (userData.exists()) {
@@ -32,12 +38,22 @@ export const getCartItems = createAsyncThunk(
         if (cartItems) {
           products.push(...cartItems.map(item => {
             const matchingProduct = allProducts.find(product => product.id === item.id);
+
+            let productRating = 0;
+            let productTotalReviews = 0;
+            for (const review of allReviews) {
+              if (review.productId === item.id) {
+                productRating += review.rating;
+                productTotalReviews += 1;
+              }
+            }
+
             return {
               id: matchingProduct.id,
               title: matchingProduct.title,
               image: matchingProduct.image,
               price: matchingProduct.price,
-              rating: matchingProduct.rating,
+              rating: productRating ? productRating / productTotalReviews : 0,
               stock: matchingProduct.stock,
               quantity: item.quantity < matchingProduct.stock ? item.quantity : matchingProduct.stock,
             };
@@ -59,7 +75,7 @@ export const getCartItems = createAsyncThunk(
         };
       }
     } catch (error) {
-      console.log(error)
+      toast.error('An error occurred!')
     }
   }
 );

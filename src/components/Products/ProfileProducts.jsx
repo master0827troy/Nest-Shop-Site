@@ -3,9 +3,6 @@ import ProfileProduct from './Product/ProfileProduct';
 import Pagination from '../../ui/Pagination';
 
 const ProfileProducts = ({ products, paginationOptions }) => {
-  console.log(products)
-
-  console.log(products)
   return (
     <>
       <div className='grid lg:grid-cols-2 gap-y-8 gap-x-10'>

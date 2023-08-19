@@ -62,11 +62,13 @@ const Category = () => {
     isLoading: reviewsLoading,
     error: reviewsError
   } = useGetFirestoreData('reviews');
-  
-  const defaultPriceValues = [0, 1000]
+
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
+  const [defaultPriceValues, setDefaultValues] = useState([]);
   const [priceValues, setPriceValues] = useState([
-    searchParams.get('minPrice') ? parseInt(searchParams.get('minPrice')) : defaultPriceValues[0],
-    searchParams.get('maxPrice') ? parseInt(searchParams.get('maxPrice')) : defaultPriceValues[1]
+    searchParams.get('minPrice') ? parseInt(searchParams.get('minPrice')) : minPrice,
+    searchParams.get('maxPrice') ? parseInt(searchParams.get('maxPrice')) : maxPrice
   ]);
 
   const defaultStockValue = 0;
@@ -106,7 +108,7 @@ const Category = () => {
   const [modifiedData, paginationOptions] = usePagination(dataAfterSort, elementsPerPage);
   
   const resetFunction = () => {
-    setPriceValues(defaultPriceValues);
+    setPriceValues([minPrice, maxPrice]);
     setStockValue(defaultStockValue);
     resetFilters();
   };
@@ -136,7 +138,30 @@ const Category = () => {
         };
       })
 
-      setProducts(updatedProducts)
+      setProducts(updatedProducts);
+
+      let newMin = categoryProducts?.reduce((min, product) => {
+        return product.price < min ? product.price : min;
+      }, Infinity) || 0;
+
+      newMin = newMin === Infinity ? 0 : newMin;
+      setMinPrice(newMin)
+      
+      const newMax = categoryProducts?.reduce((max, product) => {
+        return product.price > max ? product.price : max;
+      }, 0) || 0;
+      setMaxPrice(newMax)
+
+      setPriceValues([newMin, newMax])
+      setDefaultValues([newMin, newMax])
+
+      const searchParams = new URLSearchParams(window.location.search);
+      searchParams.set('minPrice', newMin);
+      searchParams.set('maxPrice', newMax);
+      console.log(newMin)
+      const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+    navigate(newUrl, { replace: true });
+
     }
 
     if (categoryProductsError || reviewsError && (!reviewsLoading && !categoryProductsLoading)) {
@@ -144,20 +169,16 @@ const Category = () => {
     }
   }, [categoryProducts, categoryProductsError, categoryProductsLoading, reviews, reviewsError, reviewsLoading])
 
-  useEffect(() => {
-    if (categoryDataError || categoryProductsError) {
-      toast.error('An error occurred!');
-    }
-  }, [categoryDataError, categoryProductsError, navigate])
-
-  if (categoryDataLoading) return <Loading />;
+  console.log(defaultPriceValues)
+  if (categoryDataLoading || categoryProductsLoading || reviewsLoading || !Number.isInteger(defaultPriceValues[0]) || !Number.isInteger(defaultPriceValues[1])) return <Loading />;
 
   return (
     <div className='my-12'>
       <Promotions promotions={promotionsList} />
       <h2 className='section-heading'>{categoryData?.title}</h2>
       <Filters
-        priceValues={priceValues} setPriceValues={setPriceValues} stockValue={stockValue} setStockValue={setStockValue}
+        minPrice={minPrice} maxPrice={maxPrice} priceValues={priceValues} setPriceValues={setPriceValues}
+        stockValue={stockValue} setStockValue={setStockValue}
         filterFunction={applyFilters} resetFunction={resetFunction}
         searchInputValue={inputValue} onSearch={searchHandler}
         sortBy={sortBy} sortOrder={sortOrder} setSortBy={setSortBy} setSortOrder={setSortOrder}

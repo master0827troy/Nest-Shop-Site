@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import CartProduct from './Product/CartProduct';
 
-const CartProducts = ({ products }) => {
-  console.log(products)
-  
+const CartProducts = ({ products }) => {  
   return (
     <>
       {

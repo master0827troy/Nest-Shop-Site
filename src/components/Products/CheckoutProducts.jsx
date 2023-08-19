@@ -2,8 +2,6 @@ import PropTypes from 'prop-types';
 import CartProduct from './Product/CartProduct';
 
 const CheckoutProducts = ({ products }) => {
-  console.log(products)
-
   return (
     <div className='grid grid-cols-2 gap-y-5 gap-x-10'>
       {
