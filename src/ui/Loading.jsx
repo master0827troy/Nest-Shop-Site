@@ -1,9 +1,9 @@
 const Loading = () => {
   return (
-    <div>
+    <div className='w-full'>
       <svg
         aria-hidden="true"
-        className="w-10 h-10 mr-2 text-gray-200 animate-spin fill-yellow-600"
+        className="w-10 h-10 mt-10 mx-auto text-gray-200 animate-spin fill-orange-600"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
