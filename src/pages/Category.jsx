@@ -165,7 +165,6 @@ const Category = () => {
       setMinPrice(newMin)
       setMaxPrice(newMax)
       setPriceValues([newMin, newMax])
-      setStockValue('all')
     }
   }, [categoryProducts, dataAfterSearch, location.search, navigate])
   
