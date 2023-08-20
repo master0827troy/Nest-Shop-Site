@@ -146,7 +146,6 @@ const Category = () => {
       const searchParams = new URLSearchParams(location.search);
 
       const data = categoryProducts && searchParams.get('search') ? dataAfterSearch : categoryProducts;
-      console.log(data)
       let newMin = data?.reduce((min, product) => {
         return product.price < min ? product.price : min;
       }, Infinity) || 0;
@@ -159,12 +158,14 @@ const Category = () => {
   
       searchParams.set('minPrice', newMin);
       searchParams.set('maxPrice', newMax);
+      searchParams.set('stock', 'all');
       const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
       navigate(newUrl, { replace: true });
   
       setMinPrice(newMin)
       setMaxPrice(newMax)
       setPriceValues([newMin, newMax])
+      setStockValue('all')
     }
   }, [categoryProducts, dataAfterSearch, location.search, navigate])
   
