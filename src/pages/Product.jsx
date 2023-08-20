@@ -64,7 +64,7 @@ const Product = () => {
   useEffect(() => {
     if (usersData) {
       for (const userData of usersData) {
-        if (userData.id === id) {
+        if (userData.id === userId) {
           const addProductToRecentlyViewed = async () => {
             let updatedRecentlyViewed = userData.recentlyViewed.includes(id) ?
                 [id, ...userData.recentlyViewed.filter(item => item !== id)]
@@ -75,6 +75,8 @@ const Product = () => {
               updatedRecentlyViewed = updatedRecentlyViewed.slice(0, 8);
             }
       
+            console.log(updatedRecentlyViewed)
+
             await updateDoc(doc(db, 'users', userId), {
               recentlyViewed: updatedRecentlyViewed
             });

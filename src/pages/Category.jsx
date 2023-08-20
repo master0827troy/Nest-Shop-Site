@@ -65,10 +65,16 @@ const Category = () => {
 
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
-  const [priceValues, setPriceValues] = useState([minPrice, maxPrice]);
+  const [priceValues, setPriceValues] = useState([
+    searchParams.get('minPrice') ? parseInt(searchParams.get('minPrice')) : minPrice,
+    searchParams.get('maxPrice') ? parseInt(searchParams.get('maxPrice')) : maxPrice
+  ]);
+  const priceDistance = Math.ceil((maxPrice - minPrice) / 10);
 
   const defaultStockValue = 0;
-  const [stockValue, setStockValue] = useState(defaultStockValue);
+  const [stockValue, setStockValue] = useState(
+    searchParams.get('stock') && searchParams.get('stock') === 'available' ? 1 : defaultStockValue
+  );
 
   const filterFunctions = [
     {
@@ -82,7 +88,7 @@ const Category = () => {
       filterFunction: (item) => item.price <= priceValues[1],
       resetFunction: (item) => item.price <= maxPrice,
       urlSearchParam: 'maxPrice',
-      urlSearchDefaultValue: minPrice,
+      urlSearchDefaultValue: maxPrice,
       urlSearchValue: priceValues[1]
     },
     {
@@ -112,20 +118,6 @@ const Category = () => {
   const searchHandler = (e) => {
     searchFunction(e.target.value);
   };
-
-  useEffect(() => {
-    if (categoryDataLoading) {
-      setProducts([]);
-      setStockValue(searchParams.get('stock') && searchParams.get('stock') === 'available' ? 1 : defaultStockValue)
-      setPriceValues([
-        searchParams.get('minPrice') ? parseInt(searchParams.get('minPrice')) : 0,
-        searchParams.get('maxPrice') ? parseInt(searchParams.get('maxPrice')) : 0
-      ]);
-      setMinPrice(null)
-      setMaxPrice(null)
-      navigate(location.pathname);
-    }
-  }, [categoryDataLoading])
 
   useEffect(() => {
     if (categoryProducts && reviews) {
@@ -194,7 +186,7 @@ const Category = () => {
         (priceValues && categoryProducts && products) &&
         <Filters
           categoryId={id}
-          minPrice={minPrice} maxPrice={maxPrice} priceValues={priceValues} setPriceValues={setPriceValues}
+          minPrice={minPrice} maxPrice={maxPrice} priceDistance={priceDistance} priceValues={priceValues} setPriceValues={setPriceValues}
           stockValue={stockValue} setStockValue={setStockValue}
           filterFunction={applyFilters} resetFunction={resetFunction}
           searchInputValue={inputValue} onSearch={searchHandler}

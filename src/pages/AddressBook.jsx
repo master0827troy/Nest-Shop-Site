@@ -80,17 +80,20 @@ const AddressBook = () => {
         </div>
         <div className='mb-8 flex flex-col gap-4'>
           {
-            addresses.map((address) => 
-              editingAddress !== addresses.indexOf(address) ?
-                <div key={addresses.indexOf(address)} className='flex flex-row items-center gap-2'>
-                  <FaMapMarkerAlt className='text-lg text-orange-600' />
-                  <p className='font-semibold mr-4'>{address.apartment} {address.street}, {address.city}, {address.country}, {address.postalNumber}</p>
-                  <FaPen className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => setEditingAddress(addresses.indexOf(address))} />
-                  <FiTrash2 className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => deleteAddress(address)} />
-                </div>
-              :
-                <AddressForm key={addresses.indexOf(address)} show={editingAddress !== null} changeHandler={setEditingAddress} callbackFunction={reFetchUserData} userId={auth.currentUser.uid} addresses={addresses} address={address} />
-            )
+            addresses.length !== 0 ?
+              addresses.map((address) => 
+                editingAddress !== addresses.indexOf(address) ?
+                  <div key={addresses.indexOf(address)} className='flex flex-row items-center gap-2'>
+                    <FaMapMarkerAlt className='text-lg text-orange-600' />
+                    <p className='font-semibold mr-4'>{address.apartment} {address.street}, {address.city}, {address.country}, {address.postalNumber}</p>
+                    <FaPen className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => setEditingAddress(addresses.indexOf(address))} />
+                    <FiTrash2 className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => deleteAddress(address)} />
+                  </div>
+                :
+                  <AddressForm key={addresses.indexOf(address)} show={editingAddress !== null} changeHandler={setEditingAddress} callbackFunction={reFetchUserData} userId={auth.currentUser.uid} addresses={addresses} address={address} />
+              )
+            :
+              <p>You don't have any address yet!</p>
           }
         </div>
         
@@ -108,17 +111,20 @@ const AddressBook = () => {
         </div>
         <div className='mb-8 flex flex-col gap-4'>
           {
-            phoneNumbers.map((phoneNumber) => 
-              editingPhone !== phoneNumbers.indexOf(phoneNumber) ?
-                <div key={phoneNumbers.indexOf(phoneNumber)} className='flex flex-row items-center gap-2'>
-                  <FaPhoneAlt className='text-lg text-orange-600' />
-                  <p className='font-semibold mr-4'>{phoneNumber}</p>
-                  <FaPen className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => setEditingPhone(phoneNumbers.indexOf(phoneNumber))} />
-                  <FiTrash2 className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => deletePhone(phoneNumber)} />
-                </div>
-              :
-                <PhoneForm key={phoneNumbers.indexOf(phoneNumber)} show={editingPhone !== null} changeHandler={setEditingPhone} callbackFunction={reFetchUserData} userId={auth.currentUser.uid} phoneNumbers={phoneNumbers} phoneNumber={phoneNumber} />
-            )
+            phoneNumbers.length !== 0 ?
+              phoneNumbers.map((phoneNumber) => 
+                editingPhone !== phoneNumbers.indexOf(phoneNumber) ?
+                  <div key={phoneNumbers.indexOf(phoneNumber)} className='flex flex-row items-center gap-2'>
+                    <FaPhoneAlt className='text-lg text-orange-600' />
+                    <p className='font-semibold mr-4'>{phoneNumber}</p>
+                    <FaPen className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => setEditingPhone(phoneNumbers.indexOf(phoneNumber))} />
+                    <FiTrash2 className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => deletePhone(phoneNumber)} />
+                  </div>
+                :
+                  <PhoneForm key={phoneNumbers.indexOf(phoneNumber)} show={editingPhone !== null} changeHandler={setEditingPhone} callbackFunction={reFetchUserData} userId={auth.currentUser.uid} phoneNumbers={phoneNumbers} phoneNumber={phoneNumber} />
+              )
+            :
+              <p>You don't have any phone numbers yet!</p>
           }
         </div>
         {

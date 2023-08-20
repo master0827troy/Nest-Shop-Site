@@ -53,7 +53,7 @@ const Orders = () => {
   return (
     <>
       {
-        userOrders.length > 0 ?
+        userOrders?.length > 0 ?
           userOrders?.map(order =>
             <div key={order.id} className='mb-10 p-5 bg-gray-100 shadow-lg'>
               <div className='mb-3 flex flex-row justify-between'>
