@@ -137,29 +137,37 @@ const Category = () => {
           reviews: productReviews
         };
       })
+      setProducts(updatedProducts);
+    }
+  }, [categoryProducts, reviews])
 
-      let newMin = updatedProducts.reduce((min, product) => {
+  useEffect(() => {
+    if (categoryProducts) {
+      const searchParams = new URLSearchParams(location.search);
+
+      const data = categoryProducts && searchParams.get('search') ? dataAfterSearch : categoryProducts;
+      console.log(data)
+      let newMin = data?.reduce((min, product) => {
         return product.price < min ? product.price : min;
       }, Infinity) || 0;
   
       newMin = newMin === Infinity ? 0 : newMin;
       
-      const newMax = updatedProducts.reduce((max, product) => {
+      const newMax = data?.reduce((max, product) => {
         return product.price > max ? product.price : max;
       }, 0) || 0;
-
-      const searchParams = new URLSearchParams(window.location.search);
+  
       searchParams.set('minPrice', newMin);
       searchParams.set('maxPrice', newMax);
       const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
       navigate(newUrl, { replace: true });
-
+  
       setMinPrice(newMin)
       setMaxPrice(newMax)
       setPriceValues([newMin, newMax])
-      setProducts(updatedProducts);
     }
-  }, [categoryProducts, reviews, navigate])
+  }, [categoryProducts, dataAfterSearch, location.search, navigate])
+  
 
   useEffect(() => {
     if (categoryProductsError || reviewsError && (!categoryDataLoading && !reviewsLoading && !categoryProductsLoading)) {
