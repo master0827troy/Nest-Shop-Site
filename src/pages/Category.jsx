@@ -65,30 +65,24 @@ const Category = () => {
 
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
-  const [defaultPriceValues, setDefaultValues] = useState([]);
-  const [priceValues, setPriceValues] = useState([
-    searchParams.get('minPrice') ? parseInt(searchParams.get('minPrice')) : minPrice,
-    searchParams.get('maxPrice') ? parseInt(searchParams.get('maxPrice')) : maxPrice
-  ]);
+  const [priceValues, setPriceValues] = useState([minPrice, maxPrice]);
 
   const defaultStockValue = 0;
-  const [stockValue, setStockValue] = useState(
-    searchParams.get('stock') && searchParams.get('stock') === 'available' ? 1 : defaultStockValue
-  );
+  const [stockValue, setStockValue] = useState(defaultStockValue);
 
   const filterFunctions = [
     {
       filterFunction: (item) => item.price >= priceValues[0],
-      resetFunction: (item) => item.price >= defaultPriceValues[0],
+      resetFunction: (item) => item.price >= minPrice,
       urlSearchParam: 'minPrice',
-      urlSearchDefaultValue: defaultPriceValues[0],
+      urlSearchDefaultValue: minPrice,
       urlSearchValue: priceValues[0]
     },
     {
       filterFunction: (item) => item.price <= priceValues[1],
-      resetFunction: (item) => item.price <= defaultPriceValues[1],
+      resetFunction: (item) => item.price <= maxPrice,
       urlSearchParam: 'maxPrice',
-      urlSearchDefaultValue: defaultPriceValues[1],
+      urlSearchDefaultValue: minPrice,
       urlSearchValue: priceValues[1]
     },
     {
@@ -120,6 +114,20 @@ const Category = () => {
   };
 
   useEffect(() => {
+    if (categoryDataLoading) {
+      setProducts([]);
+      setStockValue(searchParams.get('stock') && searchParams.get('stock') === 'available' ? 1 : defaultStockValue)
+      setPriceValues([
+        searchParams.get('minPrice') ? parseInt(searchParams.get('minPrice')) : 0,
+        searchParams.get('maxPrice') ? parseInt(searchParams.get('maxPrice')) : 0
+      ]);
+      setMinPrice(null)
+      setMaxPrice(null)
+      navigate(location.pathname);
+    }
+  }, [categoryDataLoading])
+
+  useEffect(() => {
     if (categoryProducts && reviews) {
       const updatedProducts = categoryProducts.map(product => {
         let productRating = 0;
@@ -138,32 +146,28 @@ const Category = () => {
         };
       })
 
-      setProducts(updatedProducts);
-    }
-  }, [id, categoryProducts, reviews])
-
-  useEffect(() => {
-      let newMin = categoryProducts?.reduce((min, product) => {
+      let newMin = updatedProducts.reduce((min, product) => {
         return product.price < min ? product.price : min;
       }, Infinity) || 0;
   
       newMin = newMin === Infinity ? 0 : newMin;
-      setMinPrice(newMin)
       
-      const newMax = categoryProducts?.reduce((max, product) => {
+      const newMax = updatedProducts.reduce((max, product) => {
         return product.price > max ? product.price : max;
       }, 0) || 0;
-      setMaxPrice(newMax)
-  
-      setPriceValues([newMin, newMax])
-      setDefaultValues([newMin, newMax])
-  
+
       const searchParams = new URLSearchParams(window.location.search);
       searchParams.set('minPrice', newMin);
       searchParams.set('maxPrice', newMax);
       const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
       navigate(newUrl, { replace: true });
-  }, [categoryProducts, id, navigate])
+
+      setMinPrice(newMin)
+      setMaxPrice(newMax)
+      setPriceValues([newMin, newMax])
+      setProducts(updatedProducts);
+    }
+  }, [categoryProducts, reviews, navigate])
 
   useEffect(() => {
     if (categoryProductsError || reviewsError && (!categoryDataLoading && !reviewsLoading && !categoryProductsLoading)) {
@@ -178,25 +182,27 @@ const Category = () => {
     }
   }, [categoryDataError, categoryDataLoading, id, navigate])
   
-
   if (categoryDataLoading || categoryProductsLoading || reviewsLoading ||
-    (categoryProducts?.length > 0 && priceValues[1] === 0) ||
-    !Number.isInteger(priceValues[0]) || !Number.isInteger(priceValues[1])
+    !Number.isInteger(minPrice) || !Number.isInteger(maxPrice)
   ) return <Loading />;
 
   return (
     <div className='my-12'>
       <Promotions promotions={promotionsList} />
       <h2 className='section-heading'>{ id !== 'all' ? categoryData?.title : 'All Products' }</h2>
-      <Filters
-        minPrice={minPrice} maxPrice={maxPrice} priceValues={priceValues} setPriceValues={setPriceValues}
-        stockValue={stockValue} setStockValue={setStockValue}
-        filterFunction={applyFilters} resetFunction={resetFunction}
-        searchInputValue={inputValue} onSearch={searchHandler}
-        sortBy={sortBy} sortOrder={sortOrder} setSortBy={setSortBy} setSortOrder={setSortOrder}
-        elementsPerPage={elementsPerPage} setElementsPerPage={setElementsPerPage}
-        activeLayout={activeLayout} setActiveLayout={setActiveLayout}
-      />
+      {
+        (priceValues && categoryProducts && products) &&
+        <Filters
+          categoryId={id}
+          minPrice={minPrice} maxPrice={maxPrice} priceValues={priceValues} setPriceValues={setPriceValues}
+          stockValue={stockValue} setStockValue={setStockValue}
+          filterFunction={applyFilters} resetFunction={resetFunction}
+          searchInputValue={inputValue} onSearch={searchHandler}
+          sortBy={sortBy} sortOrder={sortOrder} setSortBy={setSortBy} setSortOrder={setSortOrder}
+          elementsPerPage={elementsPerPage} setElementsPerPage={setElementsPerPage}
+          activeLayout={activeLayout} setActiveLayout={setActiveLayout}
+        />
+      }
       { categoryProductsLoading && <Loading /> }
       { !categoryProductsLoading && modifiedData.length === 0 && <p>Found no products</p> }
       { 

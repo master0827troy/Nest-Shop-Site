@@ -57,12 +57,14 @@ const Checkout = () => {
       }
       setPhoneNumbersList(phoneList);
     }
+  }, [userData])
 
-
+  useEffect(() => {
     if (userDataError && !userDataLoading) {
       toast.error('An error occurred!');
     }
-  }, [userData, userDataError, userDataLoading])
+  }, [userDataError, userDataLoading])
+  
   
   if (userDataLoading) {
     return <Loading />;
@@ -83,9 +85,10 @@ const Checkout = () => {
       });
 
       emptyCart();
-      navigate('/profile/orders')
-    } catch (err) {
-      console.log(err.message);
+      navigate('/profile/orders');
+      toast.success('Confirmed your order successfully!');
+    } catch (error) {
+      toast.error('An error occurred!');
     }
   };
 
