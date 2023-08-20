@@ -55,7 +55,7 @@ const Category = () => {
     data: categoryProducts,
     isLoading: categoryProductsLoading,
     error: categoryProductsError
-  } = useGetFirestoreData('products' , null, {lhs: 'categoryId', op: '==', rhs: id});
+  } = useGetFirestoreData('products' , null, id !== 'all' ? {lhs: 'categoryId', op: '==', rhs: id} : null);
 
   console.log(categoryProducts)
   const {
@@ -182,7 +182,7 @@ const Category = () => {
   return (
     <div className='my-12'>
       <Promotions promotions={promotionsList} />
-      <h2 className='section-heading'>{categoryData?.title}</h2>
+      <h2 className='section-heading'>{ id !== 'all' ? categoryData?.title : 'All Products' }</h2>
       <Filters
         minPrice={minPrice} maxPrice={maxPrice} priceValues={priceValues} setPriceValues={setPriceValues}
         stockValue={stockValue} setStockValue={setStockValue}

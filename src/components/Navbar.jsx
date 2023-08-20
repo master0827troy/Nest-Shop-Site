@@ -83,6 +83,11 @@ const Navbar = () => {
       </Modal>
       <Sidebar isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <ul>
+          <Link to={`/category/all`} onClick={() => setIsOpen(false)} className='block pb-4 last:pb-0'>
+            <li className='text-lg text-slate-900'>
+              All
+            </li>  
+          </Link>
           {categories?.map(category =>
             <Link key={category.id} to={`/category/${category.id}`} onClick={() => setIsOpen(false)} className='block pb-4 last:pb-0'>
               <li className='text-lg text-slate-900'>
