@@ -19,9 +19,9 @@ const Reviews = () => {
   const {
     data: reviews,
     isLoading: reviewsLoading,
-    error: reviewsError
+    error: reviewsError,
+    reFetchData: reFetchReviews
   } = useGetFirestoreData('reviews', null, {lhs: 'userId', op: '==', rhs: auth.currentUser.uid});
-  console.log(reviews)
 
   const {
     data: products,
@@ -60,6 +60,7 @@ const Reviews = () => {
       const ref = doc(db, 'reviews', review.reviewId);
       await deleteDoc(ref);
 
+      reFetchReviews();
       toast.success('Review deleted successfully!')
     } catch (error) {
       toast.error('An error occurred!')
@@ -74,31 +75,34 @@ const Reviews = () => {
           <div className='w-1/2 border border-orange-600'></div>
         </div>
           {
-            userReviews.map(review => 
-              editingReview !== userReviews.indexOf(review) ?
-                <div key={review.productId} className='mb-6'>
-                  <div className='flex flex-row gap-6'>
-                    <Link to={`/product/${review.productId}`}>
-                      <img src={review.productImage} alt='' className='w-36 h-36 object-cover border rounded-lg' />
-                    </Link>
-                    <div>
+            userReviews.length > 0 ?
+              userReviews.map(review => 
+                editingReview !== userReviews.indexOf(review) ?
+                  <div key={review.productId} className='mb-6'>
+                    <div className='flex flex-row gap-6'>
                       <Link to={`/product/${review.productId}`}>
-                        <p className='mb-2 text-xl font-semibold tracking-wide'>{review.productTitle}</p>
+                        <img src={review.productImage} alt='' className='w-36 h-36 object-cover border rounded-lg' />
                       </Link>
-                      <ProductRating max={5} rating={review.reviewRating} className='mb-3 justify-center lg:justify-start'>
-                        <p className='text-sm'>{review.date}</p>
-                      </ProductRating>
-                      <p className='max-w-3xl text-center lg:text-left tracking-wider leading-7'>{review.reviewText}</p>
+                      <div>
+                        <Link to={`/product/${review.productId}`}>
+                          <p className='mb-2 text-xl font-semibold tracking-wide'>{review.productTitle}</p>
+                        </Link>
+                        <ProductRating max={5} rating={review.reviewRating} className='mb-3 justify-center lg:justify-start'>
+                          <p className='text-sm'>{review.date}</p>
+                        </ProductRating>
+                        <p className='max-w-3xl text-center lg:text-left tracking-wider leading-7'>{review.reviewText}</p>
+                      </div>
+                      <FaPen className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => setEditingReview(userReviews.indexOf(review))}  />
+                      <FiTrash2 className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => deleteReviewHandler(review)} />
                     </div>
-                    <FaPen className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => setEditingReview(userReviews.indexOf(review))}  />
-                    <FiTrash2 className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => deleteReviewHandler(review)} />
                   </div>
-                </div>
-              :
-                <div  key={review.productId} className="mb-6">
-                  <ReviewForm reviews={reviews} review={review} changeHandler={setEditingReview} />
-                </div>
-            )
+                :
+                  <div  key={review.productId} className="mb-6">
+                    <ReviewForm reviews={reviews} review={review} changeHandler={setEditingReview} callbackFunction={reFetchReviews} />
+                  </div>
+              )
+            :
+              <p>You didn&#39;t write any review yet!</p>
           }
       </div>
     </>

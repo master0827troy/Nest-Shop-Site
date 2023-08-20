@@ -10,7 +10,8 @@ const SavedItems = () => {
   const {
     data: userData,
     isLoading: userDataLoading,
-    error: userDataError
+    error: userDataError,
+    reFetchData: reFetchUserData
   } = useGetFirestoreData('users', auth.currentUser.uid);
 
   const {
@@ -19,22 +20,43 @@ const SavedItems = () => {
     error: productsError
   } = useGetFirestoreData('products');
 
+  const {
+    data: reviews,
+    isLoading: reviewsLoading,
+    error: reviewsError
+  } = useGetFirestoreData('reviews');
+
   const [savedItems, setSavedItems] = useState([]);
   
   useEffect(() => {
-    if (userData?.wishlistItems && products) {
+    if (userData?.wishlistItems && products && reviews) {
       setSavedItems(userData.wishlistItems.map(item => {
         const matchingProduct = products.find(product => product.id === item);
-        return { ...matchingProduct };
-      }));
-    }
   
-    if ((userDataError || productsError) && (!userDataLoading && !productsLoading)) {
+        let productTotalReviews = 0;
+        let productRating = 0;
+        for (const review of reviews) {
+          if (review.productId == matchingProduct.id) {
+            productTotalReviews += 1;
+            productRating += review.rating;
+          }
+        }
+        return {
+          ...matchingProduct,
+          rating: productTotalReviews ? productRating / productTotalReviews : productRating
+        };
+      }) || []);
+    }
+  }, [products, reviews, userData?.wishlistItems])
+  
+  useEffect(() => {
+    if ((userDataError || productsError || reviewsError) && (!userDataLoading && !productsLoading && !reviewsLoading)) {
       toast.error('An error occurred!');
     }
-  }, [products, productsError, productsLoading, userData?.wishlistItems, userDataError, userDataLoading])
+  }, [productsError, productsLoading, reviewsError, reviewsLoading, userDataError, userDataLoading])
   
-  if ( userDataLoading || productsLoading) {
+
+  if ( userDataLoading || productsLoading || reviewsLoading) {
     return <Loading />;
   }
 
@@ -45,7 +67,12 @@ const SavedItems = () => {
           <h3 className='pb-2 text-xl font-semibold tracking-wide'>Saved Items</h3>
           <div className='w-1/2 border border-orange-600'></div>
         </div>
-        <ProfileProducts products={savedItems} />
+        {
+          savedItems.length > 0 ?
+            <ProfileProducts products={savedItems} callbackFunction={reFetchUserData} />
+          :
+            <p>You have no products in your wishlist!</p>
+        }
       </div>
     </>
   );

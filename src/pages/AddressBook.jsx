@@ -17,7 +17,8 @@ const AddressBook = () => {
   const {
     data: userData,
     isLoading: userDataLoading,
-    error: userDataError
+    error: userDataError,
+    reFetchData: reFetchUserData
   } = useGetFirestoreData('users', auth.currentUser.uid);
 
   const [addresses, setAddresses] = useState([]);
@@ -49,6 +50,7 @@ const AddressBook = () => {
         addresses: newAddresses
       });
 
+      reFetchUserData();
       toast.success('Address deleted successfully!')
     } catch (error) {
       toast.error('An error occurred!')
@@ -62,6 +64,7 @@ const AddressBook = () => {
         phoneNumbers: newPhoneNumber
       });
 
+      reFetchUserData();
       toast.success('Number deleted successfully!')
     } catch (error) {
       toast.error('An error occurred!')
@@ -86,13 +89,13 @@ const AddressBook = () => {
                   <FiTrash2 className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => deleteAddress(address)} />
                 </div>
               :
-                <AddressForm key={addresses.indexOf(address)} show={editingAddress !== null} changeHandler={setEditingAddress} userId={auth.currentUser.uid} addresses={addresses} address={address} />
+                <AddressForm key={addresses.indexOf(address)} show={editingAddress !== null} changeHandler={setEditingAddress} callbackFunction={reFetchUserData} userId={auth.currentUser.uid} addresses={addresses} address={address} />
             )
           }
         </div>
         
         {
-          addressForm && <AddressForm show={addressForm} changeHandler={setAddressForm} userId={auth.currentUser.uid} addresses={addresses} />
+          addressForm && <AddressForm show={addressForm} changeHandler={setAddressForm} callbackFunction={reFetchUserData} userId={auth.currentUser.uid} addresses={addresses} />
         }
         {
           !addressForm && editingAddress === null && <Button bg text='Add' className='h-fit' onClick={() => setAddressForm(true)} />
@@ -114,12 +117,12 @@ const AddressBook = () => {
                   <FiTrash2 className='text-lg cursor-pointer transition duration-300 hover:text-orange-600 hover:scale-125' onClick={() => deletePhone(phoneNumber)} />
                 </div>
               :
-                <PhoneForm key={phoneNumbers.indexOf(phoneNumber)} show={editingPhone !== null} changeHandler={setEditingPhone} userId={auth.currentUser.uid} phoneNumbers={phoneNumbers} phoneNumber={phoneNumber} />
+                <PhoneForm key={phoneNumbers.indexOf(phoneNumber)} show={editingPhone !== null} changeHandler={setEditingPhone} callbackFunction={reFetchUserData} userId={auth.currentUser.uid} phoneNumbers={phoneNumbers} phoneNumber={phoneNumber} />
             )
           }
         </div>
         {
-          phoneForm && <PhoneForm show={phoneForm} changeHandler={setPhoneForm} userId={auth.currentUser.uid} phoneNumbers={phoneNumbers} />
+          phoneForm && <PhoneForm show={phoneForm} changeHandler={setPhoneForm} callbackFunction={reFetchUserData} userId={auth.currentUser.uid} phoneNumbers={phoneNumbers} />
         }
         {
           !phoneForm && editingPhone === null && <Button bg text='Add' className='h-fit' onClick={() => setPhoneForm(true)} />

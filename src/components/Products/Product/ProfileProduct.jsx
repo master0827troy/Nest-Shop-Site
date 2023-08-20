@@ -8,7 +8,7 @@ import ProductPrice from './ProductDetails/ProductPrice';
 import ProductCartIcon from './ProductIcons/ProductCartIcon';
 import ProductWishlistIcon from './ProductIcons/ProductWishlistIcon';
 
-const ProfileProduct = ({ product }) => {
+const ProfileProduct = ({ product, callbackFunction }) => {
   return (
     <div className='flex flex-row gap-5'>
       <ProductImage id={product.id} title={product.title} image={product.image} className='w-52 h-36' />
@@ -21,7 +21,7 @@ const ProfileProduct = ({ product }) => {
         </div>
         <div className='flex flex-col items-center gap-2'>
           <ProductPrice price={product.price} discount={product.discount} />
-          <ProductWishlistIcon id={product.id} />
+          <ProductWishlistIcon id={product.id} callbackFunction={callbackFunction} />
           <ProductCartIcon product={product} />
         </div>
       </div>
@@ -31,6 +31,7 @@ const ProfileProduct = ({ product }) => {
 
 ProfileProduct.propTypes = {
   product: PropTypes.object.isRequired,
+  callbackFunction: PropTypes.func,
 };
 
 export default ProfileProduct;

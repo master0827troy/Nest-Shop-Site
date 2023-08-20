@@ -7,6 +7,8 @@ import {
   limit,
   orderBy,
   onSnapshot,
+  getDocs,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -30,20 +32,15 @@ const useGetFirestoreData = (
     setIsLoading(true);
     try {
       if (documentId) {
-        onSnapshot(doc(db, c, documentId), 
-          (docSnap) => {
-            if (docSnap.exists()) {
-              setData({ ...docSnap.data(), documentId });
-            } else {
-              setError('Document does not exist');
-            }
-            setIsLoading(false);
-          },
-          (error) => {
-            setError(error)
-            setIsLoading(false);
-          }
-        );
+        const docSnap = await getDoc(doc(db, c, documentId));
+
+        if (docSnap.exists()) {
+          setData({ ...docSnap.data(), id: documentId });
+          setIsLoading(false);
+        } else {
+          setError('Document does not exist');
+          setIsLoading(false);
+        }
       } else {
         let queryCollection = collection(db, c);
 
@@ -75,19 +72,13 @@ const useGetFirestoreData = (
         :
           queryCollection
 
-        onSnapshot(q,
-          (querySnapshot) => {
-            querySnapshot.forEach((doc) => {
+          const querySnapshot = await getDocs(q);
+          querySnapshot.forEach((doc) => {
               result.push({ ...doc.data(), id: doc.id });
-            });
-            setData(result);
-            setIsLoading(false);
-          },
-          (error) => {
-            setError(error)
-            setIsLoading(false);
-          }
-        );
+          });
+
+          setData(result);
+          setIsLoading(false);
       }
     } catch (error) {
       setError(error);
@@ -105,7 +96,11 @@ const useGetFirestoreData = (
     setWhereStatementValue(whereStatement?.rhs);
   }, [whereStatement]);
 
-  return { data, isLoading, error };
+  const reFetchData = () => {
+    fetchData();
+  };
+
+  return { data, isLoading, error, reFetchData };
 };
 
 export default useGetFirestoreData;

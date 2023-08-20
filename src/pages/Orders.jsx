@@ -50,41 +50,42 @@ const Orders = () => {
     return <Loading />;
   }
 
-  console.log(userOrders)
-
   return (
     <>
       {
-        userOrders?.map(order =>
-          <div key={order.id} className='mb-10 p-5 bg-gray-100 shadow-lg'>
-            <div className='mb-3 flex flex-row justify-between'>
-              <div className='flex flex-col items-center'>
-                <p className='text-xl font-semibold'>Order ID</p>
-                <p>#{order.id}</p>
+        userOrders.length > 0 ?
+          userOrders?.map(order =>
+            <div key={order.id} className='mb-10 p-5 bg-gray-100 shadow-lg'>
+              <div className='mb-3 flex flex-row justify-between'>
+                <div className='flex flex-col items-center'>
+                  <p className='text-xl font-semibold'>Order ID</p>
+                  <p>#{order.id}</p>
+                </div>
+                <div className='flex flex-col items-center'>
+                  <p className='text-xl font-semibold'>Placed On</p>
+                  <p>{order.timestamp.seconds}</p>
+                </div>
+                <div className='flex flex-col items-center'>
+                  <p className='text-xl font-semibold'>Shipped To</p>
+                  <p>{order.address.apartment} {order.address.street}, {order.address.city}, {order.address.country}, {order.address.postalNumber}</p>
+                </div>
+                <div className='flex flex-col items-center'>
+                  <p className='text-xl font-semibold'>Items</p>
+                  <p>{order.totalAmount}</p>
+                </div>
+                <div className='flex flex-col items-center'>
+                  <p className='text-xl font-semibold'>Total</p>
+                  <p>${order.totalPrice}</p>
+                </div>
               </div>
-              <div className='flex flex-col items-center'>
-                <p className='text-xl font-semibold'>Placed On</p>
-                <p>{order.timestamp.seconds}</p>
-              </div>
-              <div className='flex flex-col items-center'>
-                <p className='text-xl font-semibold'>Shipped To</p>
-                <p>{order.address.apartment} {order.address.street}, {order.address.city}, {order.address.country}, {order.address.postalNumber}</p>
-              </div>
-              <div className='flex flex-col items-center'>
-                <p className='text-xl font-semibold'>Items</p>
-                <p>{order.totalAmount}</p>
-              </div>
-              <div className='flex flex-col items-center'>
-                <p className='text-xl font-semibold'>Total</p>
-                <p>${order.totalPrice}</p>
+              <div className='mb-5 w-full border border-orange-600'></div>
+              <div className='grid grid-cols-2 gap-8'>
+                <OrderProducts products={order.items} />
               </div>
             </div>
-            <div className='mb-5 w-full border border-orange-600'></div>
-            <div className='grid grid-cols-2 gap-8'>
-              <OrderProducts products={order.items} />
-            </div>
-          </div>
-        )
+          )
+        :
+          <p>You have no previously created orders!</p>
       }
     </>
   );

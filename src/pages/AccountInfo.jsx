@@ -6,10 +6,16 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import useGetFirestoreData from '../hooks/useGetFirestoreData';
 import Loading from '../ui/Loading';
+import {toast} from 'react-toastify';
 
 const AccountInfo = () => {
   const auth = getAuth();
-  const {data, isLoading, error} = useGetFirestoreData('users', auth.currentUser.uid);
+  const {
+    data: userData,
+    isLoading: userDataLoading,
+    error: userDataError,
+    reFetchData: reFetchUserData
+  } = useGetFirestoreData('users', auth.currentUser.uid);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -19,15 +25,22 @@ const AccountInfo = () => {
   const [newPassword2, setNewPassword2] = useState('');
   
   useEffect(() => {
-    if (data) {
-      setFirstName(data.firstName);
-      setLastName(data.lastName);
-      setEmail(data.email);
-      setPhone(data.phone);
+    if (userData) {
+      setFirstName(userData.firstName);
+      setLastName(userData.lastName);
+      setEmail(userData.email);
+      setPhone(userData.phone);
     }
-  }, [data])
+  }, [userData])
+
+  useEffect(() => {
+    if (userDataError && !userDataLoading) {
+      toast.error('An error occurred!');
+    }
+  }, [userDataError, userDataLoading])
   
-  if (isLoading) {
+  
+  if (userDataLoading) {
     return <Loading />;
   }
 
@@ -46,17 +59,25 @@ const AccountInfo = () => {
         email,
         phone
       });
+
+      reFetchUserData();
+      toast.success('Updated your profile successfully!')
     } catch (error) {
-      console.log(error)
+      toast.error('An error occurred!')
     }
   }
 
   const changePasswordHandler = () => {
-    if (newPassword1 === newPassword2) {
+    if (newPassword1 !== newPassword2) {
+      toast.error('Both passwords need to match!')
+    } else if (newPassword1.length < 6) {
+      toast.error('New password should be at least 6 characters!')
+    } else {
       updatePassword(auth.currentUser, newPassword1).then(() => {
-        console.log('Password Changed')
+        toast.success('Changed your password successfully!')
       }).catch((error) => {
         console.log(error)
+        toast.error('An error occurred!')
       });
     }
   };

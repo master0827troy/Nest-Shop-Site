@@ -16,6 +16,7 @@ const PhoneForm = (props) => {
         phoneNumbers: [...props.phoneNumbers, phoneNumber]
       });
 
+      props.callbackFunction();
       toast.success('Phone number added successfully!')
     } catch (error) {
       toast.error('An error occurred!')
@@ -31,6 +32,7 @@ const PhoneForm = (props) => {
         phoneNumbers: [...filteredPhoneNumbers, phoneNumber]
       });
 
+      props.callbackFunction();
       toast.success('Updated phone number successfully!')
     } catch (error) {
       toast.error('An error occurred!')
@@ -61,6 +63,7 @@ PhoneForm.propTypes = {
   phoneNumbers: PropTypes.array,
   phoneNumber: PropTypes.string,
   changeHandler: PropTypes.func,
+  callbackFunction: PropTypes.func
 };
 
 export default PhoneForm;

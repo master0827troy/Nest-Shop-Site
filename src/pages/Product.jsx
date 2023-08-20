@@ -30,17 +30,19 @@ const Product = () => {
   
   const isAuthenticated = useSelector(state => state.authentication.isAuthenticated);
   const userId = auth.currentUser?.uid;
+
   
   const {
     data: product,
     isLoading: productLoading,
     error: productError
   } = useGetFirestoreData('products', id)
-
+  
   const {
     data: reviews,
     isLoading: reviewsLoading,
-    error: reviewsError
+    error: reviewsError,
+    reFetchData: reFetchReviews
   } = useGetFirestoreData('reviews');
 
   const {
@@ -54,10 +56,11 @@ const Product = () => {
     isLoading: relatedProductsLoading,
     error: relatedProductsError
   } = useGetFirestoreData('products', null, null, null, null, 4)
-
+  
   const [productData, setProductData] = useState();
   const [productReviews, setProductReviews] = useState([]);
   const [rProducts, setRProducts] = useState([]);
+  const [reviewForm, setReviewForm] = useState(false);
 
   useEffect(() => {
     if (userData?.recentlyViewed) {
@@ -81,20 +84,28 @@ const Product = () => {
   }, [id, userData?.recentlyViewed, userId])
   
 
-  useEffect(() => {
-    if (product && reviews) {
-      setProductData(product);
+useEffect(() => {
+  if (product) {
+    setProductData(product);
+  }
+}, [product])
 
-      const productReviews = [];
-      for (const review of reviews) {
-        if (review.productId === id) {
-          productReviews.push(review);
-        }
+useEffect(() => {
+  if (reviews) {
+    const productReviews = [];
+    for (const review of reviews) {
+      if (review.productId === id) {
+        productReviews.push(review);
       }
-
-      setProductReviews(productReviews)
     }
 
+    setProductReviews(productReviews)
+    setReviewForm(isAuthenticated && !(reviews?.find(review => review?.userId === userId && review?.productId === id)))
+  }
+}, [id, isAuthenticated, reviews, userId])
+
+
+  useEffect(() => {
     if (relatedProducts && reviews) {
       const updatedProducts = relatedProducts.map(product => {
         let productRating = 0;
@@ -115,17 +126,17 @@ const Product = () => {
 
       setRProducts(updatedProducts)
     }
-
+  }, [id, relatedProducts, reviews])
+  
+  useEffect(() => {
     if (productError || reviewsError || userDataError || relatedProductsError && 
       (!productLoading && !reviewsLoading && userDataLoading && relatedProductsLoading)) {
       toast.error('An error occurred!');
     }
-  }, [id, product, productError, productLoading, relatedProducts, relatedProductsError, relatedProductsLoading, reviews, reviewsError, reviewsLoading, userDataError, userDataLoading])
-  
+  }, [productError, productLoading, relatedProductsError, relatedProductsLoading, reviewsError, reviewsLoading, userDataError, userDataLoading])
   
   let productRating = 0;
   const totalReviews = productReviews.length;
-  const currentUserReview = reviews?.find(review => review?.userId === userId && review?.productId === id);
   
   if (totalReviews) {
     for (const review of productReviews) {
@@ -144,7 +155,9 @@ const Product = () => {
   }
   
   if (!productData || productLoading || reviewsLoading || userDataLoading || relatedProductsLoading) return <Loading />;
-  console.log(!!productData)
+
+  console.log(reviews)
+  console.log(productReviews)
   return (
     <div className='my-12'>
       <div className="flex flex-col xl:flex-row justify-between gap-12 lg:gap-14">
@@ -181,10 +194,10 @@ const Product = () => {
               <div className='grow'>
                 <CustomerReviews customerReviews={productReviews} />
                 {
-                  isAuthenticated && !currentUserReview &&
+                  reviewForm &&
                   <>
                     <Heading heading='Leave a review' className='mb-5' />
-                    <ReviewForm userId={userId} productId={id} />
+                    <ReviewForm show={reviewForm} changeHandler={setReviewForm} callbackFunction={reFetchReviews} userId={userId} productId={id} />
                   </>
                 }
               </div>

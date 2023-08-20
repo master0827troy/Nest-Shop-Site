@@ -19,28 +19,43 @@ const RecentlyViewed = () => {
     error: productsError
   } = useGetFirestoreData('products');
 
+  const {
+    data: reviews,
+    isLoading: reviewsLoading,
+    error: reviewsError
+  } = useGetFirestoreData('reviews');
+
   const [recentlyViewed, setRecentlyViewed] = useState([]);
 
   useEffect(() => {
-    if (userData?.recentlyViewed && products) {
-        for (const recentlyViewedProductId of userData.recentlyViewed) {
-          for (const product of products) {
-            if (product.id == recentlyViewedProductId) {
-            }
+    if (userData?.recentlyViewed && products && reviews) {
+      setRecentlyViewed(userData.recentlyViewed.map(item => {
+        const matchingProduct = products.find(product => product.id === item);
+  
+        let productTotalReviews = 0;
+        let productRating = 0;
+        for (const review of reviews) {
+          if (review.productId == matchingProduct.id) {
+            productTotalReviews += 1;
+            productRating += review.rating;
           }
         }
-      }
-    setRecentlyViewed(userData?.recentlyViewed?.map(item => {
-      const matchingProduct = products?.find(product => product.id === item);
-      return {...matchingProduct};
-    }) || []);
-
-    if ((userDataError || productsError) && (!userDataLoading && !productsLoading)) {
+        return {
+          ...matchingProduct,
+          rating: productTotalReviews ? productRating / productTotalReviews : productRating
+        };
+      }) || []);
+    }
+  }, [products, reviews, userData?.recentlyViewed])
+  
+  useEffect(() => {
+    if ((userDataError || productsError || reviewsError) && (!userDataLoading && !productsLoading && !reviewsLoading)) {
       toast.error('An error occurred!');
     }
-  }, [products, productsError, productsLoading, userData?.recentlyViewed, userDataError, userDataLoading])
+  }, [productsError, productsLoading, reviewsError, reviewsLoading, userDataError, userDataLoading])
   
-  if (userDataLoading || productsLoading) {
+
+  if (userDataLoading || productsLoading || reviewsLoading) {
     return <Loading />;
   }
 
@@ -51,7 +66,12 @@ const RecentlyViewed = () => {
           <h3 className='pb-2 text-xl font-semibold tracking-wide'>Recently Viewed</h3>
           <div className='w-1/2 border border-orange-600'></div>
         </div>
-        <ProfileProducts products={recentlyViewed} />
+        {
+          recentlyViewed.length > 0 ?
+          <ProfileProducts products={recentlyViewed} />
+          :
+            <p>You have no products in your recently viewed!</p>
+        }
       </div>
     </>
   );

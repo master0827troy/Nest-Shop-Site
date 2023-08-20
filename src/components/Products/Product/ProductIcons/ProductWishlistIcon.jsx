@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import {RiHeart3Line, RiHeart3Fill} from 'react-icons/ri';
 import useProductActions from '../../../../hooks/useProductActions';
 
-const ProductWishlistIcon = ({ id }) => {
+const ProductWishlistIcon = ({ id, callbackFunction }) => {
   const {
     isInWishlist,
     addToWishlist,
@@ -10,11 +10,13 @@ const ProductWishlistIcon = ({ id }) => {
   } = useProductActions();
 
   const addToWishlistHandler = () => {
-    addToWishlist(id)
+    addToWishlist(id);
+    callbackFunction();
   };
 
   const removeFromWishlistHandler = () => {
-    removeFromWishlist(id)
+    removeFromWishlist(id);
+    callbackFunction();
   };
 
   return (
@@ -31,6 +33,7 @@ const ProductWishlistIcon = ({ id }) => {
 
 ProductWishlistIcon.propTypes = {
   id: PropTypes.string.isRequired,
+  callbackFunction: PropTypes.func,
 };
 
 export default ProductWishlistIcon;

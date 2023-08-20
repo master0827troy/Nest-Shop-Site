@@ -4,6 +4,7 @@ import {doc, updateDoc, addDoc, collection, serverTimestamp} from 'firebase/fire
 import {db} from '../../firebase';
 import StarInput from '../../ui/StarInput';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 
 const ReviewForm = (props) => {
   const [text, setReview] = useState(props.review?.reviewText || '')
@@ -18,6 +19,7 @@ const ReviewForm = (props) => {
         timestamp: serverTimestamp()
       });
 
+      props.callbackFunction();
       toast.success('Updated review successfully!')
     } catch (error) {
       toast.error('An error occurred!')
@@ -26,6 +28,7 @@ const ReviewForm = (props) => {
 
   const submitReviewHandler = async () => {
     try {
+      props.changeHandler(prevState => !prevState);
       await addDoc(collection(db, 'reviews'), {
         productId: props.productId,
         userId: props.userId,
@@ -34,9 +37,10 @@ const ReviewForm = (props) => {
         timestamp: serverTimestamp()
       });
 
+      props.callbackFunction();
       toast.success('Added review successfully!')
     } catch (error) {
-      console.log(error)
+      toast.error('An error occurred!')
     }
   };
 
@@ -56,5 +60,13 @@ const ReviewForm = (props) => {
   );
 };
 
+ReviewForm.propTypes = {
+  userId: PropTypes.string,
+  productId: PropTypes.string,
+  show: PropTypes.bool,
+  review: PropTypes.object,
+  changeHandler: PropTypes.func,
+  callbackFunction: PropTypes.func
+};
 
 export default ReviewForm;

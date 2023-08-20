@@ -57,6 +57,7 @@ const Category = () => {
     error: categoryProductsError
   } = useGetFirestoreData('products' , null, {lhs: 'categoryId', op: '==', rhs: id});
 
+  console.log(categoryProducts)
   const {
     data: reviews,
     isLoading: reviewsLoading,
@@ -100,7 +101,7 @@ const Category = () => {
     },
   ]
   
-  const [products, setProducts] = useState(categoryProducts || [])
+  const [products, setProducts] = useState([])
   const [dataAfterFilters, applyFilters, resetFilters] = useFilter(products, filterFunctions);
   const [searchFunction, dataAfterSearch, inputValue ] = useSearch(dataAfterFilters, 'title');
   const [setSortBy, setSortOrder, dataAfterSort, sortBy, sortOrder] = useSort(dataAfterSearch, 'id');
@@ -140,11 +141,7 @@ const Category = () => {
 
       setProducts(updatedProducts);
     }
-
-    if (categoryProductsError || reviewsError && (!reviewsLoading && !categoryProductsLoading)) {
-      toast.error('An error occurred!');
-    }
-  }, [categoryProducts, categoryProductsError, categoryProductsLoading, reviews, reviewsError, reviewsLoading])
+  }, [id, categoryProducts, reviews])
 
   useEffect(() => {
     let newMin = categoryProducts?.reduce((min, product) => {
@@ -167,11 +164,19 @@ const Category = () => {
     searchParams.set('maxPrice', newMax);
     const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
     navigate(newUrl, { replace: true });
+    console.log(categoryProducts)
   }, [categoryProducts, id, navigate])
 
+  useEffect(() => {
+    if (categoryProductsError || reviewsError && (!reviewsLoading && !categoryProductsLoading)) {
+      toast.error('An error occurred!');
+    }
+  }, [categoryProductsError, categoryProductsLoading, reviewsError, reviewsLoading])
+  
+
   if (categoryDataLoading || categoryProductsLoading || reviewsLoading ||
-    (categoryProducts?.length > 0 && defaultPriceValues[1] === 0) ||
-    !Number.isInteger(defaultPriceValues[0]) || !Number.isInteger(defaultPriceValues[1])
+    (categoryProducts?.length > 0 && priceValues[1] === 0) ||
+    !Number.isInteger(priceValues[0]) || !Number.isInteger(priceValues[1])
   ) return <Loading />;
 
   return (

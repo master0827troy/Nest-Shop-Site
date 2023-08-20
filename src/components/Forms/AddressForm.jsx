@@ -20,6 +20,7 @@ const AddressForm = (props) => {
         addresses: [...props.addresses, { apartment, street, city, country, postalNumber }]
       });
 
+      props.callbackFunction();
       toast.success('Address added successfully!')
     } catch (error) {
       toast.error('An error occurred!')
@@ -35,6 +36,7 @@ const AddressForm = (props) => {
         addresses: [...filteredAddresses, { apartment, street, city, country, postalNumber }]
       });
 
+      props.callbackFunction();
       toast.success('Updated address successfully!')
     } catch (error) {
       toast.error('An error occurred!')
@@ -73,6 +75,7 @@ AddressForm.propTypes = {
   addresses: PropTypes.array,
   address: PropTypes.object,
   changeHandler: PropTypes.func,
+  callbackFunction: PropTypes.func
 };
 
 export default AddressForm;
