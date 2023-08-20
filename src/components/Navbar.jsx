@@ -43,13 +43,22 @@ const Navbar = () => {
     if (searchInputValue) {
       const searchParams = new URLSearchParams(location.search);
       let searchParamsString = '';
-      for (const [key, value] of searchParams.entries()) {
-        searchParamsString += `${key}=${key === 'search' ? searchInputValue : value}&`;
+      
+      if (searchParams.entries().length) {
+        searchParamsString += `search=${searchInputValue}&`;
+        for (const [paramKey, paramValue] of searchParams.entries()) {
+          if (paramKey !== 'search') {
+            searchParamsString += `${paramKey}=${paramValue}&`
+          }
+        }
+        searchParamsString = searchParamsString.slice(0, -1);
+      } else {
+        searchParamsString += `search=${searchInputValue}&minPrice=0&maxPrice=0&stock=all`
       }
-      searchParamsString = searchParamsString.slice(0, -1);
+
       navigate({
         pathname: '/category/all',
-        search: searchParamsString || `search=${searchInputValue}&minPrice=0&maxPrice=0&stock=all`,
+        search: searchParamsString,
       });
   
       setSearchInputValue('');

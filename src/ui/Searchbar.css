@@ -19,7 +19,7 @@
 }
 
 .search-bar-container .icon-container {
-  @apply w-fit absolute top-1/2 -translate-y-1/2 transition-all duration-700;
+  @apply w-fit   absolute top-1/2 -translate-y-1/2 transition-all duration-700;
   --padding-x: 10px;
   left: calc(0px + var(--padding-x));
   right: calc(100% - var(--padding-x));
