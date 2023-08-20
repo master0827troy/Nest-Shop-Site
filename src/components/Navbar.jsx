@@ -43,6 +43,8 @@ const Navbar = () => {
       pathname: '/category/all',
       search: searchInputValue ? `search=${searchInputValue}` : '',
     });
+
+    setSearchInputValue('');
   };
 
   const iconClasses = 'text-3xl cursor-pointer transition duration-700 hover:text-orange-600 hover:scale-110';
