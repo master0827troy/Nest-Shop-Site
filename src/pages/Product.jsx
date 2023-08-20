@@ -100,8 +100,6 @@ useEffect(() => {
     for (const review of reviews) {
       if (review.productId === id) {
         const matchingUser = usersData.find(user => user.id === review.userId);
-        console.log(usersData)
-        console.log(review)
         productReviews.push({
           ...review,
           user: matchingUser ? `${matchingUser.firstName} ${matchingUser.lastName}` : 'Deleted User'
@@ -166,8 +164,6 @@ useEffect(() => {
   
   if (!productData || productLoading || reviewsLoading || userDataLoading || relatedProductsLoading) return <Loading />;
 
-  console.log(reviews)
-  console.log(productReviews)
   return (
     <div className='my-12'>
       <div className="flex flex-col xl:flex-row justify-between gap-12 lg:gap-14">
