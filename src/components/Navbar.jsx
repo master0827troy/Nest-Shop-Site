@@ -1,5 +1,5 @@
 import SearchBar from '../ui/SearchBar'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AiOutlineUser } from 'react-icons/ai'
 import { FiMenu } from 'react-icons/fi'
 import {useState} from 'react';
@@ -19,6 +19,7 @@ const Navbar = () => {
   const { data: categories, isLoading, error } = useGetFirestoreData('categories', null, null, 'title')
 
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
@@ -38,13 +39,21 @@ const Navbar = () => {
     setSearchInputValue(e.target.value);
   };
 
-  const clickHandler = () => {
-    navigate({
-      pathname: '/category/all',
-      search: searchInputValue ? `search=${searchInputValue}` : '',
-    });
-
-    setSearchInputValue('');
+  const clickHandler = () => {    
+    if (searchInputValue) {
+      const searchParams = new URLSearchParams(location.search);
+      let searchParamsString = '';
+      for (const [key, value] of searchParams.entries()) {
+        searchParamsString += `${key}=${key === 'search' ? searchInputValue : value}&`;
+      }
+      searchParamsString = searchParamsString.slice(0, -1);
+      navigate({
+        pathname: '/category/all',
+        search: searchParamsString || `search=${searchInputValue}&minPrice=0&maxPrice=0&stock=all`,
+      });
+  
+      setSearchInputValue('');
+    }
   };
 
   const iconClasses = 'text-3xl cursor-pointer transition duration-700 hover:text-orange-600 hover:scale-110';

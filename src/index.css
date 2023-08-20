@@ -71,7 +71,7 @@ input[type=number] {
 }
 
 .search-bar-container .search-bar {
-  @apply w-full py-1.5 pl-8 pr-2 text-black border-none outline-none transition-all duration-700;
+  @apply w-full py-1.5 pl-10 pr-2 text-black border-none outline-none transition-all duration-700;
 }
 
 .search-bar-container.border-bottom .search-bar {
@@ -87,10 +87,11 @@ input[type=number] {
 }
 
 .search-bar-container .icon-container {
-  @apply w-fit absolute top-1/2 -translate-y-1/2 transition-all duration-700;
+  @apply w-fit h-full absolute top-1/2 -translate-y-1/2 cursor-pointer transition-all duration-700;
   --padding-x: 10px;
-  left: calc(0px + var(--padding-x));
-  right: calc(100% - var(--padding-x));
+  padding-left: var(--padding-x);
+  left: 0;
+  right: 100%;
 }
 
 .search-bar-container.border-bottom .icon-container {
@@ -99,12 +100,13 @@ input[type=number] {
 
 .search-bar-container.active .icon-container {
   @apply -translate-x-full;
-  left: calc(100% - var(--padding-x));
-  right: calc(0px + var(--padding-x));
+  padding-right: var(--padding-x);
+  left: 100%;
+  right: 0;
 }
 
 .search-bar-container .icon-container .icon {
-  @apply text-gray-500 cursor-pointer transition duration-700 hover:scale-125;
+  @apply w-fit h-full py-[10px] text-gray-500 transition duration-700 hover:scale-125;
 }
 
 .search-bar-container.active .icon-container .icon {
