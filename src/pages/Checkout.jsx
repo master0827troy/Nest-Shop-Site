@@ -81,6 +81,7 @@ const Checkout = () => {
         userId,
         items: updatedItems,
         address: addressesList[activeAddress].value,
+        phoneNumber: phoneNumbersList[activePhoneNumber].value,
         timestamp: serverTimestamp()
       });
 
