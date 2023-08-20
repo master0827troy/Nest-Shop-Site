@@ -15,11 +15,10 @@ import useGetFirestoreData from '../hooks/useGetFirestoreData';
 import { toast } from 'react-toastify';
 
 const Navbar = () => {
-  const navigate = useNavigate();
-
   const isAuthenticated = useSelector(state => state.authentication.isAuthenticated);
   const { data: categories, isLoading, error } = useGetFirestoreData('categories', null, null, 'title')
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
@@ -29,9 +28,21 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [ModalsOpen, setModalIsOpen] = useState(false);
   const [formIsOpen, setFormIsOpen] = useState(false);
+  const [searchInputValue, setSearchInputValue] = useState('');
 
   const closeCartHandler = () => {
     setModalIsOpen(false);
+  };
+
+  const searchHandler = (e) => {
+    setSearchInputValue(e.target.value);
+  };
+
+  const clickHandler = () => {
+    navigate({
+      pathname: '/category/all',
+      search: searchInputValue ? `search=${searchInputValue}` : '',
+    });
   };
 
   const iconClasses = 'text-3xl cursor-pointer transition duration-700 hover:text-orange-600 hover:scale-110';
@@ -51,7 +62,7 @@ const Navbar = () => {
               <span>Ipsum</span>
             </p>
           </Link>
-          <SearchBar placeholder='Search' inputClass = '!py-2 rounded-sm' containerClass='w-1/3' />
+          <SearchBar placeholder='Search' containerClass='w-1/3' inputClass = '!py-2 rounded-sm' value={searchInputValue} onSearch={searchHandler} onIconClick={clickHandler} />
           <ul className="flex flex-col lg:flex-row items-center gap-3">
             <li className={iconClasses + ' mr-2'} onClick={() => isAuthenticated ? setModalIsOpen(true) : toast.error('You need to log in first!')}>
               <CartIcon />

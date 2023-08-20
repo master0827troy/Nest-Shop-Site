@@ -62,7 +62,7 @@ const SearchBar = (props) => {
         onFocus={focusHandler}
         onBlur={blurHandler}
       />
-      <div className='icon-container'>
+      <div className='icon-container' onClick={props.onIconClick ? props.onIconClick : () => {}}>
         <FaSearch className='icon' />
       </div>
     </div>
