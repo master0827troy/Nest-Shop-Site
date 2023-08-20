@@ -11,12 +11,16 @@ const ProductWishlistIcon = ({ id, callbackFunction }) => {
 
   const addToWishlistHandler = () => {
     addToWishlist(id);
-    callbackFunction();
+    if (callbackFunction) {
+      callbackFunction();
+    }
   };
 
   const removeFromWishlistHandler = () => {
     removeFromWishlist(id);
-    callbackFunction();
+    if (callbackFunction) {
+      callbackFunction();
+    }
   };
 
   return (
