@@ -31,7 +31,6 @@ const Product = () => {
   const isAuthenticated = useSelector(state => state.authentication.isAuthenticated);
   const userId = auth.currentUser?.uid;
 
-  
   const {
     data: product,
     isLoading: productLoading,
@@ -46,10 +45,10 @@ const Product = () => {
   } = useGetFirestoreData('reviews');
 
   const {
-    data: userData,
+    data: usersData,
     isLoading: userDataLoading,
     error: userDataError
-  } = useGetFirestoreData('users', userId);
+  } = useGetFirestoreData('users');
 
   const {
     data: relatedProducts,
@@ -63,25 +62,30 @@ const Product = () => {
   const [reviewForm, setReviewForm] = useState(false);
 
   useEffect(() => {
-    if (userData?.recentlyViewed) {
-      const addProductToRecentlyViewed = async () => {
-        let updatedRecentlyViewed = userData.recentlyViewed.includes(id) ?
-            [id, ...userData.recentlyViewed.filter(item => item !== id)]
-          :
-            [id, ...userData.recentlyViewed];
-        
-        if (updatedRecentlyViewed.length > 8) {
-          updatedRecentlyViewed = updatedRecentlyViewed.slice(0, 8);
+    if (usersData) {
+      for (const userData of usersData) {
+        if (userData.id === id) {
+          const addProductToRecentlyViewed = async () => {
+            let updatedRecentlyViewed = userData.recentlyViewed.includes(id) ?
+                [id, ...userData.recentlyViewed.filter(item => item !== id)]
+              :
+                [id, ...userData.recentlyViewed];
+            
+            if (updatedRecentlyViewed.length > 8) {
+              updatedRecentlyViewed = updatedRecentlyViewed.slice(0, 8);
+            }
+      
+            await updateDoc(doc(db, 'users', userId), {
+              recentlyViewed: updatedRecentlyViewed
+            });
+          }
+          
+          addProductToRecentlyViewed();
         }
-  
-        await updateDoc(doc(db, 'users', userId), {
-          recentlyViewed: updatedRecentlyViewed
-        });
       }
 
-      addProductToRecentlyViewed();
     }
-  }, [id, userData?.recentlyViewed, userId])
+  }, [id, usersData, userId])
   
 
 useEffect(() => {
@@ -91,18 +95,24 @@ useEffect(() => {
 }, [product])
 
 useEffect(() => {
-  if (reviews) {
+  if (reviews && usersData) {
     const productReviews = [];
     for (const review of reviews) {
       if (review.productId === id) {
-        productReviews.push(review);
+        const matchingUser = usersData.find(user => user.id === review.userId);
+        console.log(usersData)
+        console.log(review)
+        productReviews.push({
+          ...review,
+          user: matchingUser ? `${matchingUser.firstName} ${matchingUser.lastName}` : 'Deleted User'
+        });
       }
     }
 
     setProductReviews(productReviews)
     setReviewForm(isAuthenticated && !(reviews?.find(review => review?.userId === userId && review?.productId === id)))
   }
-}, [id, isAuthenticated, reviews, userId])
+}, [id, isAuthenticated, reviews, userId, usersData])
 
 
   useEffect(() => {

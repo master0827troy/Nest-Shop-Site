@@ -12,7 +12,7 @@ const CustomerReviews = (props) => {
           <div key={review.id} className='mb-6'>
             <div className='flex flex-row items-center justify-center lg:justify-start gap-2 mb-2'>
               <img src='https://images-na.ssl-images-amazon.com/images/S/amazon-avatars-global/default._CR0,0,1024,1024_SX48_.png' alt="" className='w-6' />
-              <p>Patrick Bateman</p>
+              <p>{review.user}</p>
             </div>
             <Rating max={5} rating={review.rating} className='mb-3 justify-center lg:justify-start'>
               <p className='text-sm'>{review.timestamp.seconds}</p>

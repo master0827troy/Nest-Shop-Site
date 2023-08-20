@@ -6,7 +6,6 @@ import {
   query,
   limit,
   orderBy,
-  onSnapshot,
   getDocs,
   getDoc,
 } from "firebase/firestore";
@@ -74,7 +73,7 @@ const useGetFirestoreData = (
 
           const querySnapshot = await getDocs(q);
           querySnapshot.forEach((doc) => {
-              result.push({ ...doc.data(), id: doc.id });
+            result.push({ ...doc.data(), id: doc.id });
           });
 
           setData(result);
