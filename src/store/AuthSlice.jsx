@@ -15,6 +15,7 @@ export const login = createAsyncThunk(
       const auth = getAuth();
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
+      toast.info('Welcome back!');
       return !!(userCredential.user);
     } catch (error) {
       toast.error('An error occurred!')
@@ -50,7 +51,6 @@ export const autoLogin = createAsyncThunk(
     try {
       thunkAPI.dispatch(getCartItems())
       thunkAPI.dispatch(getWishlistItems())
-      toast.info('Welcome back!');
 
       return true;
     } catch (error) {
