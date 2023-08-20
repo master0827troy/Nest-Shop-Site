@@ -187,7 +187,7 @@ useEffect(() => {
               <ProductPrice vertical price={productData.price} discount={productData.discount} />
               <ProductStock stock={productData.stock} />
               <ProductDescription description={productData.description} />
-              <div className="flex flex-col lg:flex-row gap-3">
+              <div className="flex flex-col sm:flex-row gap-3 mx-auto md:mx-0">
                 <SaveToWishlistButton id={id} />
                 <AddToCartButton product={{id, ...productData}} />
               </div>

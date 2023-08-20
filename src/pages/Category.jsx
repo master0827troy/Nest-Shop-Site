@@ -49,7 +49,7 @@ const Category = () => {
     data: categoryData,
     isLoading: categoryDataLoading,
     error: categoryDataError
-  } = useGetFirestoreData('categories', id);
+  } = useGetFirestoreData('categories', id !== 'all' ? id : null);
 
   const {
     data: categoryProducts,
@@ -57,7 +57,6 @@ const Category = () => {
     error: categoryProductsError
   } = useGetFirestoreData('products' , null, id !== 'all' ? {lhs: 'categoryId', op: '==', rhs: id} : null);
 
-  console.log(categoryProducts)
   const {
     data: reviews,
     isLoading: reviewsLoading,
@@ -144,34 +143,40 @@ const Category = () => {
   }, [id, categoryProducts, reviews])
 
   useEffect(() => {
-    let newMin = categoryProducts?.reduce((min, product) => {
-      return product.price < min ? product.price : min;
-    }, Infinity) || 0;
-
-    newMin = newMin === Infinity ? 0 : newMin;
-    setMinPrice(newMin)
-    
-    const newMax = categoryProducts?.reduce((max, product) => {
-      return product.price > max ? product.price : max;
-    }, 0) || 0;
-    setMaxPrice(newMax)
-
-    setPriceValues([newMin, newMax])
-    setDefaultValues([newMin, newMax])
-
-    const searchParams = new URLSearchParams(window.location.search);
-    searchParams.set('minPrice', newMin);
-    searchParams.set('maxPrice', newMax);
-    const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
-    navigate(newUrl, { replace: true });
-    console.log(categoryProducts)
+      let newMin = categoryProducts?.reduce((min, product) => {
+        return product.price < min ? product.price : min;
+      }, Infinity) || 0;
+  
+      newMin = newMin === Infinity ? 0 : newMin;
+      setMinPrice(newMin)
+      
+      const newMax = categoryProducts?.reduce((max, product) => {
+        return product.price > max ? product.price : max;
+      }, 0) || 0;
+      setMaxPrice(newMax)
+  
+      setPriceValues([newMin, newMax])
+      setDefaultValues([newMin, newMax])
+  
+      const searchParams = new URLSearchParams(window.location.search);
+      searchParams.set('minPrice', newMin);
+      searchParams.set('maxPrice', newMax);
+      const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+      navigate(newUrl, { replace: true });
   }, [categoryProducts, id, navigate])
 
   useEffect(() => {
-    if (categoryProductsError || reviewsError && (!reviewsLoading && !categoryProductsLoading)) {
+    if (categoryProductsError || reviewsError && (!categoryDataLoading && !reviewsLoading && !categoryProductsLoading)) {
       toast.error('An error occurred!');
     }
-  }, [categoryProductsError, categoryProductsLoading, reviewsError, reviewsLoading])
+  }, [categoryDataLoading, categoryProductsError, categoryProductsLoading, reviewsError, reviewsLoading])
+  
+  useEffect(() => {
+    if (categoryDataError && !categoryDataLoading && id !== 'all') {
+      navigate('/');
+      toast.error('There\'s no category with this id!');
+    }
+  }, [categoryDataError, categoryDataLoading, id, navigate])
   
 
   if (categoryDataLoading || categoryProductsLoading || reviewsLoading ||

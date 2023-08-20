@@ -31,6 +31,7 @@ const SignUpForm = (props) => {
         phoneNumbers: [],
         cartItems: [],
         wishlistItems: [],
+        recentlyViewed: [],
         timestamp: serverTimestamp()
       };
       await setDoc(doc(db, 'users', user.uid), data);

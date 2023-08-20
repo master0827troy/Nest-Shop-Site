@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ReactSlider from 'react-slider'
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from 'react-icons/fa'
 import { BsGrid3X3GapFill } from 'react-icons/bs'
@@ -31,6 +31,18 @@ const Filters = (props) => {
     setElementsPerPage(item);
     props.setElementsPerPage(parseInt(item.text));
   };
+
+  const [priceValues, setPricesValues] = useState(null);
+
+  useEffect(() => {
+    setPricesValues(null);
+  }, [])
+  
+
+  useEffect(() => {
+    setPricesValues(props.priceValues);
+  }, [props.priceValues])
+  
 
   return (
     <div className='mb-14'>
@@ -91,13 +103,15 @@ const Filters = (props) => {
         </div>
       </div>
       <div className='flex flex-col lg:flex-row items-center gap-12'>
+        {
+          priceValues &&
           <div className="flex flex-col md:flex-row gap-8">
             <div className="w-80">
               <ReactSlider
                 className="slider"
                 thumbClassName="slider-thumb"
                 trackClassName="slider-track"
-                defaultValue={props.priceValues}
+                defaultValue={priceValues}
                 pearling
                 min={props.minPrice}
                 max={props.maxPrice}
@@ -107,17 +121,18 @@ const Filters = (props) => {
               />
             </div>
             <div className="flex flex-row justify-center gap-4">
-              <input type="number" min={props.minPrice} className={inputNumberClasses} value={props.priceValues[0]} 
+              <input type="number" min={props.minPrice} className={inputNumberClasses} value={priceValues[0]} 
               onChange={(e) => props.setPriceValues(prevState => [+e.target.value, prevState[1]])} />
               <span className='text-lg select-none'>-</span>
-              <input type="number" max={props.maxPrice} className={inputNumberClasses} value={props.priceValues[1]} 
+              <input type="number" max={props.maxPrice} className={inputNumberClasses} value={priceValues[1]} 
               onChange={(e) => props.setPriceValues(prevState => [prevState[0], +e.target.value])} />
               <Button bg text='Apply' onClick={() => props.filterFunction()} className='rounded-sm py-1' />
             </div>
           </div>
-          <div className='flex flex-row gap-8'>
-            <Button bg text='Reset' onClick={() => props.resetFunction()} className='rounded-sm py-1' />
-          </div>
+        }
+        <div className='flex flex-row gap-8'>
+          <Button bg text='Reset' onClick={() => props.resetFunction()} className='rounded-sm py-1' />
+        </div>
       </div>
     </div>
   )
