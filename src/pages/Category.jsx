@@ -155,18 +155,28 @@ const Category = () => {
       const newMax = data?.reduce((max, product) => {
         return product.price > max ? product.price : max;
       }, 0) || 0;
-  
-      searchParams.set('minPrice', newMin);
-      searchParams.set('maxPrice', newMax);
+
+      if (JSON.stringify(dataAfterFilters) === JSON.stringify(products)) {
+        setMinPrice(newMin)
+        setMaxPrice(newMax)
+        setPriceValues([newMin,newMax]);
+
+        searchParams.set('minPrice', newMin);
+        searchParams.set('maxPrice', newMax);
+      } else if (JSON.stringify(dataAfterFilters) === JSON.stringify(dataAfterSearch)) {
+        searchParams.set('minPrice', priceValues[0]);
+        searchParams.set('maxPrice', priceValues[1]);
+      }
+
       searchParams.set('stock', 'all');
+
+
       const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
       navigate(newUrl, { replace: true });
-  
-      setMinPrice(newMin)
-      setMaxPrice(newMax)
-      setPriceValues([newMin, newMax])
-    }
-  }, [categoryProducts, dataAfterSearch, location.search, navigate])
+      }
+
+    
+  }, [categoryProducts, dataAfterFilters, dataAfterSearch, location.search, navigate, products])
   
 
   useEffect(() => {
