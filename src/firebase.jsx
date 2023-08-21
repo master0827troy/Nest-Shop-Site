@@ -14,7 +14,16 @@ const firebaseConfig = {
   appId: "1:263748091583:web:19f8ee5dc1dbb7f1f7500a"
 };
 
+const firebaseConfig2 = {
+  apiKey: "AIzaSyD-BXsW9Ulh_qhFxe2SndtnI39keQVCYoY",
+  authDomain: "e-commerce-2-7a687.firebaseapp.com",
+  projectId: "e-commerce-2-7a687",
+  storageBucket: "e-commerce-2-7a687.appspot.com",
+  messagingSenderId: "939433668604",
+  appId: "1:939433668604:web:615807c6a4f7f4e579cc79"
+};
+
 // Initialize Firebase
-initializeApp(firebaseConfig);
+initializeApp(firebaseConfig2);
 
 export const db = getFirestore();
