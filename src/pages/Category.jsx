@@ -142,7 +142,7 @@ const Category = () => {
   }, [categoryProducts, reviews])
 
   useEffect(() => {
-    if (categoryProducts) {
+    if (categoryProducts && !categoryProductsLoading) {
       const searchParams = new URLSearchParams(location.search);
 
       const getMin = (arr) => {
@@ -159,7 +159,10 @@ const Category = () => {
         }, 0) || 0);
       }
 
-      if (!dataAfterSearch.length && !dataAfterFilters.length) {
+      const newMin = getMin(categoryProducts);
+      const newMax = getMax(categoryProducts);
+
+      if (newMin !== minPrice && newMax !== maxPrice) {
         const newMin = getMin(categoryProducts);
         const newMax = getMax(categoryProducts);
 
@@ -169,20 +172,31 @@ const Category = () => {
 
         searchParams.set('minPrice', newMin);
         searchParams.set('maxPrice', newMax);
-
-      } else if (JSON.stringify(dataAfterFilters) === JSON.stringify(dataAfterSearch)) {
+      } else if (priceValues[0] !== minPrice || priceValues[1] !== maxPrice) {
         searchParams.set('minPrice', priceValues[0]);
         searchParams.set('maxPrice', priceValues[1]);
+      } else {
+        const newMin = getMin(categoryProducts);
+        const newMax = getMax(categoryProducts);
+
+        setMinPrice(newMin)
+        setMaxPrice(newMax)
+        setPriceValues([newMin,newMax]);
+
+        searchParams.set('minPrice', newMin);
+        searchParams.set('maxPrice', newMax);
       }
 
       searchParams.set('stock', 'all');
+
+
       
       const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
       navigate(newUrl, { replace: true });
       }
 
     
-  }, [categoryProducts, dataAfterFilters, dataAfterSearch, products])
+  }, [id, categoryProducts, dataAfterFilters, dataAfterSearch, products])
   
 
   useEffect(() => {
