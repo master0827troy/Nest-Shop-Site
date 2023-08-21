@@ -17,25 +17,25 @@ const Home = () =>{
     autoplaySpeed: 2000,
     pauseOnHover: true,
     slidesToShow: 5,
-    slidesToScroll: 5,
+    slidesToScroll: 1,
     arrows: false,
     centerMode: true,
     responsive: [
       {
         breakpoint: 480,
-        settings: { slidesToShow: 1, slidesToScroll: 1 }
+        settings: { slidesToShow: 1 }
       },
       {
         breakpoint: 768,
-        settings: { slidesToShow: 2, slidesToScroll: 2 }
+        settings: { slidesToShow: 2 }
       },
       {
         breakpoint: 976,
-        settings: { slidesToShow: 3, slidesToScroll: 3 }
+        settings: { slidesToShow: 3 }
       },
       {
         breakpoint: 1440,
-        settings: { slidesToShow: 4, slidesToScroll: 4 }
+        settings: { slidesToShow: 4 }
       }
     ]
   };
