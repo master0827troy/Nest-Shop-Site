@@ -69,6 +69,7 @@ const Category = () => {
     searchParams.get('minPrice') ? parseInt(searchParams.get('minPrice')) : minPrice,
     searchParams.get('maxPrice') ? parseInt(searchParams.get('maxPrice')) : maxPrice
   ]);
+  const [calculatingPrice, setCalculatingPrice] = useState(false);
   const priceDistance = Math.ceil((maxPrice - minPrice) / 10);
 
   const defaultStockValue = 0;
@@ -142,7 +143,7 @@ const Category = () => {
   }, [categoryProducts, reviews])
 
   useEffect(() => {
-    if (categoryProducts && !categoryProductsLoading) {
+    if (!categoryDataLoading && categoryData && dataAfterSearch) {
       const searchParams = new URLSearchParams(location.search);
 
       const getMin = (arr) => {
@@ -162,41 +163,32 @@ const Category = () => {
       const newMin = getMin(categoryProducts);
       const newMax = getMax(categoryProducts);
 
-      if (newMin !== minPrice && newMax !== maxPrice) {
-        const newMin = getMin(categoryProducts);
-        const newMax = getMax(categoryProducts);
-
-        setMinPrice(newMin)
-        setMaxPrice(newMax)
-        setPriceValues([newMin,newMax]);
-
-        searchParams.set('minPrice', newMin);
-        searchParams.set('maxPrice', newMax);
-      } else if (priceValues[0] !== minPrice || priceValues[1] !== maxPrice) {
+      if (
+          (newMin === minPrice && newMax === maxPrice) &&
+          (priceValues[0] !== minPrice || priceValues[1] !== maxPrice)
+        ) {
         searchParams.set('minPrice', priceValues[0]);
         searchParams.set('maxPrice', priceValues[1]);
-      } else {
-        const newMin = getMin(categoryProducts);
-        const newMax = getMax(categoryProducts);
-
-        setMinPrice(newMin)
-        setMaxPrice(newMax)
-        setPriceValues([newMin,newMax]);
-
+      } else if (
+          (!((priceValues[0] !== minPrice || priceValues[1] !== maxPrice) &&
+          (newMin !== minPrice && newMax !== maxPrice)))
+        ) {
         searchParams.set('minPrice', newMin);
         searchParams.set('maxPrice', newMax);
+        setPriceValues([newMin, newMax])
+        setMinPrice(newMin)
+        setMaxPrice(newMax)
+      } else {
+        setPriceValues([parseInt(searchParams.get('minPrice')), parseInt(searchParams.get('maxPrice'))])
+        setMinPrice(newMin)
+        setMaxPrice(newMax)
       }
-
-      searchParams.set('stock', 'all');
-
-
       
       const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
       navigate(newUrl, { replace: true });
-      }
+    }
 
-    
-  }, [id, categoryProducts, dataAfterFilters, dataAfterSearch, products])
+  }, [id, categoryProducts, dataAfterSearch])
   
 
   useEffect(() => {
