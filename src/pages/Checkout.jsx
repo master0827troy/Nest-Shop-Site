@@ -95,7 +95,7 @@ const Checkout = () => {
 
   return (
     <div className='mt-12'>
-      <div className='grid grid-flow-col justify-between gap-20'>
+      <div className='grid md:grid-flow-col justify-between gap-10 md:gap-20'>
         <div className='grow'>
           <div className='flex flex-row items-center gap-2 mb-6 text-3xl font-semibold tracking-wide'>
             <RiShoppingCart2Line className='text-4xl' />
@@ -105,7 +105,7 @@ const Checkout = () => {
           <CheckoutProducts products={cartItems} />
         </div>
         <div className='w-80'>
-          <h2 className='section-heading !mb-4'>Order Details</h2>
+          <h2 className='section-heading !mb-4 !text-left'>Order Details</h2>
           <div className='mb-4 space-y-2 text-xl'>
             <div className="mb-4 pb-4 border-b">
               <RadioInput name='address' className='mb-5' list={addressesList} active={activeAddress} setActive={setActiveAddress}>

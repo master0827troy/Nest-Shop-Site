@@ -56,7 +56,7 @@ const Orders = () => {
         userOrders?.length > 0 ?
           userOrders?.map(order =>
             <div key={order.id} className='mb-10 p-5 bg-gray-100 shadow-lg'>
-              <div className='mb-3 flex flex-row justify-between'>
+              <div className='mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 justify-between gap-2'>
                 <div className='flex flex-col items-center'>
                   <p className='text-xl font-semibold'>Placed On</p>
                   <p>{order.timestamp.seconds}</p>
@@ -79,9 +79,7 @@ const Orders = () => {
                 </div>
               </div>
               <div className='mb-5 w-full border border-orange-600'></div>
-              <div className='grid grid-cols-2 gap-8'>
-                <OrderProducts products={order.items} />
-              </div>
+              <OrderProducts products={order.items} />
             </div>
           )
         :

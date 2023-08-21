@@ -20,9 +20,9 @@ const ProfileLayout = () => {
         <AiOutlineUser className='text-3xl' />
         <h3 className='text-2xl font-semibold'>Hello, {auth.currentUser.displayName}</h3>
       </div>
-      <div className='flex flex-row gap-8'>
-        <div className='flex flex-col'>
-          <ul className='w-max flex flex-col text-xl font-semibold'>
+      <div className='flex flex-col lg:flex-row gap-8'>
+        <div>
+          <ul className='md:w-max grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-none text-xl font-semibold'>
             {
               list.map(listItem =>
                 <NavLink key={listItem.id} to={listItem.path} 

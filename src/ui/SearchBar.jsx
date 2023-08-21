@@ -51,10 +51,10 @@ const SearchBar = (props) => {
   const inputClasses = props.inputClass ? 'search-bar' + ' ' + props.inputClass : 'search-bar';
 
   return (
-    <div className={containerClasses}>
+    <form className={containerClasses}>
       <input 
         type="text" 
-        id="search" 
+        id="search"
         placeholder={placeholder}
         className={inputClasses}
         value={props.value}
@@ -65,7 +65,7 @@ const SearchBar = (props) => {
       <div className='icon-container' onClick={props.onIconClick ? props.onIconClick : () => {}}>
         <FaSearch className='icon'/>
       </div>
-    </div>
+    </form>
   );
 };
 export default SearchBar;

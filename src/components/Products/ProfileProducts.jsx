@@ -5,7 +5,7 @@ import Pagination from '../../ui/Pagination';
 const ProfileProducts = ({ products, paginationOptions, callbackFunction }) => {
   return (
     <>
-      <div className='grid lg:grid-cols-2 gap-y-8 gap-x-10'>
+      <div className='grid grid-cols-1 xl:grid-cols-2 gap-y-8 gap-x-10'>
         {
           products.map(product =>
             <ProfileProduct key={product.id} product={product} callbackFunction={callbackFunction} />

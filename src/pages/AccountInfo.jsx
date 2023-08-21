@@ -84,18 +84,16 @@ const AccountInfo = () => {
 
   return (
     <>
-      <div className='mb-10 p-5 bg-gray-100 shadow-lg'>
+      <div className='w-full mb-10 p-5 bg-gray-100 shadow-lg'>
         <div className='w-fit mb-3'>
           <h3 className='pb-2 text-xl font-semibold tracking-wide'>Account Info</h3>
           <div className='w-1/2 border border-orange-600'></div>
         </div>
-        <div className='mb-8 flex flex-row gap-10'>
-          <Input label='First Name' bgColor='!bg-gray-100' value={firstName} setValue={setFirstName} />
-          <Input label='Last Name' bgColor='!bg-gray-100' value={lastName} setValue={setLastName} />
-          <Input label='Email Address' bgColor='!bg-gray-100' value={email} setValue={setEmail} />
-        </div>
-        <div className='mb-8 flex flex-row items-end gap-10'>
-          <Input label='Phone Number' bgColor='!bg-gray-100' value={phone} setValue={setPhone} />
+        <div className='mb-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-end gap-8'>
+          <Input label='First Name' bgColor='!bg-gray-100' className='w-full' value={firstName} setValue={setFirstName} />
+          <Input label='Last Name' bgColor='!bg-gray-100' className='w-full' value={lastName} setValue={setLastName} />
+          <Input label='Email Address' bgColor='!bg-gray-100' className='w-full' value={email} setValue={setEmail} />
+          <Input label='Phone Number' bgColor='!bg-gray-100' className='w-full' value={phone} setValue={setPhone} />
           <Button bg text='Save' className='h-fit' onClick={submitHandler} />
         </div>
       </div>
@@ -104,9 +102,9 @@ const AccountInfo = () => {
           <h3 className='pb-2 text-xl font-semibold tracking-wide'>Change Password</h3>
           <div className='w-1/2 border border-orange-600'></div>
         </div>
-        <div className='mb-8 flex flex-row items-end gap-10'>
-          <Input label='New Password' bgColor='!bg-gray-100' value={newPassword1} setValue={setNewPassword1} />
-          <Input label='Repeat New Password' bgColor='!bg-gray-100' value={newPassword2} setValue={setNewPassword2} />
+        <div className='mb-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-end gap-8'>
+          <Input label='New Password' bgColor='!bg-gray-100' className='w-full' value={newPassword1} setValue={setNewPassword1} />
+          <Input label='Repeat New Password' bgColor='!bg-gray-100' className='w-full' value={newPassword2} setValue={setNewPassword2} />
           <Button bg text='Save' className='h-fit' onClick={changePasswordHandler} />
         </div>
       </div>

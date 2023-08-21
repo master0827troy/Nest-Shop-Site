@@ -199,7 +199,7 @@ useEffect(() => {
             <Heading heading='Customer reviews' className='text-center lg:text-left mb-10' />
             <div className='flex flex-col lg:flex-row items-center lg:items-start gap-12'>
               <CustomerRatings productRating={productRating} productReviews={totalReviews} ratings={ratings} />
-              <div className='grow'>
+              <div className='w-full grow'>
                 <CustomerReviews customerReviews={productReviews} />
                 {
                   reviewForm &&

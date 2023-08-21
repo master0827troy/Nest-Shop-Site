@@ -10,7 +10,7 @@ const ProductDeleteIcon = ({ id }) => {
   };
 
   return (
-    <FiTrash2 className='mx-auto text-xl font-semibold cursor-pointer transition duration-500 hover:text-orange-600 hover:scale-110' onClick={removeFromCartHandler}/>
+    <FiTrash2 className='text-xl font-semibold cursor-pointer transition duration-500 hover:text-orange-600 hover:scale-110' onClick={removeFromCartHandler}/>
   );
 };
 

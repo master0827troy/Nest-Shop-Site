@@ -1,10 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 import Button from '../ui/Button';
 import './Promotions.css';
 
 const promotions = (props) => {
-  const navigate = useNavigate();
-
   return (
     <div className='promotions'>
       {

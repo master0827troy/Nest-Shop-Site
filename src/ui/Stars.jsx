@@ -2,7 +2,7 @@ import { FaStar } from 'react-icons/fa6';
 import './Stars.css';
 
 const Stars = ({ max, numberOfStars }) => {
-  const numberOfFullStars = numberOfStars ? Math.floor(numberOfStars) : 0;
+  const numberOfFullStars = Number.isInteger(numberOfStars)  ? Math.floor(numberOfStars) : 0;
   const numberOfEmptyStars = 
     numberOfStars && numberOfStars !== Math.floor(numberOfStars) ?
       max - numberOfFullStars - 1
