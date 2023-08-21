@@ -145,38 +145,44 @@ const Category = () => {
     if (categoryProducts) {
       const searchParams = new URLSearchParams(location.search);
 
-      const data = categoryProducts && searchParams.get('search') ? dataAfterSearch : categoryProducts;
-      let newMin = data?.reduce((min, product) => {
-        return product.price < min ? product.price : min;
-      }, Infinity) || 0;
-  
-      newMin = newMin === Infinity ? 0 : newMin;
-      
-      const newMax = data?.reduce((max, product) => {
-        return product.price > max ? product.price : max;
-      }, 0) || 0;
+      const getMin = (arr) => {
+        let newMin = arr?.reduce((min, product) => {
+          return product.price < min ? product.price : min;
+        }, Infinity) || 0;
 
-      if (JSON.stringify(dataAfterFilters) === JSON.stringify(products)) {
+        return (newMin === Infinity ? 0 : newMin);
+      };
+
+      const getMax = (arr) => {
+        return (arr?.reduce((max, product) => {
+          return product.price > max ? product.price : max;
+        }, 0) || 0);
+      }
+
+      if (!dataAfterSearch.length && !dataAfterFilters.length) {
+        const newMin = getMin(categoryProducts);
+        const newMax = getMax(categoryProducts);
+
         setMinPrice(newMin)
         setMaxPrice(newMax)
         setPriceValues([newMin,newMax]);
 
         searchParams.set('minPrice', newMin);
         searchParams.set('maxPrice', newMax);
+
       } else if (JSON.stringify(dataAfterFilters) === JSON.stringify(dataAfterSearch)) {
         searchParams.set('minPrice', priceValues[0]);
         searchParams.set('maxPrice', priceValues[1]);
       }
 
       searchParams.set('stock', 'all');
-
-
+      
       const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
       navigate(newUrl, { replace: true });
       }
 
     
-  }, [categoryProducts, dataAfterFilters, dataAfterSearch, location.search, navigate, products])
+  }, [categoryProducts, dataAfterFilters, dataAfterSearch, products])
   
 
   useEffect(() => {
