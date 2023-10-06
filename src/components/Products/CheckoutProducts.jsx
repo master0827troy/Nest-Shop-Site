@@ -3,7 +3,7 @@ import CartProduct from './Product/CartProduct';
 
 const CheckoutProducts = ({ products }) => {
   return (
-    <div className='grid grid-cols-1 lg:grid-cols-2 gap-y-5 gap-x-10'>
+    <div className='grid grid-cols-1 xl:grid-cols-2 gap-y-5 gap-x-10'>
       {
         products.length > 0 ?
           products.map(product =>
