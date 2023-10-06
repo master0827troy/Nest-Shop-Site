@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 const ProductPrice = ({vertical, price, discount}) => {
-  const newPrice = discount ? (price - ( price / discount )).toFixed(2) : price;
+  const newPrice = discount ? (price - ( price * discount / 100 )).toFixed(2) : price;
   const containerClasses = vertical ? 'flex flex-row gap-2' : 'space-y-1 text-center';
 
   return (
