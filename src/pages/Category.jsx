@@ -186,7 +186,9 @@ const Category = () => {
         let newMin =
           arr?.reduce((min, product) => {
             const price = product.discount
-              ? product.price - (product.price * product.discount) / 100
+              ? Math.floor(
+                  product.price - (product.price * product.discount) / 100
+                )
               : product.price;
             return price < min ? price : min;
           }, Infinity) || 0;
@@ -198,7 +200,9 @@ const Category = () => {
         return (
           arr?.reduce((max, product) => {
             const price = product.discount
-              ? product.price - (product.price * product.discount) / 100
+              ? Math.ceil(
+                  product.price - (product.price * product.discount) / 100
+                )
               : product.price;
 
             return price > max ? price : max;
