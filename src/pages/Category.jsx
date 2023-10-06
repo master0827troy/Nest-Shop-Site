@@ -95,7 +95,10 @@ const Category = () => {
         item.discount
           ? item.price - (item.price * item.discount) / 100 >= priceValues[0]
           : item.price >= priceValues[0],
-      resetFunction: (item) => item.price >= minPrice,
+      resetFunction: (item) =>
+        item.discount
+          ? item.price - (item.price * item.discount) / 100 >= minPrice
+          : item.price >= minPrice,
       urlSearchParam: "minPrice",
       urlSearchDefaultValue: minPrice,
       urlSearchValue: priceValues[0],
@@ -105,7 +108,10 @@ const Category = () => {
         item.discount
           ? item.price - (item.price * item.discount) / 100 <= priceValues[1]
           : item.price <= priceValues[1],
-      resetFunction: (item) => item.price <= maxPrice,
+      resetFunction: (item) =>
+        item.discount
+          ? item.price - (item.price * item.discount) / 100 <= maxPrice
+          : item.price <= maxPrice,
       urlSearchParam: "maxPrice",
       urlSearchDefaultValue: maxPrice,
       urlSearchValue: priceValues[1],
