@@ -6,10 +6,6 @@
   @apply bg-orange-600 text-gray-100;
 }
 
-.badge.new {
-  @apply bg-red-500;
-}
-
 .badge .badge-icon {
   @apply text-xs mt-0.5;
 }
