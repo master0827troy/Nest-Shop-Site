@@ -6,10 +6,11 @@ import ProductCartIcon from "./ProductIcons/ProductCartIcon";
 import ProductTitle from "./ProductDetails/ProductTitle";
 import ProductRating from "./ProductDetails/ProductRating";
 import ProductTotalReviews from "./ProductDetails/ProductTotalReviews";
+import ProductDiscount from "./ProductDetails/ProductDiscount";
 
 const CategoryProduct = ({ product }) => {
   return (
-    <div className="relative max-w-full mb-2 pb-3 overflow-hidden  rounded-lg shadow-lg text-gray-900 group">
+    <div className="relative max-w-full mb-2 pb-3 overflow-hidden rounded-lg shadow-lg text-gray-900 group">
       <ProductImage
         id={product.id}
         title={product.title}
@@ -17,8 +18,8 @@ const CategoryProduct = ({ product }) => {
         className="h-48 w-full"
       />
       <div className="px-4 py-2">
-        <div className="flex flex-row justify-between">
-          <div className="">
+        <div className="flex flex-row justify-between gap-1">
+          <div className="flex flex-col">
             <div className="flex flex-row gap-2">
               <ProductRating max={5} rating={product.rating} />
               <ProductTotalReviews reviews={product.reviews} />
@@ -30,12 +31,13 @@ const CategoryProduct = ({ product }) => {
             />
             <ProductTitle id={product.id} title={product.title} />
           </div>
-          <div className="flex flex-col items-center  gap-1">
+          <div className="flex flex-col items-center gap-1">
             <ProductWishlistIcon id={product.id} />
             <ProductCartIcon product={product} />
           </div>
         </div>
       </div>
+      {product.discount && <ProductDiscount discount={product.discount} />}
     </div>
   );
 };
