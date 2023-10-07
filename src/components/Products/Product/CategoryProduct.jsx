@@ -7,6 +7,7 @@ import ProductTitle from "./ProductDetails/ProductTitle";
 import ProductRating from "./ProductDetails/ProductRating";
 import ProductTotalReviews from "./ProductDetails/ProductTotalReviews";
 import ProductDiscount from "./ProductDetails/ProductDiscount";
+import ProductBadge from "./ProductDetails/ProductBadge";
 
 const CategoryProduct = ({ product }) => {
   return (
@@ -17,24 +18,24 @@ const CategoryProduct = ({ product }) => {
         image={product.image}
         className="h-48 w-full"
       />
-      <div className="px-4 py-2">
-        <div className="flex flex-row justify-between gap-1">
-          <div className="flex flex-col">
-            <div className="flex flex-row gap-2">
-              <ProductRating max={5} rating={product.rating} />
-              <ProductTotalReviews reviews={product.reviews} />
-            </div>
-            <ProductPrice
-              price={product.price}
-              discount={product.discount}
-              vertical={true}
-            />
-            <ProductTitle id={product.id} title={product.title} />
+      <div className="px-4 py-2 flex flex-row justify-between gap-1">
+        <div className="flex flex-col gap-1">
+          <ProductBadge rating={product.rating} textStyle="!text-xs" />
+          <div className="flex flex-row gap-2">
+            <ProductRating max={5} rating={product.rating} />
+            <ProductTotalReviews reviews={product.reviews} />
           </div>
-          <div className="flex flex-col items-center gap-1">
-            <ProductWishlistIcon id={product.id} />
-            <ProductCartIcon product={product} />
-          </div>
+
+          <ProductPrice
+            price={product.price}
+            discount={product.discount}
+            vertical={true}
+          />
+          <ProductTitle id={product.id} title={product.title} />
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <ProductWishlistIcon id={product.id} />
+          <ProductCartIcon product={product} />
         </div>
       </div>
       {product.discount && <ProductDiscount discount={product.discount} />}
