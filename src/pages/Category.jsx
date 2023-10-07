@@ -138,10 +138,10 @@ const Category = () => {
     dataAfterSearch,
     "id"
   );
-  const [elementsPerPage, setElementsPerPage] = useState(4);
+  const [elementsPerPage, setElementsPerPage] = useState({ id: 1, text: "15" });
   const [modifiedData, paginationOptions] = usePagination(
     dataAfterSort,
-    elementsPerPage
+    parseInt(elementsPerPage.text)
   );
 
   const resetFunction = () => {

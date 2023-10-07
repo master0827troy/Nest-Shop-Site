@@ -1,17 +1,20 @@
-import {Link} from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const ProductTitle = ({ id, title }) => {
   return (
     <>
-      {
-        id ?
-          <Link to={`/product/${id}`}>
-            <p className='max-w-xs mb-1 text-xl font-semibold tracking-wide'>{title.length > 30 ? title.substring(0, 62) + '...' : title}</p>
-          </Link>
-        :
-          <p className='mb-1 text-xl font-semibold tracking-wide'>{title}</p>
-      }
+      {id ? (
+        <Link to={`/product/${id}`}>
+          <p className="max-w-xs text-base text-gray-700 font-semibold leading-5 tracking-tight">
+            {title.length > 30 ? title.substring(0, 62) + "..." : title}
+          </p>
+        </Link>
+      ) : (
+        <p className="text-base text-gray-700 font-semibold leading-5 tracking-tight">
+          {title}
+        </p>
+      )}
     </>
   );
 };
