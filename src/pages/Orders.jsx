@@ -75,7 +75,7 @@ const Orders = () => {
       {!userOrdersLoading && userOrders?.length > 0 ? (
         userOrders?.map((order) => (
           <div key={order.id} className="mb-10 p-5 bg-gray-100 shadow-lg">
-            <div className="mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 justify-between gap-2">
+            <div className="mb-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 justify-between gap-2 text-center">
               <div className="flex flex-col items-center">
                 <p className="text-xl font-semibold">Placed On</p>
                 <p>{order.timestamp.seconds}</p>
