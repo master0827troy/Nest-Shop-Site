@@ -8,6 +8,7 @@ import ProductRating from "./ProductDetails/ProductRating";
 import ProductTotalReviews from "./ProductDetails/ProductTotalReviews";
 import ProductDiscount from "./ProductDetails/ProductDiscount";
 import ProductBadge from "./ProductDetails/ProductBadge";
+import ProductStock from "./ProductDetails/ProductStock";
 
 const CategoryProduct = ({ product }) => {
   return (
@@ -32,6 +33,7 @@ const CategoryProduct = ({ product }) => {
             vertical={true}
           />
           <ProductTitle id={product.id} title={product.title} />
+          <ProductStock stock={product.stock} />
         </div>
         <div className="flex flex-col items-center gap-1">
           <ProductWishlistIcon id={product.id} />
