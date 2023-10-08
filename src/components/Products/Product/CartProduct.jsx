@@ -9,17 +9,20 @@ import ProductDecreaseIcon from "./ProductIcons/ProductDecreaseIcon";
 import ProductQuantity from "./ProductDetails/ProductQuantity";
 import ProductIncreaseIcon from "./ProductIcons/ProductIncreaseIcon";
 import ProductDeleteIcon from "./ProductIcons/ProductDeleteIcon";
+import ProductDiscount from './ProductDetails/ProductDiscount';
 
 const CartProduct = ({ product }) => {
+  console.log(product);
   return (
     <div className="mb-10 flex flex-col lg:grid lg:grid-cols-6 gap-3">
-      <div className="grid col-span-3 md:col-span-2">
+      <div className="relative grid col-span-3 md:col-span-2">
         <ProductImage
           id={product.id}
           title={product.title}
           image={product.image}
           className="w-full h-36"
         />
+        {product.discount && <ProductDiscount discount={product.discount} />}
       </div>
       <div className="col-span-3 md:col-span-4 flex flex-col lg:grid lg:grid-cols-3">
         <div className="col-span-2 flex flex-col items-start gap-1">
