@@ -12,7 +12,7 @@ const CheckBox = (props) => {
       <div className={props.isChecked ? 'icon-container checked' : 'icon-container'}>
         <FiCheck className='icon' />
       </div>
-      <span className='text'>{props.text}</span>
+      <span className='text whitespace-nowrap'>{props.text}</span>
     </div>
   )
 }
