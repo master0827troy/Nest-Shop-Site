@@ -138,7 +138,7 @@ const Category = () => {
     dataAfterSearch,
     "id"
   );
-  const [elementsPerPage, setElementsPerPage] = useState({ id: 1, text: "15" });
+  const [elementsPerPage, setElementsPerPage] = useState({ id: 1, text: "12" });
   const [modifiedData, paginationOptions] = usePagination(
     dataAfterSort,
     parseInt(elementsPerPage.text)

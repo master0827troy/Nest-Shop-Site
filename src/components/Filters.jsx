@@ -19,11 +19,10 @@ const Filters = (props) => {
   ];
 
   const elementsPerPageList = [
-    { id: 1, text: "15" },
-    { id: 2, text: "20" },
-    { id: 3, text: "25" },
-    { id: 4, text: "30" },
-    { id: 5, text: "40" },
+    { id: 1, text: "12" },
+    { id: 2, text: "24" },
+    { id: 3, text: "36" },
+    { id: 4, text: "48" },
   ];
 
   const [elementsPerPage, setElementsPerPage] = useState(props.elementsPerPage);
@@ -88,7 +87,7 @@ const Filters = (props) => {
         </div>
         <div className="flex flex-row items-center justify-center md:justify-start gap-3">
           <div className="flex gap-2 md:gap-5 text-xl">
-            Show
+            Items
             <div className="w-auto">
               <SelectBox
                 list={elementsPerPageList}
@@ -96,7 +95,6 @@ const Filters = (props) => {
                 onSelect={elementsPerPageChangeHandler}
               />
             </div>
-            items
           </div>
           <div className="flex flex-row gap-2 text-xl">
             {props.activeLayout === "grid" ? (
@@ -166,12 +164,12 @@ const Filters = (props) => {
           </div>
         </div>
         <div className="flex flex-row gap-3">
-            <Button
-              bg
-              text="Apply"
-              onClick={() => props.filterFunction()}
-              className="rounded-sm py-1"
-            />
+          <Button
+            bg
+            text="Apply"
+            onClick={() => props.filterFunction()}
+            className="rounded-sm py-1"
+          />
           <Button
             bg
             text="Reset"
