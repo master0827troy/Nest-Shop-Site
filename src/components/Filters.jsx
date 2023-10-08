@@ -35,8 +35,8 @@ const Filters = (props) => {
 
   return (
     <div className="mb-14">
-      <div className="flex flex-col xl:flex-row md:items-center lg:items-start xl:items-end gap-12 mb-10">
-        <div className="flex flex-col md:flex-row items-center lg:items-end gap-12">
+      <div className="md:mb-5 flex flex-col xl:flex-row md:items-center lg:items-start xl:items-end gap-3 md:gap-5 lg:gap-8">
+        <div className="flex flex-col md:flex-row items-center lg:items-end gap-3 md:gap-8 lg:gap-12">
           <SearchBar
             placeholder="Search"
             containerClass="border-bottom"
@@ -44,8 +44,8 @@ const Filters = (props) => {
             value={props.searchInputValue}
             onSearch={props.onSearch}
           />
-          <div className="flex flex-row items-end gap-12">
-            <div className="flex flex-row gap-5 order-2 lg:order-1">
+          <div className="flex flex-row items-end gap-3 md:gap-5 lg:gap-12">
+            <div className="flex flex-row gap-3 order-2 lg:order-1">
               <div className="w-36">
                 <SelectBox
                   list={orderList}
@@ -86,9 +86,8 @@ const Filters = (props) => {
             </div>
           </div>
         </div>
-
-        <div className="flex flex-row items-center justify-center md:justify-start gap-12">
-          <div className="flex gap-2 text-xl">
+        <div className="flex flex-row items-center justify-center md:justify-start gap-3">
+          <div className="flex gap-2 md:gap-5 text-xl">
             Show
             <div className="w-auto">
               <SelectBox
@@ -97,9 +96,8 @@ const Filters = (props) => {
                 onSelect={elementsPerPageChangeHandler}
               />
             </div>
-            per page
+            items
           </div>
-
           <div className="flex flex-row gap-2 text-xl">
             {props.activeLayout === "grid" ? (
               <BsGrid3X3GapFill className={"filter-icon" + " active"} />
@@ -121,9 +119,9 @@ const Filters = (props) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col lg:flex-row items-center gap-12">
-        <div className="flex flex-col md:flex-row gap-8">
-          <div className="w-80">
+      <div className="flex flex-col lg:flex-row items-center gap-5">
+        <div className="flex flex-col md:flex-row items-center gap-3 md:gap-8">
+          <div className="min-w-[15rem] w-80">
             <ReactSlider
               className="slider"
               thumbClassName="slider-thumb"
@@ -165,15 +163,15 @@ const Filters = (props) => {
                 ])
               }
             />
+          </div>
+        </div>
+        <div className="flex flex-row gap-3">
             <Button
               bg
               text="Apply"
               onClick={() => props.filterFunction()}
               className="rounded-sm py-1"
             />
-          </div>
-        </div>
-        <div className="flex flex-row gap-8">
           <Button
             bg
             text="Reset"
