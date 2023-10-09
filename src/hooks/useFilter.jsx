@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 const useFilter = (array, filterFunctions) => {
   const [filteredArray, setFilteredArray] = useState([]);
@@ -18,10 +18,10 @@ const useFilter = (array, filterFunctions) => {
         newFilteredArray = newFilteredArray.filter(element.resetFunction);
       }
     }
-    setFilteredArray(newFilteredArray || [])
+    setFilteredArray(newFilteredArray || []);
     navigate(`${location.pathname}?${searchParams.toString()}`);
-  }, [array])
-  
+  }, [array]);
+
   const applyFilter = () => {
     let newFilteredArray = array;
     for (const element of filterFunctions) {

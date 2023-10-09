@@ -1,9 +1,7 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const ProductQuantity = ({ quantity }) => {
-  return (
-    <p className='text-xl font-semibold'>{quantity}</p>
-  );
+  return <p className="text-xl font-semibold">{quantity}</p>;
 };
 
 ProductQuantity.propTypes = {

@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
-import {GoChevronRight} from 'react-icons/go';
-import useProductActions from '../../../../hooks/useProductActions';
+import PropTypes from "prop-types";
+import { GoChevronRight } from "react-icons/go";
+import useProductActions from "../../../../hooks/useProductActions";
 
 const ProductIncreaseIcon = ({ id }) => {
   const { increaseItem } = useProductActions();
@@ -10,7 +10,10 @@ const ProductIncreaseIcon = ({ id }) => {
   };
 
   return (
-    <GoChevronRight className='mx-auto text-xl font-semibold cursor-pointer transition duration-500 hover:text-orange-600 hover:scale-110' onClick={increaseItemHandler} />
+    <GoChevronRight
+      className="mx-auto text-xl font-semibold cursor-pointer transition duration-500 hover:text-orange-600 hover:scale-110"
+      onClick={increaseItemHandler}
+    />
   );
 };
 

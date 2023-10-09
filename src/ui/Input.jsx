@@ -1,24 +1,40 @@
-import { useEffect, useRef, useState } from 'react';
-import './Input.css';
+import { useEffect, useRef, useState } from "react";
+import "./Input.css";
 
 const Input = (props) => {
   const [isActive, setIsActive] = useState(false);
-  const [containerClasses, setContainerClasses] = useState('input-container')
+  const [containerClasses, setContainerClasses] = useState("input-container");
 
   const inputRef = useRef(null);
 
   useEffect(() => {
-    setContainerClasses((isActive || props.value.length !== 0) ? 'input-container active' : 'input-container inactive');
-  }, [isActive, props.value.length])
+    setContainerClasses(
+      isActive || props.value.length !== 0
+        ? "input-container active"
+        : "input-container inactive"
+    );
+  }, [isActive, props.value.length]);
 
   const clickHandler = () => {
-    setIsActive(true)
+    setIsActive(true);
     inputRef.current.focus();
   };
 
   return (
-    <div className={props.className ? containerClasses + ' ' + props.className : containerClasses}>
-      <label className={props.bgColor ? props.bgColor : ''} htmlFor={props.id} onClick={clickHandler}>{props.label}</label>
+    <div
+      className={
+        props.className
+          ? containerClasses + " " + props.className
+          : containerClasses
+      }
+    >
+      <label
+        className={props.bgColor ? props.bgColor : ""}
+        htmlFor={props.id}
+        onClick={clickHandler}
+      >
+        {props.label}
+      </label>
       <input
         id={props.id}
         type={props.type}
@@ -27,9 +43,12 @@ const Input = (props) => {
         onFocus={() => setIsActive(true)}
         onBlur={() => setIsActive(false)}
         ref={inputRef}
-        autoComplete='off'
+        autoComplete="off"
       />
-      <div className={props.bgColor ? 'after ' + props.bgColor : 'after'} onClick={clickHandler}></div>
+      <div
+        className={props.bgColor ? "after " + props.bgColor : "after"}
+        onClick={clickHandler}
+      ></div>
     </div>
   );
 };

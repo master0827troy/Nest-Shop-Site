@@ -9,7 +9,7 @@ import ProductDecreaseIcon from "./ProductIcons/ProductDecreaseIcon";
 import ProductQuantity from "./ProductDetails/ProductQuantity";
 import ProductIncreaseIcon from "./ProductIcons/ProductIncreaseIcon";
 import ProductDeleteIcon from "./ProductIcons/ProductDeleteIcon";
-import ProductDiscount from './ProductDetails/ProductDiscount';
+import ProductDiscount from "./ProductDetails/ProductDiscount";
 
 const CartProduct = ({ product }) => {
   return (

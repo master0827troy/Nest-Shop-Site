@@ -9,7 +9,7 @@ const store = configureStore({
     authentication: AuthSlice,
     cart: cartSlice,
     wishlist: wishlistSlice,
-  }
+  },
 });
 
 export default store;

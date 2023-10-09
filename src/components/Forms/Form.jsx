@@ -4,7 +4,7 @@ import SignUpForm from "./SignUpForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 
 const Form = (props) => {
-  const [mode, setMode] = useState('login')
+  const [mode, setMode] = useState("login");
 
   const switchForm = (form) => {
     setMode(form);
@@ -12,14 +12,22 @@ const Form = (props) => {
 
   return (
     <>
-      {
-        mode === 'login' ?
-          <LoginForm switchForm={switchForm} onClose={() => props.onClose(false)} />
-        : mode === 'signup' ?
-          <SignUpForm switchForm={switchForm} onClose={() => props.onClose(false)} />
-        :
-          <ForgotPasswordForm switchForm={switchForm} onClose={() => props.onClose(false)} />
-        }
+      {mode === "login" ? (
+        <LoginForm
+          switchForm={switchForm}
+          onClose={() => props.onClose(false)}
+        />
+      ) : mode === "signup" ? (
+        <SignUpForm
+          switchForm={switchForm}
+          onClose={() => props.onClose(false)}
+        />
+      ) : (
+        <ForgotPasswordForm
+          switchForm={switchForm}
+          onClose={() => props.onClose(false)}
+        />
+      )}
     </>
   );
 };

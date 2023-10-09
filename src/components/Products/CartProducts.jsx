@@ -1,14 +1,12 @@
-import PropTypes from 'prop-types';
-import CartProduct from './Product/CartProduct';
+import PropTypes from "prop-types";
+import CartProduct from "./Product/CartProduct";
 
-const CartProducts = ({ products }) => {  
+const CartProducts = ({ products }) => {
   return (
     <>
-      {
-        products.map(product =>
-          <CartProduct key={product.id} product={product} />
-        )
-      }
+      {products.map((product) => (
+        <CartProduct key={product.id} product={product} />
+      ))}
     </>
   );
 };

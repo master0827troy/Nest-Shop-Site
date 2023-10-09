@@ -9,7 +9,7 @@
 .scrollableDiv::-webkit-scrollbar-track {
   @apply bg-gray-200;
 }
- 
+
 .scrollableDiv::-webkit-scrollbar-thumb {
   @apply bg-orange-600;
 }

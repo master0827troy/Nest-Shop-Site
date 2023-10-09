@@ -1,20 +1,30 @@
-import { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import { RiCloseLine } from 'react-icons/ri';
-import useScrollBlock from '../hooks/useScrollBlock';
-import Backdrop from './Backdrop';
-import './Modal.css';
+import { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
+import { RiCloseLine } from "react-icons/ri";
+import useScrollBlock from "../hooks/useScrollBlock";
+import Backdrop from "./Backdrop";
+import "./Modal.css";
 
 const Modal = (props) => {
-  const [modalClasses, setModalClasses] = useState(props.className ? props.className + ' modal modal-hidden' : ' modal modal-hidden');
-  const [backdropClasses, setBackdropClasses] = useState('backdrop backdrop-hidden');
+  const [modalClasses, setModalClasses] = useState(
+    props.className
+      ? props.className + " modal modal-hidden"
+      : " modal modal-hidden"
+  );
+  const [backdropClasses, setBackdropClasses] = useState(
+    "backdrop backdrop-hidden"
+  );
 
   const [blockScroll, allowScroll] = useScrollBlock();
 
   const closeModal = () => {
-    setModalClasses(props.className ? props.className + ' modal modal-hidden' : 'modal modal-hidden');
-    setBackdropClasses('backdrop backdrop-hidden');
+    setModalClasses(
+      props.className
+        ? props.className + " modal modal-hidden"
+        : "modal modal-hidden"
+    );
+    setBackdropClasses("backdrop backdrop-hidden");
 
     allowScroll();
 
@@ -29,13 +39,21 @@ const Modal = (props) => {
 
   useEffect(() => {
     if (props.isOpen) {
-      setModalClasses(props.className ? props.className + ' modal modal-visible' : 'modal modal-visible')
-      setBackdropClasses('backdrop backdrop-visible');
+      setModalClasses(
+        props.className
+          ? props.className + " modal modal-visible"
+          : "modal modal-visible"
+      );
+      setBackdropClasses("backdrop backdrop-visible");
 
       blockScroll();
     } else {
-      setModalClasses(props.className ? props.className + ' modal modal-hidden' : 'modal modal-hidden')
-      setBackdropClasses('backdrop backdrop-hidden');
+      setModalClasses(
+        props.className
+          ? props.className + " modal modal-hidden"
+          : "modal modal-hidden"
+      );
+      setBackdropClasses("backdrop backdrop-hidden");
 
       allowScroll();
     }
@@ -43,24 +61,22 @@ const Modal = (props) => {
 
   if (!props.isOpen) return;
 
-  return (
-    ReactDOM.createPortal(
-      <>
-        <Backdrop backdropClasses={backdropClasses} onClose={closeModal} />
-        <div className={modalClasses}>
-          <RiCloseLine className='modal-close-icon' onClick={closeModal} />
-          {props.children}
-        </div>
-      </>,
-      document.getElementById('portal')
-    )
+  return ReactDOM.createPortal(
+    <>
+      <Backdrop backdropClasses={backdropClasses} onClose={closeModal} />
+      <div className={modalClasses}>
+        <RiCloseLine className="modal-close-icon" onClick={closeModal} />
+        {props.children}
+      </div>
+    </>,
+    document.getElementById("portal")
   );
 };
 
 Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  children: PropTypes.element.isRequired
+  children: PropTypes.element.isRequired,
 };
 
 export default Modal;

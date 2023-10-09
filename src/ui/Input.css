@@ -18,7 +18,7 @@
 }
 
 .input-container input {
-  @apply px-4 bg-transparent appearance-none relative block w-full py-2 border border-b-gray-300 text-gray-900 focus:outline-none z-10 transition duration-700
+  @apply px-4 bg-transparent appearance-none relative block w-full py-2 border border-b-gray-300 text-gray-900 focus:outline-none z-10 transition duration-700;
 }
 
 .input-container.active input {
@@ -44,11 +44,11 @@
 
 .input-container.active .after {
   animation-name: example2;
-} 
+}
 
 .input-container.inactive .after {
   animation-name: example3;
-} 
+}
 
 @keyframes example {
   0% {

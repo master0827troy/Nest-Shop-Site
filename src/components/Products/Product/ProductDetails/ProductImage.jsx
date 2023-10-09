@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const ProductImage = ({ id, title, image, className }) => {
-  const imageClasses = className ? "w-full rounded-lg " + className : "w-full rounded-lg ";
+  const imageClasses = className
+    ? "w-full rounded-lg " + className
+    : "w-full rounded-lg ";
 
   return (
     <>

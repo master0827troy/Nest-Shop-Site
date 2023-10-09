@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs } from "firebase/firestore";
 
 export const useCollection = (c) => {
   const [documents, setDocuments] = useState(null);
@@ -19,11 +19,11 @@ export const useCollection = (c) => {
 
         setDocuments(result);
       } catch (error) {
-        setError(error)
+        setError(error);
       }
       setIsLoading(false);
     };
-     fetchData();
+    fetchData();
   }, [c]);
 
   return { documents, isLoading, error };

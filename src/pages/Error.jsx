@@ -1,11 +1,11 @@
-import Navbar from '../components/Navbar'
+import Navbar from "../components/Navbar";
 
 const Error = () => {
   return (
     <>
       <div>Error</div>
     </>
-  )
-}
+  );
+};
 
-export default Error
+export default Error;

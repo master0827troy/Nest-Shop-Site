@@ -1,19 +1,19 @@
-import PropTypes from 'prop-types';
-import Stars from '../../../../ui/Stars'
+import PropTypes from "prop-types";
+import Stars from "../../../../ui/Stars";
 
 const ProductRating = ({ max, rating, className }) => {
-  let classes = 'flex flex-row items-center';
+  let classes = "flex flex-row items-center";
 
   if (className) {
-    classes += ' ' + className;
+    classes += " " + className;
   }
 
   return (
     <div className={classes}>
       <Stars max={max} numberOfStars={rating} />
     </div>
-  )
-}
+  );
+};
 
 ProductRating.propTypes = {
   max: PropTypes.number.isRequired,
@@ -21,4 +21,4 @@ ProductRating.propTypes = {
   className: PropTypes.string,
 };
 
-export default ProductRating
+export default ProductRating;

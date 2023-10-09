@@ -1,9 +1,7 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-const ProductTotalReviews = ({reviews}) => {
-  return (
-    <span className='text-sm font-semibold'>({reviews})</span>
-  );
+const ProductTotalReviews = ({ reviews }) => {
+  return <span className="text-sm font-semibold">({reviews})</span>;
 };
 
 ProductTotalReviews.propTypes = {

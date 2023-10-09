@@ -1,21 +1,31 @@
-import {useEffect, useState} from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import { RiCloseLine } from 'react-icons/ri';
-import Backdrop from './Backdrop';
-import './Sidebar.css';
-import ScrollableDiv from './ScrollableDiv';
-import useScrollBlock from '../hooks/useScrollBlock';
+import { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
+import { RiCloseLine } from "react-icons/ri";
+import Backdrop from "./Backdrop";
+import "./Sidebar.css";
+import ScrollableDiv from "./ScrollableDiv";
+import useScrollBlock from "../hooks/useScrollBlock";
 
 const Sidebar = (props) => {
-  const [sidebarClasses, setSidebarClasses] = useState(props.className ? props.className + ' sidebar sidebar-hidden' : 'sidebar sidebar-hidden');
-  const [backdropClasses, setBackdropClasses] = useState('backdrop backdrop-hidden');
+  const [sidebarClasses, setSidebarClasses] = useState(
+    props.className
+      ? props.className + " sidebar sidebar-hidden"
+      : "sidebar sidebar-hidden"
+  );
+  const [backdropClasses, setBackdropClasses] = useState(
+    "backdrop backdrop-hidden"
+  );
 
   const [blockScroll, allowScroll] = useScrollBlock();
 
   const closeSidebar = () => {
-    setSidebarClasses(props.className ? props.className + ' sidebar sidebar-hidden' : 'sidebar sidebar-hidden');
-    setBackdropClasses('backdrop backdrop-hidden');
+    setSidebarClasses(
+      props.className
+        ? props.className + " sidebar sidebar-hidden"
+        : "sidebar sidebar-hidden"
+    );
+    setBackdropClasses("backdrop backdrop-hidden");
 
     /*
     * This setTimeout will delay the execution of the props.onClose() function by 0.7s
@@ -28,13 +38,21 @@ const Sidebar = (props) => {
 
   useEffect(() => {
     if (props.isOpen) {
-      setSidebarClasses(props.className ? props.className + ' sidebar sidebar-visible' : 'sidebar sidebar-visible');
-      setBackdropClasses('backdrop backdrop-visible');
+      setSidebarClasses(
+        props.className
+          ? props.className + " sidebar sidebar-visible"
+          : "sidebar sidebar-visible"
+      );
+      setBackdropClasses("backdrop backdrop-visible");
 
       blockScroll();
     } else {
-      setSidebarClasses(props.className ? props.className + ' sidebar sidebar-hidden' : 'sidebar sidebar-hidden');
-      setBackdropClasses('backdrop backdrop-hidden');
+      setSidebarClasses(
+        props.className
+          ? props.className + " sidebar sidebar-hidden"
+          : "sidebar sidebar-hidden"
+      );
+      setBackdropClasses("backdrop backdrop-hidden");
 
       allowScroll();
     }
@@ -42,26 +60,22 @@ const Sidebar = (props) => {
 
   if (!props.isOpen) return;
 
-  return (
-    ReactDOM.createPortal(
-      <>
-        <Backdrop backdropClasses={backdropClasses} onClose={closeSidebar} />
-        <div className={sidebarClasses}>
-          <RiCloseLine className='sidebar-close-icon' onClick={closeSidebar} />
-          <ScrollableDiv className='h-full'>
-            {props.children}
-          </ScrollableDiv>
-        </div>
-      </>,
-      document.getElementById('portal')
-    )
+  return ReactDOM.createPortal(
+    <>
+      <Backdrop backdropClasses={backdropClasses} onClose={closeSidebar} />
+      <div className={sidebarClasses}>
+        <RiCloseLine className="sidebar-close-icon" onClick={closeSidebar} />
+        <ScrollableDiv className="h-full">{props.children}</ScrollableDiv>
+      </div>
+    </>,
+    document.getElementById("portal")
   );
 };
 
 Sidebar.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  children: PropTypes.element.isRequired
+  children: PropTypes.element.isRequired,
 };
 
 export default Sidebar;

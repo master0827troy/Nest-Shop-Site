@@ -1,24 +1,28 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { cartActions, getCartItems } from './cart-slice';
-import { getWishlistItems, wishlistActions } from './WishlistSlice';
-import { toast } from 'react-toastify';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { cartActions, getCartItems } from "./cart-slice";
+import { getWishlistItems, wishlistActions } from "./WishlistSlice";
+import { toast } from "react-toastify";
 
 const initialAuthState = {
-  isAuthenticated: false
+  isAuthenticated: false,
 };
 
 export const login = createAsyncThunk(
-  'authentication/login',
-  async ({email, password}) => {
+  "authentication/login",
+  async ({ email, password }) => {
     try {
       const auth = getAuth();
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-      toast.info('Welcome back!');
-      return !!(userCredential.user);
+      toast.info("Welcome back!");
+      return !!userCredential.user;
     } catch (error) {
-      toast.error('An error occurred!')
+      toast.error("An error occurred!");
 
       return false;
     }
@@ -26,19 +30,19 @@ export const login = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk(
-  'authentication/logout',
+  "authentication/logout",
   async (params, thunkAPI) => {
     try {
       const auth = getAuth();
       auth.signOut();
 
-      thunkAPI.dispatch(cartActions.emptyCart())
-      thunkAPI.dispatch(wishlistActions.emptyWishlist())
-      toast.info('You\'ve logged out successfully!');
+      thunkAPI.dispatch(cartActions.emptyCart());
+      thunkAPI.dispatch(wishlistActions.emptyWishlist());
+      toast.info("You've logged out successfully!");
 
       return false;
     } catch (error) {
-      toast.error('An error occurred!')
+      toast.error("An error occurred!");
 
       return true;
     }
@@ -46,15 +50,15 @@ export const logout = createAsyncThunk(
 );
 
 export const autoLogin = createAsyncThunk(
-  'authentication/autoLogin',
+  "authentication/autoLogin",
   async (params, thunkAPI) => {
     try {
-      thunkAPI.dispatch(getCartItems())
-      thunkAPI.dispatch(getWishlistItems())
+      thunkAPI.dispatch(getCartItems());
+      thunkAPI.dispatch(getWishlistItems());
 
       return true;
     } catch (error) {
-      toast.error('An error occurred!')
+      toast.error("An error occurred!");
 
       return false;
     }
@@ -62,7 +66,7 @@ export const autoLogin = createAsyncThunk(
 );
 
 const authSlice = createSlice({
-  name: 'authentication',
+  name: "authentication",
   initialState: initialAuthState,
   extraReducers: (builder) => {
     builder
@@ -74,8 +78,8 @@ const authSlice = createSlice({
       })
       .addCase(autoLogin.fulfilled, (state, action) => {
         state.isAuthenticated = action.payload;
-      })
-  }
+      });
+  },
 });
 
 export const authActions = authSlice.actions;
