@@ -219,7 +219,10 @@ const Product = () => {
             </div>
             <div className="max-w-2xl flex flex-col gap-4">
               <ProductBadge rating={productRating} />
-              <ProductTitle title={productData.title} className="!text-lg" />
+              <ProductTitle
+                title={productData.title}
+                className="!text-xl md:!text-2xl"
+              />
               <div className="flex flex-row gap-2">
                 <ProductRating max={5} rating={productRating} />
                 <ProductTotalReviews reviews={totalReviews} />
