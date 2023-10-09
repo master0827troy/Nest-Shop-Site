@@ -23,9 +23,7 @@ const Footer = () => {
               fill="#FF630B"
             ></path>
           </svg>
-          <p>
-            <span>Nest</span>
-          </p>
+          <span>Nest</span>
         </Link>
         All rights reserved.
       </p>
