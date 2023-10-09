@@ -22,7 +22,7 @@ const Badge = ({ text, icon: Icon, containerStyle, iconStyle, textStyle }) => {
 
 Badge.propTypes = {
   text: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.elementType.isRequired,
   containerStyle: PropTypes.string,
   iconStyle: PropTypes.string,
   textStyle: PropTypes.string,
