@@ -60,6 +60,7 @@ export const getCartItems = createAsyncThunk("cart/getCartItems", async () => {
               title: matchingProduct.title,
               image: matchingProduct.image,
               price: matchingProduct.price,
+              discount: matchingProduct.discount,
               rating: productRating ? productRating / productTotalReviews : 0,
               stock: matchingProduct.stock,
               quantity:
@@ -75,7 +76,10 @@ export const getCartItems = createAsyncThunk("cart/getCartItems", async () => {
       let totalPrice = 0;
 
       for (const product of products) {
-        totalPrice += product.price * product.quantity;
+        totalPrice +=
+          (product.discount
+            ? product.price - (product.price * product.discount) / 100
+            : product.price) * product.quantity;
         totalQuantity += product.quantity;
       }
 
@@ -152,12 +156,15 @@ export const addItemToCart = createAsyncThunk(
         let totalPrice = 0;
 
         for (const cartItem of updatedCartItems) {
-          totalPrice += cartItem.price * cartItem.quantity;
+          totalPrice +=
+            (cartItem.discount
+              ? cartItem.price - (cartItem.price * cartItem.discount) / 100
+              : cartItem.price) * cartItem.quantity;
           totalQuantity += cartItem.quantity;
         }
 
         toast.success("Added product to cart!");
-
+        console.log(updatedCartItems);
         return {
           cartItems: updatedCartItems,
           totalQuantity,
@@ -208,7 +215,10 @@ export const removeItemFromCart = createAsyncThunk(
         let totalPrice = 0;
 
         for (const cartItem of updatedCartItems) {
-          totalPrice += cartItem.price * cartItem.quantity;
+          totalPrice +=
+            (cartItem.discount
+              ? cartItem.price - (cartItem.price * cartItem.discount) / 100
+              : cartItem.price) * cartItem.quantity;
           totalQuantity += cartItem.quantity;
         }
 
@@ -269,7 +279,10 @@ export const updateItemQuantity = createAsyncThunk(
         let totalPrice = 0;
 
         for (const cartItem of updatedCartItems) {
-          totalPrice += cartItem.price * cartItem.quantity;
+          totalPrice +=
+            (cartItem.discount
+              ? cartItem.price - (cartItem.price * cartItem.discount) / 100
+              : cartItem.price) * cartItem.quantity;
           totalQuantity += cartItem.quantity;
         }
 

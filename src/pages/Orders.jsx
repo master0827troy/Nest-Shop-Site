@@ -37,12 +37,12 @@ const Orders = () => {
             const matchingProduct = products?.find(
               (product) => product.id === item.id
             );
-            totalPrice += matchingProduct?.price;
+            totalPrice += item?.price;
             totalAmount += parseInt(item.amount);
             return {
               productId: matchingProduct?.id,
               productTitle: matchingProduct?.title,
-              productPrice: matchingProduct?.price,
+              productPrice: item?.price,
               productImage: matchingProduct?.image,
               productAmount: item?.amount,
             };
