@@ -94,16 +94,15 @@ const AccountInfo = () => {
         user.email,
         currentPassword2
       );
-      await reauthenticateWithCredential(user, credential);
 
-      updatePassword(auth.currentUser, newPassword1)
-        .then(() => {
-          toast.success("Changed your password successfully!");
-        })
-        .catch((error) => {
-          console.log(error);
-          toast.error("An error occurred!");
-        });
+      try {
+        await reauthenticateWithCredential(user, credential);
+
+        updatePassword(auth.currentUser, newPassword1);
+        toast.success("Changed your password successfully!");
+      } catch (error) {
+        toast.error("An error occurred!");
+      }
     }
   };
 
