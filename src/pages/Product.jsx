@@ -77,8 +77,6 @@ const Product = () => {
               updatedRecentlyViewed = updatedRecentlyViewed.slice(0, 8);
             }
 
-            console.log(updatedRecentlyViewed);
-
             await updateDoc(doc(db, "users", userId), {
               recentlyViewed: updatedRecentlyViewed,
             });
