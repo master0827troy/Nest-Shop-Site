@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { db } from '../../api/firebase';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import Input from '../../ui/Input';

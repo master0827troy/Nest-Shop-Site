@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { doc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { db } from "../firebase";
+import { db } from "../api/firebase";
 import CustomerReviews from "../components/CustomerReviews";
 import ReviewForm from "../components/Forms/ReviewForm";
 import CustomerRatings from "../components/CustomerRatings";

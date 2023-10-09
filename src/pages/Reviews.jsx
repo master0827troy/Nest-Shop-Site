@@ -4,7 +4,7 @@ import { FiTrash2 } from "react-icons/fi";
 import useGetFirestoreData from "../hooks/useGetFirestoreData";
 import { getAuth } from "firebase/auth";
 import { doc, deleteDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../api/firebase";
 import { useEffect, useState } from "react";
 import ReviewForm from "../components/Forms/ReviewForm";
 import Loading from "../ui/Loading";

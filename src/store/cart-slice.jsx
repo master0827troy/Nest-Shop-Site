@@ -7,7 +7,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { db } from "../firebase";
+import { db } from "../api/firebase";
 import { toast } from "react-toastify";
 
 const initialCartState = {

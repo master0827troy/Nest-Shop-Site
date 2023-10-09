@@ -9,7 +9,7 @@ import {
   getDocs,
   getDoc,
 } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../api/firebase";
 
 const useGetFirestoreData = (
   c,
@@ -23,9 +23,15 @@ const useGetFirestoreData = (
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [whereStatementProperty, setWhereStatementProperty] = useState(whereStatement?.lhs)
-  const [whereStatementOperator, setWhereStatementOperator] = useState(whereStatement?.op)
-  const [whereStatementValue, setWhereStatementValue] = useState(whereStatement?.rhs)
+  const [whereStatementProperty, setWhereStatementProperty] = useState(
+    whereStatement?.lhs
+  );
+  const [whereStatementOperator, setWhereStatementOperator] = useState(
+    whereStatement?.op
+  );
+  const [whereStatementValue, setWhereStatementValue] = useState(
+    whereStatement?.rhs
+  );
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -37,15 +43,23 @@ const useGetFirestoreData = (
           setData({ ...docSnap.data(), id: documentId });
           setIsLoading(false);
         } else {
-          setError('Document does not exist');
+          setError("Document does not exist");
           setIsLoading(false);
         }
       } else {
         let queryCollection = collection(db, c);
 
         let queryWhere;
-        if (whereStatementProperty && whereStatementOperator && whereStatementValue) {
-          queryWhere = where(whereStatementProperty, whereStatementOperator, whereStatementValue);
+        if (
+          whereStatementProperty &&
+          whereStatementOperator &&
+          whereStatementValue
+        ) {
+          queryWhere = where(
+            whereStatementProperty,
+            whereStatementOperator,
+            whereStatementValue
+          );
         }
 
         let queryOrderBy = orderBy_ && orderBy(orderBy_, orderType || "asc");
@@ -66,24 +80,32 @@ const useGetFirestoreData = (
 
         let result = [];
 
-        const q = filteredQueryConstraintsArray ?
-          query(queryCollection, ...filteredQueryConstraintsArray)
-        :
-          queryCollection
+        const q = filteredQueryConstraintsArray
+          ? query(queryCollection, ...filteredQueryConstraintsArray)
+          : queryCollection;
 
-          const querySnapshot = await getDocs(q);
-          querySnapshot.forEach((doc) => {
-            result.push({ ...doc.data(), id: doc.id });
-          });
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          result.push({ ...doc.data(), id: doc.id });
+        });
 
-          setData(result);
-          setIsLoading(false);
+        setData(result);
+        setIsLoading(false);
       }
     } catch (error) {
       setError(error);
       setIsLoading(false);
     }
-  }, [c, documentId, whereStatementProperty, whereStatementOperator, whereStatementValue, orderBy_, orderType, limit_]);
+  }, [
+    c,
+    documentId,
+    whereStatementProperty,
+    whereStatementOperator,
+    whereStatementValue,
+    orderBy_,
+    orderType,
+    limit_,
+  ]);
 
   useEffect(() => {
     fetchData();

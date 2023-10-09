@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { db } from "../firebase";
+import { db } from "../api/firebase";
 import { FaMapMarkerAlt, FaPhoneAlt, FaAddressBook } from "react-icons/fa";
 import { RiShoppingCart2Line } from "react-icons/ri";
 import { toast } from "react-toastify";

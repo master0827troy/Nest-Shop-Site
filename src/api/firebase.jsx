@@ -1,3 +1,5 @@
+import { apiKey } from "./apiKey";
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
@@ -6,12 +8,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBsPOiocGqwA9vofo5OrEJ59uMjlgyosFY",
+  apiKey: apiKey,
   authDomain: "e-commerce-cccb4.firebaseapp.com",
   projectId: "e-commerce-cccb4",
   storageBucket: "e-commerce-cccb4.appspot.com",
   messagingSenderId: "263748091583",
-  appId: "1:263748091583:web:19f8ee5dc1dbb7f1f7500a"
+  appId: "1:263748091583:web:19f8ee5dc1dbb7f1f7500a",
 };
 
 // Initialize Firebase

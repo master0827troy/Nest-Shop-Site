@@ -10,7 +10,7 @@ import {
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../api/firebase";
 import useGetFirestoreData from "../hooks/useGetFirestoreData";
 import Loading from "../ui/Loading";
 import { toast } from "react-toastify";

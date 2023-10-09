@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { db } from '../../firebase';
+import { db } from '../../api/firebase';
 import Input from '../../ui/Input';
 import Button from '../../ui/Button';
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
