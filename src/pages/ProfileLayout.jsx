@@ -22,7 +22,7 @@ const ProfileLayout = () => {
           Hello, {auth.currentUser.displayName}
         </h3>
       </div>
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="mb-12 flex flex-col lg:flex-row gap-8">
         <div className="lg:sticky lg:top-[5.5rem] h-fit">
           <ul className="md:w-max grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-none text-xl font-semibold">
             {list.map((listItem) => (
