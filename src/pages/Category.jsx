@@ -16,30 +16,21 @@ const Category = () => {
   const promotionsList = [
     {
       id: 1,
-      title: "20% Off On Tank Tops",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac dictum.",
+      title: "20% Off On Electronics",
+      text: "Get unbeatable discounts on a wide range of electronics.",
       image:
-        "https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2018/12/women-fashion-free-img.jpg",
-      imageClasses: "!bg-right-top",
-      path: "/category/BTc1YJEY2Oxhqorp3ivd",
+        "https://www.computersmobile.com.au/wp-content/uploads/2016/11/slider1-1200x480.jpg",
+      imageClasses: "!bg-center",
+      path: "/category/k0H6JtUC44ZkLJMDTnSi",
     },
     {
       id: 2,
-      title: "Latest Eyewear For You",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac dictum.",
+      title: "Latest watches For You",
+      text: "Enjoy amazing discounts on watches!",
       image:
-        "https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2018/12/men-fashion-free-img.jpg",
-      imageClasses: "!bg-left-top",
-      path: "/category/D1iuGHpJSQaKh7o7Lski",
-    },
-    {
-      id: 3,
-      title: "Let's Lorem Suit Up!",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac dictum.",
-      image:
-        "https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2018/12/footwear-free-img.jpg",
+        "https://png.pngtree.com/thumb_back/fh260/back_our/20190620/ourmid/pngtree-simple-outdoor-forest-watch-banner-image_166794.jpg",
       imageClasses: "!bg-right-top",
-      path: "/category/jb0ljpG0Ntfo2CpCqQZa",
+      path: "/category/YCSCEBPGhYNqdrmdoGXL",
     },
   ];
 

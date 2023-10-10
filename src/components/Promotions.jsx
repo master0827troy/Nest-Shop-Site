@@ -23,7 +23,7 @@ const Promotions = (props) => {
             <Button
               text="Shop now"
               className="text-white !border-orange-600 rounded-sm"
-              noBg
+              bg
               onClick={() => navigate(promotion.path)}
             />
           </div>
