@@ -25,7 +25,7 @@ const Category = () => {
     },
     {
       id: 2,
-      title: "Latest watches For You",
+      title: "Latest Watches For You",
       text: "Enjoy amazing discounts on watches!",
       image:
         "https://png.pngtree.com/thumb_back/fh260/back_our/20190620/ourmid/pngtree-simple-outdoor-forest-watch-banner-image_166794.jpg",
