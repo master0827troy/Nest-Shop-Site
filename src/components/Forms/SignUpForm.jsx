@@ -8,6 +8,7 @@ import { db } from "../../api/firebase";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
 
 const SignUpForm = (props) => {
   const [firstName, setFirstName] = useState("");
@@ -45,7 +46,17 @@ const SignUpForm = (props) => {
       await setDoc(doc(db, "users", user.uid), data);
       props.onClose();
     } catch (error) {
-      console.log(error);
+      const errorMessage = error.message
+        ? error.message
+            .replace("Firebase: Error (auth/", "")
+            .replace(")", "")
+            .replace(/-/g, " ")
+        : "An error ocurred!";
+
+      const capitalizedError =
+        errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1);
+
+      toast.error(capitalizedError);
     }
   };
 

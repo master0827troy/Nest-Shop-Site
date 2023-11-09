@@ -22,7 +22,17 @@ export const login = createAsyncThunk(
       toast.info("Welcome back!");
       return !!userCredential.user;
     } catch (error) {
-      toast.error("An error occurred!");
+      const errorMessage = error.message
+        ? error.message
+            .replace("Firebase: Error (auth/", "")
+            .replace(")", "")
+            .replace(/-/g, " ")
+        : "An error ocurred!";
+
+      const capitalizedError =
+        errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1);
+
+      toast.error(capitalizedError);
 
       return false;
     }
