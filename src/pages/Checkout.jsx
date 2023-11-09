@@ -100,7 +100,7 @@ const Checkout = () => {
   };
 
   return (
-    <div className="mt-12">
+    <div className="my-12">
       <div className="grid md:grid-flow-col justify-between gap-10 md:gap-20">
         <div className="grow">
           <div className="flex flex-row items-center gap-2 mb-6 text-3xl font-semibold tracking-wide">
