@@ -20,6 +20,11 @@ const SignUpForm = (props) => {
   const submitHandler = async (e) => {
     e.preventDefault();
 
+    if (!firstName || !lastName || !email || !phone || !password) {
+      toast.error("Fill all the required fields.");
+      return;
+    }
+
     try {
       const auth = getAuth();
       const userCredential = await createUserWithEmailAndPassword(

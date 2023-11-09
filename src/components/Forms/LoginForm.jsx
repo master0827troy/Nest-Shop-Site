@@ -3,6 +3,7 @@ import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/AuthSlice";
+import { toast } from "react-toastify";
 
 const LoginForm = (props) => {
   const [email, setEmail] = useState("");
@@ -12,6 +13,12 @@ const LoginForm = (props) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    if (!email || !password) {
+      toast.error("Fill all the required fields.");
+      return;
+    }
+
     dispatch(login({ email, password }));
     props.onClose();
   };

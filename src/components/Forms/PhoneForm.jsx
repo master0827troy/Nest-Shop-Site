@@ -10,6 +10,11 @@ const PhoneForm = (props) => {
   const [phoneNumber, setPhoneNumber] = useState(props.phoneNumber || "");
 
   const addPhoneHandler = async () => {
+    if (!phoneNumber) {
+      toast.error("Fill all the required fields.");
+      return;
+    }
+
     try {
       props.changeHandler((prevState) => !prevState);
       await updateDoc(doc(db, "users", props.userId), {
@@ -24,6 +29,11 @@ const PhoneForm = (props) => {
   };
 
   const editAddressHandler = async () => {
+    if (!phoneNumber) {
+      toast.error("Fill all the required fields.");
+      return;
+    }
+
     try {
       const filteredPhoneNumbers = props.phoneNumbers.filter(
         (ele) =>

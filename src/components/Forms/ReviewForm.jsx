@@ -17,6 +17,11 @@ const ReviewForm = (props) => {
   const [rating, setRating] = useState(props.review?.reviewRating || 0);
 
   const editReviewHandler = async () => {
+    if (!text || rating === 0) {
+      toast.error("Fill all the required fields.");
+      return;
+    }
+
     try {
       props.changeHandler(null);
       await updateDoc(doc(db, "reviews", props.review.reviewId), {
@@ -33,6 +38,11 @@ const ReviewForm = (props) => {
   };
 
   const submitReviewHandler = async () => {
+    if (!text || rating === 0) {
+      toast.error("Fill all the required fields.");
+      return;
+    }
+
     try {
       props.changeHandler((prevState) => !prevState);
       await addDoc(collection(db, "reviews"), {

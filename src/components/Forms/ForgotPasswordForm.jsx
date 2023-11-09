@@ -2,6 +2,7 @@ import { useState } from "react";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
+import { toast } from "react-toastify";
 
 const ForgotPasswordForm = (props) => {
   const [email, setEmail] = useState("");
@@ -9,6 +10,10 @@ const ForgotPasswordForm = (props) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
+      if (!email) {
+        toast.error("Fill all the required fields.");
+        return;
+      }
       const auth = getAuth();
       await sendPasswordResetEmail(auth, email);
       props.onClose();

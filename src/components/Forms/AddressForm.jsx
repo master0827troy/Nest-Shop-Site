@@ -16,6 +16,11 @@ const AddressForm = (props) => {
   );
 
   const addAddressHandler = async () => {
+    if (!apartment || !street || !city || !country || !postalNumber) {
+      toast.error("Fill all the required fields.");
+      return;
+    }
+
     try {
       props.changeHandler((prevState) => !prevState);
       await updateDoc(doc(db, "users", props.userId), {
@@ -33,6 +38,11 @@ const AddressForm = (props) => {
   };
 
   const editAddressHandler = async () => {
+    if (!apartment || !street || !city || !country || !postalNumber) {
+      toast.error("Fill all the required fields.");
+      return;
+    }
+
     try {
       const filteredAddresses = props.addresses.filter(
         (ele) =>
