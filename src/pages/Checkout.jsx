@@ -70,6 +70,21 @@ const Checkout = () => {
   }
 
   const confirmOrder = async () => {
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty!");
+      return;
+    }
+
+    if (!addressesList[activeAddress]?.value) {
+      toast.error("Missing address!");
+      return;
+    }
+
+    if (!phoneNumbersList[activePhoneNumber]?.value) {
+      toast.error("Missing phone number!");
+      return;
+    }
+
     try {
       const updatedItems = [];
       for (const item of cartItems) {
@@ -95,7 +110,17 @@ const Checkout = () => {
       navigate("/profile/orders");
       toast.success("Confirmed your order successfully!");
     } catch (error) {
-      toast.error("An error occurred!");
+      const errorMessage = error.message
+        ? error.message
+            .replace("Firebase: Error (auth/", "")
+            .replace(")", "")
+            .replace(/-/g, " ")
+        : "An error ocurred!";
+
+      const capitalizedError =
+        errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1);
+
+      toast.error(capitalizedError);
     }
   };
 
