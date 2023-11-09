@@ -55,6 +55,11 @@ const AccountInfo = () => {
   }
 
   const submitHandler = async () => {
+    if (!currentPassword1) {
+      toast.error("Current password is needed.");
+      return;
+    }
+
     try {
       await updateProfile(auth.currentUser, {
         displayName: firstName,
@@ -80,12 +85,24 @@ const AccountInfo = () => {
       reFetchUserData();
       toast.success("Updated your profile successfully!");
     } catch (error) {
-      toast.error("An error occurred!");
+      const errorMessage = error.message
+        ? error.message
+            .replace("Firebase: Error (auth/", "")
+            .replace(")", "")
+            .replace(/-/g, " ")
+        : "An error ocurred!";
+
+      const capitalizedError =
+        errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1);
+
+      toast.error(capitalizedError);
     }
   };
 
   const changePasswordHandler = async () => {
-    if (newPassword1 !== newPassword2) {
+    if (!currentPassword2) {
+      toast.error("Current password is needed.");
+    } else if (newPassword1 !== newPassword2) {
       toast.error("Both passwords need to match!");
     } else if (newPassword1.length < 6) {
       toast.error("New password should be at least 6 characters!");
@@ -101,7 +118,17 @@ const AccountInfo = () => {
         updatePassword(auth.currentUser, newPassword1);
         toast.success("Changed your password successfully!");
       } catch (error) {
-        toast.error("An error occurred!");
+        const errorMessage = error.message
+          ? error.message
+              .replace("Firebase: Error (auth/", "")
+              .replace(")", "")
+              .replace(/-/g, " ")
+          : "An error ocurred!";
+
+        const capitalizedError =
+          errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1);
+
+        toast.error(capitalizedError);
       }
     }
   };
