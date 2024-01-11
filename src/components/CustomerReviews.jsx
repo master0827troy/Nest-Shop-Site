@@ -1,6 +1,7 @@
 import Rating from "./Products/Product/ProductDetails/ProductRating";
 import usePagination from "../hooks/usePagination";
 import Pagination from "../ui/Pagination";
+import user from "../assets/user.jpeg";
 
 const CustomerReviews = (props) => {
   const [modifiedData, paginationOptions] = usePagination(
@@ -18,11 +19,7 @@ const CustomerReviews = (props) => {
       {modifiedData.map((review) => (
         <div key={review.id} className="mb-6">
           <div className="flex flex-row items-center justify-center lg:justify-start gap-2 mb-2">
-            <img
-              src="https://images-na.ssl-images-amazon.com/images/S/amazon-avatars-global/default._CR0,0,1024,1024_SX48_.png"
-              alt=""
-              className="w-6"
-            />
+            <img src={user} alt="" className="w-6" />
             <p>{review.user}</p>
           </div>
           <Rating

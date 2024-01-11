@@ -11,6 +11,8 @@ import usePagination from "../hooks/usePagination";
 import useGetFirestoreData from "../hooks/useGetFirestoreData";
 import Loading from "../ui/Loading";
 import { toast } from "react-toastify";
+import electronics from "../assets/electronics.webp";
+import watches from "../assets/watches.webp";
 
 const Category = () => {
   const promotionsList = [
@@ -18,8 +20,7 @@ const Category = () => {
       id: 1,
       title: "20% Off On Electronics",
       text: "Get unbeatable discounts on a wide range of electronics.",
-      image:
-        "https://www.computersmobile.com.au/wp-content/uploads/2016/11/slider1-1200x480.jpg",
+      image: electronics,
       imageClasses: "!bg-center",
       path: "/category/k0H6JtUC44ZkLJMDTnSi",
     },
@@ -27,8 +28,7 @@ const Category = () => {
       id: 2,
       title: "Latest Watches For You",
       text: "Enjoy amazing discounts on watches!",
-      image:
-        "https://png.pngtree.com/thumb_back/fh260/back_our/20190620/ourmid/pngtree-simple-outdoor-forest-watch-banner-image_166794.jpg",
+      image: watches,
       imageClasses: "!bg-right-top",
       path: "/category/YCSCEBPGhYNqdrmdoGXL",
     },
