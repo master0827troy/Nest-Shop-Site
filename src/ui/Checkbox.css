@@ -15,7 +15,7 @@
 }
 
 .checkbox .icon-container.checked .icon {
-  @apply opacity-100;
+  @apply opacity-200;
 }
 
 .checkbox .text {
