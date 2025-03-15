@@ -80,7 +80,7 @@ const Home = () => {
       productsError ||
       (reviewsError && !reviewsLoading && !productsLoading)
     ) {
-      toast.error("An error occurred!");
+      toast.error("error!");
     }
   }, [
     products,
